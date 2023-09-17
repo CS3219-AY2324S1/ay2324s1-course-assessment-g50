@@ -32,7 +32,7 @@ function checkJwtToken(req, res, next) {
         } else {
             // Check if token is valid
             const id = getCurrentUserId(req)
-            req.params.id = id
+            req.query.id = id
             next()
         }
     } catch (error) {

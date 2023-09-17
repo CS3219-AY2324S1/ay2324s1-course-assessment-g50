@@ -30,6 +30,4 @@ function decrypt(encryptedTxt) {
     return key.decrypt(encryptedTxt, 'utf8')
 }
 
-console.log(encrypt("123456"))
-
 module.exports = {getPublicKey, getPrivateKey, encrypt, decrypt}

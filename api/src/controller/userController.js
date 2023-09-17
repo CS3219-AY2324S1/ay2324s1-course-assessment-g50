@@ -106,7 +106,7 @@ async function getUserById(req, res) {
 
     // Get user by id
     const userInfo = await UserInfo.findOne({ where: { userId: id } }).catch(err => {
-        return JsonResponse.fail(500, error.message).send(res)
+        return JsonResponse.fail(500, err.message).send(res)
     })
     if (userInfo) {
         return JsonResponse.success(200, userInfo).send(res)
@@ -116,7 +116,7 @@ async function getUserById(req, res) {
 
 // Update user email or password
 async function updateUser(req, res) {
-    const id = req.params.id
+    const id = req.query.id
 
     await User.update(req.body, { where: { id: id } }).then((num) => {
         if (num == 0) {
@@ -130,7 +130,7 @@ async function updateUser(req, res) {
 
 // Update user profile
 async function updateUserInfo(req, res) {
-    const id = req.params.id
+    const id = req.query.id
 
     await UserInfo.update(req.body, { where: { id: id } }).then((num) => {
         if (num == 0) {
@@ -144,7 +144,7 @@ async function updateUserInfo(req, res) {
 
 // Deregister from platform
 async function deleteUserById(req, res) {
-    const id = req.params.id;
+    const id = req.query.id;
 
     sequelize.transaction(async (t) => {
         const user = await User.destroy({ where: { id: id } })
