@@ -1,6 +1,10 @@
-const config = require('dotenv').config()
+require('dotenv').config()
 const express = require('express')
 const app = express()
+
+// Config cors
+const cors = require('cors')
+app.use(cors())
 
 // Middlewares:
 const checkJwtToken = require('./middlewares/tokenCheck')
