@@ -8,7 +8,7 @@ import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 
 const ExpandableRow = ({
-  question: { title, description, category, complexity, id },
+  question: { title, description, categories, complexity, id },
   row_num,
 }) => {
   const [open, setOpen] = useState(false);
@@ -30,7 +30,7 @@ const ExpandableRow = ({
           {title}
         </TableCell>
         <TableCell align="left" className="colOthers" sx={{ fontSize: "16px" }}>
-          {category}
+          {categories.join(", ")}
         </TableCell>
         <TableCell align="left" className="colOthers" sx={{ fontSize: "16px" }}>
           {complexity}
@@ -49,7 +49,7 @@ const ExpandableRow = ({
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <p>{description}</p>
+            <pre>{description}</pre>
           </Collapse>
         </TableCell>
       </TableRow>

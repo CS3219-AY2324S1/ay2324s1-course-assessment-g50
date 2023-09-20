@@ -6,7 +6,7 @@ import "../questions.css";
 
 // Option Fields (hardcode or save to db?)
 // prettier-ignore
-const categories = [
+const category_list = [
   "Array", "String", "Hash Table", "Math", "Dynamic Programming", "Sorting", 
   "Greedy", "Depth-First Search", "Binary Search", "Database", "Breadth-First Search", 
   "Tree", "Matrix", "Two Pointers", "Binary Tree", "Bit Manipulation", 
@@ -30,21 +30,30 @@ const difficulties = ["Easy", "Medium", "Hard"];
 const initialState = {
   title: "",
   description: "",
-  category: "",
+  categories: [],
   complexity: "",
 };
 
 const QuestionForm = () => {
   const [formData, setFormData] = useState(initialState);
-  const { title, description, category, complexity } = formData;
+  const { title, description, categories, complexity } = formData;
   const dispatch = useDispatch();
+
+  const onCategoryChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions).map(
+      (option) => option.value
+    );
+
+    // Update the state with the selected values
+    setFormData({ ...formData, categories: selectedOptions });
+  };
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
-
+    console.log(formData);
     const isValid = Object.values(formData).every(
       (field) => field !== null && field !== ""
     );
@@ -90,15 +99,16 @@ const QuestionForm = () => {
 
           <div className="column right">
             <select
-              name="category"
-              value={category}
-              onChange={onChange}
+              name="categories"
+              value={categories}
+              onChange={onCategoryChange}
               className="field"
+              multiple
             >
               <option value="" disabled hidden>
-                Category
+                categories
               </option>
-              {categories.map((cat, i) => (
+              {category_list.map((cat, i) => (
                 <option value={cat} key={i}>
                   {cat}
                 </option>
