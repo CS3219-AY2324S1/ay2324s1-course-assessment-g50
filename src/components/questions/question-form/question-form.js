@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addNewQuestion } from "../../reducers/questionSlice.js";
-import "./Questions.css";
+import { addNewQuestion } from "../../../reducers/questionSlice.js";
+import "./question-form.css";
+import "../questions.css";
 
 // Option Fields (hardcode or save to db?)
 // prettier-ignore

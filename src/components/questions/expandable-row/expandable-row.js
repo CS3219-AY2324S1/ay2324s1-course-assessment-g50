@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { deleteQuestion } from "../../reducers/questionSlice";
+import { deleteQuestion } from "../../../reducers/questionSlice";
 import Collapse from "@mui/material/Collapse";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import "./Questions.css";
+import "./expandable-row.css";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 

@@ -1,6 +1,6 @@
 import React from "react";
-import QuestionForm from "./QuestionForm";
-import QuestionTable from "./QuestionTable";
+import QuestionForm from "./question-form/question-form";
+import QuestionTable from "./question-table/question-table";
 
 const Question = () => {
   return (
