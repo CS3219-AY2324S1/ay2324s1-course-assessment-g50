@@ -55,10 +55,15 @@ export const fetchQuestions = createAsyncThunk(
 export const addNewQuestion = createAsyncThunk(
   "posts/addNewQuestion",
   async (formData) => {
-    const response = await addQuestionToRepo(formData);
+    try {
+      const response = await addQuestionToRepo(formData);
 
-    // The response includes unique ID
-    return response.data;
+      // The response includes unique ID
+      return response.data;
+    } catch (error) {
+      // Handle or log error if necessary
+      throw error; // This error will be caught in the onSubmit method
+    }
   }
 );
 

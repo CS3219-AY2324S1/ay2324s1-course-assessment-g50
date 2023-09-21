@@ -12,7 +12,7 @@ const notify = (dispatch, alertData) => {
   dispatch(addMessage(alertData));
   setTimeout(() => {
     dispatch(removeMessage(alertData.id));
-  }, 1000);
+  }, 2000);
 };
 
 export const sendError = (dispatch, message) => {
