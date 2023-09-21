@@ -4,7 +4,7 @@ import {
   getQuestions,
   addQuestionToRepo,
   deleteQuestionFromRepo,
-} from "../actions/question";
+} from "../services/question.service";
 
 const initialState = {
   questions: [],

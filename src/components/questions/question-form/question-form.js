@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import RichText from "./rich-text.js";
 import { addNewQuestion } from "../../../reducers/questionSlice.js";
+import { sendError } from "../../../services/alert.service.js";
 import "./question-form.css";
 import "../questions.css";
 
@@ -64,9 +65,10 @@ const QuestionForm = () => {
     if (isValid) {
       dispatch(addNewQuestion(formData));
       setFormData(initialState);
+
+      setTimeout(() => {}, 1000);
     } else {
-      //@Todo: Create alert in future
-      console.log("Invalid Form Data");
+      sendError(dispatch, "All fields must be filled");
     }
   };
 
@@ -86,7 +88,6 @@ const QuestionForm = () => {
               placeholder="Title *"
               value={title}
               onChange={onChange}
-              required
             />
             <RichText value={description} setValue={onDescriptionChange} />
             <div className="btn-container">
