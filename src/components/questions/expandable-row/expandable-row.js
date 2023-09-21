@@ -27,7 +27,7 @@ const ExpandableRow = ({
         sx={{ backgroundColor: rowColor }}
       >
         <TableCell align="left" className="colId">
-          {row_num}
+          {row_num + 1}
         </TableCell>
         <TableCell align="left" className="colOthers" sx={{ fontSize: "16px" }}>
           {title}
