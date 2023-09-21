@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import RichText from "./rich-text.js";
 import MultipleSelect from "./multi-select.js";
 import { addNewQuestion } from "../../../reducers/questionSlice.js";
@@ -23,7 +23,6 @@ const QuestionForm = () => {
   const [formData, setFormData] = useState(initialState);
   const { title, categories, description, complexity } = formData;
   const dispatch = useDispatch();
-  const status = useSelector((state) => state.questions.upload_status);
   const onDescriptionChange = (value) => {
     // If not form data's initial state
     if (value !== EMPTY_DESCRIPTION) {
@@ -36,8 +35,7 @@ const QuestionForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const emptyDescription = (value) =>
-    value.replace(/<(.|\n)*?>/g, "").trim().length !== 0 &&
-    !value.includes("<img");
+    value.replace(/<(.|\n)*?>/g, "").trim().length !== 0;
 
   const onSubmit = async (e) => {
     e.preventDefault();

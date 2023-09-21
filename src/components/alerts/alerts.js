@@ -6,8 +6,10 @@ const Alerts = () => {
   const alerts = useSelector((state) => state.alerts.messages);
   return (
     <>
-      {alerts.map((alert) => (
-        <Alert severity={alert.severity}>{alert.message}</Alert>
+      {alerts.map((alert, i) => (
+        <Alert severity={alert.severity} key={i}>
+          {alert.message}
+        </Alert>
       ))}
     </>
   );
