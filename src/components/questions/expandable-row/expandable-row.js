@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { deleteQuestion } from "../../reducers/questionSlice";
+import { deleteQuestion } from "../../../reducers/questionSlice";
 import Collapse from "@mui/material/Collapse";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import "./Questions.css";
+import "./expandable-row.css";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.bubble.css";
+
 const ExpandableRow = ({
-  question: { title, description, category, complexity, id },
+  question: { title, description, categories, complexity, id },
   row_num,
 }) => {
   const [open, setOpen] = useState(false);
@@ -24,13 +27,13 @@ const ExpandableRow = ({
         sx={{ backgroundColor: rowColor }}
       >
         <TableCell align="left" className="colId">
-          {row_num}
+          {row_num + 1}
         </TableCell>
         <TableCell align="left" className="colOthers" sx={{ fontSize: "16px" }}>
           {title}
         </TableCell>
         <TableCell align="left" className="colOthers" sx={{ fontSize: "16px" }}>
-          {category}
+          {categories.join(", ")}
         </TableCell>
         <TableCell align="left" className="colOthers" sx={{ fontSize: "16px" }}>
           {complexity}
@@ -49,7 +52,7 @@ const ExpandableRow = ({
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <p>{description}</p>
+            <ReactQuill value={description} theme="bubble" readOnly={true} />
           </Collapse>
         </TableCell>
       </TableRow>

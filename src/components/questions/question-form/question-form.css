@@ -1,0 +1,49 @@
+.body {
+  display: flex;
+  justify-content: space-between;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.left {
+  width: 70%;
+}
+
+.right {
+  width: 25%;
+}
+
+.field {
+  margin-bottom: 20px;
+  padding: 10px 10px;
+  width: 98%;
+  font-size: 16px;
+  border-width: 1px;
+}
+
+.description {
+  height: 100px;
+  resize: none;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 60px;
+}
+
+.btn {
+  padding: 15px;
+  border-radius: 20px;
+  border-style: hidden;
+  background-color: #8ddb8d;
+  font-size: 14px;
+  width: max-content;
+}
+
+.btn:hover {
+  background-color: #ccffcc;
+}
