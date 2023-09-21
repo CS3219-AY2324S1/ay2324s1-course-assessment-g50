@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import RichText from "./rich-text.js";
 import { addNewQuestion } from "../../../reducers/questionSlice.js";
 import "./question-form.css";
 import "../questions.css";
@@ -29,31 +30,33 @@ const difficulties = ["Easy", "Medium", "Hard"];
 // Empty Form (question has additional id field set after calling addQuestion)
 const initialState = {
   title: "",
-  description: "",
   categories: [],
+  description: "",
   complexity: "",
 };
 
 const QuestionForm = () => {
   const [formData, setFormData] = useState(initialState);
-  const { title, description, categories, complexity } = formData;
+  const { title, categories, description, complexity } = formData;
   const dispatch = useDispatch();
 
   const onCategoryChange = (e) => {
     const selectedOptions = Array.from(e.target.selectedOptions).map(
       (option) => option.value
     );
-
-    // Update the state with the selected values
     setFormData({ ...formData, categories: selectedOptions });
   };
 
+  const onDescriptionChange = (value) =>
+    setFormData({ ...formData, description: value });
+
+  // Update the state with the selected values
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+
     const isValid = Object.values(formData).every(
       (field) => field !== null && field !== ""
     );
@@ -83,15 +86,9 @@ const QuestionForm = () => {
               placeholder="Title *"
               value={title}
               onChange={onChange}
+              required
             />
-            <textarea
-              className="field description"
-              type="text"
-              name="description"
-              placeholder="Question Description"
-              value={description}
-              onChange={onChange}
-            />
+            <RichText value={description} setValue={onDescriptionChange} />
             <div className="btn-container">
               <input type="submit" className="btn" value="Submit"></input>
             </div>

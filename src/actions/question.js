@@ -1,9 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 
-/*
-@TODO methods should return a promise to simulate API calls
-*/
-
 // Add a new question (to questions object and to localStorage)
 export const addQuestionToRepo = (questionData) => {
   const questionRepo = getQuestions().data;
@@ -18,9 +14,7 @@ export const addQuestionToRepo = (questionData) => {
 
 // Delete a question
 export const deleteQuestionFromRepo = (id) => {
-  console.log("deleting...");
   var questionRepo = getQuestions().data;
-  console.log(id);
   questionRepo = questionRepo.filter((q) => q.id !== id);
   localStorage.setItem("questions", JSON.stringify(questionRepo));
 

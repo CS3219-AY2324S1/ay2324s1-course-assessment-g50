@@ -7,6 +7,9 @@ import "./expandable-row.css";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.bubble.css";
+
 const ExpandableRow = ({
   question: { title, description, categories, complexity, id },
   row_num,
@@ -49,7 +52,7 @@ const ExpandableRow = ({
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <pre>{description}</pre>
+            <ReactQuill value={description} theme="bubble" readOnly={true} />
           </Collapse>
         </TableCell>
       </TableRow>

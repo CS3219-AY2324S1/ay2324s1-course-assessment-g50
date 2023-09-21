@@ -31,7 +31,8 @@
 
 .btn-container {
   display: flex;
-  justify-content: "flex-start";
+  justify-content: flex-start;
+  margin-top: 60px;
 }
 
 .btn {
