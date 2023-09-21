@@ -17,6 +17,8 @@ const initialState = {
   complexity: "",
 };
 
+const EMPTY_DESCRIPTION = "<p><br></p>";
+
 const QuestionForm = () => {
   const [formData, setFormData] = useState(initialState);
   const { title, categories, description, complexity } = formData;
@@ -24,7 +26,7 @@ const QuestionForm = () => {
   const status = useSelector((state) => state.questions.upload_status);
   const onDescriptionChange = (value) => {
     // If not form data's initial state
-    if (value !== "<p><br></p>") {
+    if (value !== EMPTY_DESCRIPTION) {
       return setFormData({ ...formData, description: value });
     }
   };
@@ -33,14 +35,22 @@ const QuestionForm = () => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const emptyDescription = (value) =>
+    value.replace(/<(.|\n)*?>/g, "").trim().length !== 0 &&
+    !value.includes("<img");
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const isAllFilled = Object.values(formData).every(
+    const noneEmpty = Object.values(formData).every(
       (field) => field !== null && field !== ""
     );
+    const hasCat = formData.categories.length > 0;
+    const hasDesc = emptyDescription(formData.description);
 
-    if (true) {
+    const isAllFilled = noneEmpty && hasCat && hasDesc;
+
+    if (isAllFilled) {
       try {
         await dispatch(addNewQuestion(formData)).unwrap();
         setFormData(initialState);
