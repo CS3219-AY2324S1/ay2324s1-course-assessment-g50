@@ -1,13 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
 
-/*
-@TODO methods should return a promise to simulate API calls
-*/
+// Question service interects with backend API -> saves to reducer
 
-// Add a new question (to questions object and to localStorage)
+// Add a new question (to questions object and to localStorage, mocks api)
 export const addQuestionToRepo = (questionData) => {
   const questionRepo = getQuestions().data;
   const id = uuidv4();
+
+  // Check for duplicates
+  const hasDuplicate = questionRepo.filter(
+    (question) => question.title === questionData.title
+  );
+
+  if (hasDuplicate.length > 0) {
+    throw new Error("Found possible duplicate question with the same title");
+  }
 
   questionData.id = id;
   questionRepo.push(questionData);
@@ -18,9 +25,7 @@ export const addQuestionToRepo = (questionData) => {
 
 // Delete a question
 export const deleteQuestionFromRepo = (id) => {
-  console.log("deleting...");
   var questionRepo = getQuestions().data;
-  console.log(id);
   questionRepo = questionRepo.filter((q) => q.id !== id);
   localStorage.setItem("questions", JSON.stringify(questionRepo));
 
