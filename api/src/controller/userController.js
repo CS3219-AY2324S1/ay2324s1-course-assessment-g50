@@ -100,10 +100,9 @@ async function login(req, res) {
     }
 }
 
-// View a user's profile
+// View current user profile
 async function getUserById(req, res) {
-    const id = req.params.id
-
+    const id = req.query.id
     // Get user by id
     const userInfo = await UserInfo.findOne({ where: { userId: id } }).catch(err => {
         return JsonResponse.fail(500, err.message).send(res)
@@ -114,7 +113,27 @@ async function getUserById(req, res) {
     return JsonResponse.fail(404, 'User not found').send(res)
 }
 
-// Update user email or password
+// View users profile by filter
+async function getUsers(req, res) {
+    // Get filtered info:
+    const { nickname } = req.query
+    // Get target users by nickname
+    const userInfos = await UserInfo.findOne({
+        where: {
+            nickname: {
+                [sequelize.Op.like]: nickname
+            }
+        }
+    }).catch(err => {
+        return JsonResponse.fail(500, err.message).send(res)
+    })
+    if (userInfos) {
+        return JsonResponse.success(200, userInfos).send(res)
+    }
+    return JsonResponse.fail(404, 'User not found').send(res)
+}
+
+// Update current user email or password
 async function updateUser(req, res) {
     const id = req.query.id
 
@@ -128,7 +147,7 @@ async function updateUser(req, res) {
     })
 }
 
-// Update user profile
+// Update current user profile
 async function updateUserInfo(req, res) {
     const id = req.query.id
 
@@ -142,7 +161,7 @@ async function updateUserInfo(req, res) {
     })
 }
 
-// Deregister from platform
+// Deregister current user from platform
 async function deleteUserById(req, res) {
     const id = req.query.id;
 
@@ -161,4 +180,4 @@ async function deleteUserById(req, res) {
     })
 }
 
-module.exports = { addUser, login, getUserById, updateUser, updateUserInfo, deleteUserById }
+module.exports = { addUser, login, getUserById, getUsers, updateUser, updateUserInfo, deleteUserById }
