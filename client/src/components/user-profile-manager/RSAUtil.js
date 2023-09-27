@@ -11,4 +11,6 @@ async function encrypt(password) {
     return 'Ttdlct94I8C7yEls4/DCxNRmA3Tw/Jq1qGhVDagB1qHfdIszYPSa/HmpVtn4BQEala+yp4fsSyRpBTY9o2RtiNThmUs98ZzsZTJYkQy43APcv+jMh3bO+cGrEs5DivC7XmMNicp7Fd8idxZowgY3NRJylnL6MKj+pTj+vZNT/mQ='
 };
 
-export default { encrypt }
+const RSAUtil = { encrypt };
+
+export default RSAUtil;

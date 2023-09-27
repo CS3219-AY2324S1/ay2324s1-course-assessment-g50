@@ -3,15 +3,6 @@ import axios from 'axios';
 
 const baseUrl = 'http://localhost:8000/questions';
 
-const mapFormDataToServerFormat = (formData) => {
-  return {
-    questionTitle: formData.title,
-    questionCategories: formData.categories,
-    questionDescription: formData.description,
-    questionComplexity: formData.complexity,
-  };
-};
-
 export const addQuestionToRepo = async (formData) => {
   formData = JSON.stringify(formData, null, 4);
   console.log('add: \n' + formData);
