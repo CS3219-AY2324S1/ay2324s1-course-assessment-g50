@@ -10,7 +10,7 @@ async function addQuestion(req, res) {
     const newQuestion = new question({ title, description, categories, complexity })
 
     // If question title already exisits, return fail
-    const dbQuestion = await question.find({title: title}).catch(err => {
+    const dbQuestion = await question.find({ title: title }).catch(err => {
         return JsonResponse.fail(500, err).send(res)
     })
     if (dbQuestion.length > 0) {
@@ -21,7 +21,7 @@ async function addQuestion(req, res) {
     await newQuestion.save().then(savedQuestion => {
         return JsonResponse.success(201, savedQuestion).send(res)
     }).catch(err => {
-        return JsonResponse.fail(500, err).send(res)
+        return JsonResponse.fail(500, 'Failed to add question').send(res)
     })
 }
 
@@ -47,7 +47,7 @@ async function getQuestions(req, res) {
     await question.find(filter).then(targetQuestions => {
         return JsonResponse.success(200, targetQuestions).send(res)
     }).catch(err => {
-        return JsonResponse.fail(500, err).send(res)
+        return JsonResponse.fail(500, 'Failed to get question').send(res)
     })
 }
 
@@ -63,22 +63,21 @@ async function updateQuestion(req, res) {
         }
         return JsonResponse.success(201, updatedQuestion).send(res)
     }).catch(err => {
-        return JsonResponse.fail(500, err).send(res)
+        return JsonResponse.fail(500, 'Failed to update question').send(res)
     })
 }
 
 // Delete question from repo
 async function deleteQuestion(req, res) {
-    // Get target question info
-    const id = req.params.id
     // Delete question by id
+    const id = req.params.id
     await question.findByIdAndDelete(id).then(deletedQuestion => {
         if (!deletedQuestion) {
             return JsonResponse.fail(404, 'Question not found').send(res)
         }
         return JsonResponse.success(204, 'Deletion Successful').send(res)
     }).catch(err => {
-        return JsonResponse.fail(500, err).send(res)
+        return JsonResponse.fail(500, 'Failed to delete question').send(res)
     })
 }
 
