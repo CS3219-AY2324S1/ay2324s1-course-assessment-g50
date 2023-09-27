@@ -31,7 +31,7 @@ async function getQuestions(req, res) {
     const { qid, title, description, categories, complexity } = req.query
     // Filer constructor:
     const filter = {}
-    if (id) {
+    if (qid) {
         filter.qid = qid
     }
     if (title) {
