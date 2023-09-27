@@ -8,22 +8,18 @@ const questionSchema = new mongoose.Schema({
     },
     description: {
         type: String,
+        required: true
     },
-    category: {
-        type: String,
+    categories: {
+        type: [String],
         required: true,
     },
     complexity: {
         type: String,
         required: true
     },
-    creationTime: {
-        type: Date,
-        default: Date.now
-    },
-    updateTime: {
-        type: Date,
-    }
+}, {
+    timestamps: true
 })
 
 module.exports = mongoose.model('Question', questionSchema)
