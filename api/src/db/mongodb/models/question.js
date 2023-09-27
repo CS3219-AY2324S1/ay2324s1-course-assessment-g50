@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
 
 const questionSchema = new mongoose.Schema({
+    qid: {
+        type: String,
+        unique: true,
+        required: true,
+        immutable: true
+    },
     title: {
         type: String,
         unique: true,
