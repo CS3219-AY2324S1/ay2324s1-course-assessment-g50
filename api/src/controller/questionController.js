@@ -6,8 +6,8 @@ const question = require('../db/mongodb/models/question')
 // Add question to repo
 async function addQuestion(req, res) {
     // Create a question model
-    const { title, description, category, complexity } = req.body
-    const newQuestion = new question({ title, description, category, complexity })
+    const { title, description, categories, complexity } = req.body
+    const newQuestion = new question({ title, description, categories, complexity })
 
     // If question title already exisits, return fail
     const dbQuestion = await question.find({title: title}).catch(err => {
@@ -28,7 +28,7 @@ async function addQuestion(req, res) {
 // Get questions by filter
 async function getQuestions(req, res) {
     // Get filtered info:
-    const { title, description, category, complexity } = req.query
+    const { title, description, categories, complexity } = req.query
     // Filer constructor:
     const filter = {}
     if (title) {
@@ -37,8 +37,8 @@ async function getQuestions(req, res) {
     if (description) {
         filter.description = description
     }
-    if (category) {
-        filter.category = category;
+    if (categories) {
+        filter.categories = categories;
     }
     if (complexity) {
         filter.complexity = complexity;
@@ -54,10 +54,10 @@ async function getQuestions(req, res) {
 // Update question
 async function updateQuestion(req, res) {
     // Get target update info
-    const { title, description, category, complexity } = req.body
+    const { title, description, categories, complexity } = req.body
     const id = req.params.id
     // Update question by Id
-    await question.findByIdAndUpdate(id, { title, description, category, complexity }, { new: true }).then(updatedQuestion => {
+    await question.findByIdAndUpdate(id, { title, description, categories, complexity }, { new: true }).then(updatedQuestion => {
         if (!updatedQuestion) {
             return JsonResponse.fail(404, 'Question not found').send(res)
         }
