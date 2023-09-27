@@ -10,7 +10,7 @@ async function addQuestion(req, res) {
     const newQuestion = new question({ qid, title, description, categories, complexity })
 
     // If question title already exisits, return fail
-    const dbQuestion = await question.find({qid: qid}).catch(err => {
+    const dbQuestion = await question.find({ title: title }).catch(err => {
         return JsonResponse.fail(500, err).send(res)
     })
     if (dbQuestion.length > 0) {
@@ -74,7 +74,6 @@ async function updateQuestion(req, res) {
 async function deleteQuestion(req, res) {
     // Delete question by id
     const id = req.params.id
-    // Delete question by id
     await question.findByIdAndDelete(id).then(deletedQuestion => {
         if (!deletedQuestion) {
             return JsonResponse.fail(404, 'Question not found').send(res)
