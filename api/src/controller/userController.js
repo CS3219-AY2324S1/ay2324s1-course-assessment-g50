@@ -20,7 +20,7 @@ async function addUser(req, res) {
 
     // check if email already exists in DB
     const dbUser = await User.findOne({ where: { email: email } }).catch(err => {
-        return JsonResponse.fail(500, err.message).send(res)
+        return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res)
     })
     if (dbUser) {
         return JsonResponse.fail(400, 'User already registered, please change email').send(res)
@@ -33,7 +33,7 @@ async function addUser(req, res) {
     try {
         rawPassword = RSAUtil.decrypt(password);
     } catch (e) {
-        return JsonResponse.fail(400, e.message).send(res)
+        return JsonResponse.fail(500, 'Internal error, password decryption failed').send(res)
     }
     const md5Password = MD5Util.sign(rawPassword, salt, "utf8")
 
@@ -82,7 +82,7 @@ async function login(req, res) {
     try {
         rawPassword = RSAUtil.decrypt(password)
     } catch (error) {
-        return JsonResponse.fail(500, error.message).send(res)
+        return JsonResponse.fail(500, 'Internal error, password decryption failed').send(res)
     }
     const md5Password = MD5Util.sign(rawPassword, salt, 'utf8')
     const dbPassword = dbUser.password
@@ -96,7 +96,7 @@ async function login(req, res) {
         const accessToken = TokenUtil.generateToken(userId);
         return JsonResponse.success(200, accessToken).send(res)
     } catch (error) {
-        return JsonResponse.fail(500, error.message).send(res)
+        return JsonResponse.fail(500, 'Failed to login').send(res)
     }
 }
 
@@ -105,7 +105,7 @@ async function getUserById(req, res) {
     const id = req.query.id
     // Get user by id
     const userInfo = await UserInfo.findOne({ where: { userId: id } }).catch(err => {
-        return JsonResponse.fail(500, err.message).send(res)
+        return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res)
     })
     if (userInfo) {
         return JsonResponse.success(200, userInfo).send(res)
@@ -125,7 +125,7 @@ async function getUsers(req, res) {
             }
         }
     }).catch(err => {
-        return JsonResponse.fail(500, err.message).send(res)
+        return JsonResponse.fail(500, 'Internal error, failed to get users from db').send(res)
     })
     if (userInfos) {
         return JsonResponse.success(200, userInfos).send(res)
@@ -143,7 +143,7 @@ async function updateUser(req, res) {
         }
         return JsonResponse.success(201, "User updated successfully").send(res)
     }).catch(err => {
-        return JsonResponse.fail(500, err.message).send(res)
+        return JsonResponse.fail(500, 'Failed to update user').send(res)
     })
 }
 
@@ -157,7 +157,7 @@ async function updateUserInfo(req, res) {
         }
         return JsonResponse.success(201, "User info updated successfully").send(res)
     }).catch(err => {
-        return JsonResponse.fail(500, err.message).send(res)
+        return JsonResponse.fail(500, 'Failed to update user info').send(res)
     })
 }
 
@@ -170,13 +170,13 @@ async function deleteUserById(req, res) {
         if (user == 0) {
             throw new Error("User not found")
         }
-        const userInfo = await UserInfo.destroy({ where: { id: id } })
+        await UserInfo.destroy({ where: { id: id } })
     }).then(() => {
         console.log('Transaction has been committed successfully')
         return JsonResponse.success(204, "User deregister successfully").send(res)
     }).catch((error) => {
         console.error('Transaction failed, rolled back', error)
-        return JsonResponse.fail(500, error.message).send(res)
+        return JsonResponse.fail(500, 'Internal error, transaction failed').send(res)
     })
 }
 
