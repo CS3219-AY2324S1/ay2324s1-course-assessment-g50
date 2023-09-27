@@ -74,7 +74,8 @@ async function updateQuestion(req, res) {
 async function deleteQuestion(req, res) {
     // Delete question by id
     const id = req.params.id
-    await question.findOneAndDelete({ qid: id }).then(deletedQuestion => {
+    // Delete question by id
+    await question.findByIdAndDelete(id).then(deletedQuestion => {
         if (!deletedQuestion) {
             return JsonResponse.fail(404, 'Question not found').send(res)
         }
