@@ -5,11 +5,14 @@ import Login from './Login';
 import Profile from './Profile';
 import UpdateProfile from './UpdateProfile';
 import Deregister from './Deregister';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { Route, Link, Routes, useNavigate } from 'react-router-dom';  // Import useNavigate
+
 
 const UserProfileManager = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(null);
+
+  const navigate = useNavigate();
 
   const authorizedAxios = useMemo(() => {
     return axios.create({
@@ -44,7 +47,7 @@ const UserProfileManager = () => {
     if (token) {  // Only call fetchUserData if token is non-null
       fetchUserData();
     }
-  }, [token]); 
+  }, [token, fetchUserData]); 
 
   const handleLogin = async (JWTToken) => {
     try {
@@ -60,11 +63,13 @@ const UserProfileManager = () => {
       const response = await authorizedAxios.patch(`http://localhost:8000/users/info`, updateData);
       console.log(response.data);
       fetchUserData();
+      navigate('/profile');
     } catch (error) {
       console.error(error);
     }
   };
 
+  
   const handleUpdateUser = async (email) => {
     try {
       await authorizedAxios.patch('http://localhost:8000/users/', { email });
@@ -85,27 +90,26 @@ const UserProfileManager = () => {
   };
 
   return (
-    <Router>
-      <div>
-        {!currentUser ? (
-          <Routes>
-            <Route path="register" element={<div><Register onRegister={handleRegister} /><Link to="/">Already have an account? Login</Link></div>} />
-            <Route path="/" element={<div><Login onLogin={handleLogin} /><Link to="register">Don't have an account? Register</Link></div>} />
-          </Routes>
-        ) : (
-          <Routes>
-            <Route path="update-profile" element={<div><UpdateProfile user={currentUser} onUpdate={handleUpdateUserInfo}/><Link to="/">Back to Profile</Link></div>} />
-            <Route path="/" element={
-              <div>
-                <Profile user={currentUser} />
-                <Link to="/update-profile">Update Profile</Link>
-                <Deregister onDeregister={handleDeregister} />
-              </div>
-            } />
-          </Routes>
-        )}
-      </div>
-    </Router>
+    <div>
+      <Link to="/">Go to Questions</Link>
+      {!currentUser ? (
+        <Routes>
+          <Route path="/" element={<div><Login onLogin={handleLogin} /><Link to="../register">Don't have an account? Register</Link></div>} />
+          <Route path="register" element={<div><Register onRegister={handleRegister} /><Link to="/">Already have an account? Login</Link></div>} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/" element={
+            <div>
+              <Profile user={currentUser} />
+              <Link to="update-profile">Update Profile</Link>
+              <Deregister onDeregister={handleDeregister} />
+            </div>
+          } />
+          <Route path="update-profile" element={<div><UpdateProfile user={currentUser} onUpdate={handleUpdateUserInfo}/><Link to="/">Back to Profile</Link></div>} />
+        </Routes>
+      )}
+    </div>
   );
 };
 

@@ -1,39 +1,47 @@
-import { v4 as uuidv4 } from "uuid";
-
+import axios from 'axios';
 // Question service interects with backend API -> saves to reducer
 
-// Add a new question (to questions object and to localStorage, mocks api)
-export const addQuestionToRepo = (questionData) => {
-  const questionRepo = getQuestions().data;
-  const id = uuidv4();
+const baseUrl = 'http://localhost:8000/questions';
 
-  // Check for duplicates
-  const hasDuplicate = questionRepo.filter(
-    (question) => question.title === questionData.title
-  );
+const mapFormDataToServerFormat = (formData) => {
+  return {
+    questionTitle: formData.title,
+    questionCategories: formData.categories,
+    questionDescription: formData.description,
+    questionComplexity: formData.complexity,
+  };
+};
 
-  if (hasDuplicate.length > 0) {
-    throw new Error("Found possible duplicate question with the same title");
+export const addQuestionToRepo = async (formData) => {
+  formData = JSON.stringify(formData, null, 4);
+  console.log('add: \n' + formData);
+  try {
+    const response = await axios.post(baseUrl, formData);
+    console.log('add response: \n' + response);
+    return response.data;
+  } catch (error) {
+    console.error('There was an error adding the question:', error);
   }
-
-  questionData.id = id;
-  questionRepo.push(questionData);
-
-  localStorage.setItem("questions", JSON.stringify(questionRepo));
-  return { data: questionData };
 };
 
 // Delete a question
-export const deleteQuestionFromRepo = (id) => {
-  var questionRepo = getQuestions().data;
-  questionRepo = questionRepo.filter((q) => q.id !== id);
-  localStorage.setItem("questions", JSON.stringify(questionRepo));
-
-  return { data: questionRepo };
+export const deleteQuestionFromRepo = async (id) => {
+  console.log('delete: \n' + id);
+  try {
+    const response = await axios.delete(`${baseUrl}/${id}`);
+    console.log('delete response: \n' + response);
+    return response.data;
+  } catch (error) {
+    console.error('There was an error deleting the question:', error);
+  }
 };
 
 // Get questions (simulates response promise)
-export const getQuestions = () => {
-  const questionRepo = JSON.parse(localStorage.getItem("questions") || "[]");
-  return { data: questionRepo };
+export const getQuestions = async () => {
+  try {
+    const response = await axios.get(baseUrl);
+    return response.data;
+  } catch (error) {
+    console.error('There was an error retrieving the questions:', error);
+  }
 };
