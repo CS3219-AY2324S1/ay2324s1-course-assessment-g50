@@ -4,7 +4,6 @@ import axios from 'axios';
 const baseUrl = 'http://localhost:8000/questions';
 
 export const addQuestionToRepo = async (formData) => {
-  formData = JSON.stringify(formData, null, 4);
   console.log('add: \n' + formData);
   try {
     const response = await axios.post(baseUrl, formData);
