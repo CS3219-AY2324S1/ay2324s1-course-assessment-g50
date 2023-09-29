@@ -29,21 +29,12 @@ async function addUser(req, res) {
     // Encrypt Password
     const now = new Date()
     const salt = String(now.getTime())
-<<<<<<< HEAD
     let rawPassword = password;
     // try {
     //     rawPassword = RSAUtil.decrypt(password);
     // } catch (e) {
     //     return JsonResponse.fail(400, e.message).send(res)
     // }
-=======
-    let rawPassword;
-    try {
-        rawPassword = RSAUtil.decrypt(password);
-    } catch (e) {
-        return JsonResponse.fail(500, 'Internal error, password decryption failed').send(res)
-    }
->>>>>>> master
     const md5Password = MD5Util.sign(rawPassword, salt, "utf8")
 
     // Create user and default user info in DB.
@@ -89,19 +80,11 @@ async function login(req, res) {
     // Validate Password:
     let rawPassword=password;
     const salt = dbUser.salt
-<<<<<<< HEAD
     // try {
     //     rawPassword = RSAUtil.decrypt(password)
     // } catch (error) {
     //     return JsonResponse.fail(500, error.message).send(res)
     // }
-=======
-    try {
-        rawPassword = RSAUtil.decrypt(password)
-    } catch (error) {
-        return JsonResponse.fail(500, 'Internal error, password decryption failed').send(res)
-    }
->>>>>>> master
     const md5Password = MD5Util.sign(rawPassword, salt, 'utf8')
     const dbPassword = dbUser.password
     if (md5Password != dbPassword) {

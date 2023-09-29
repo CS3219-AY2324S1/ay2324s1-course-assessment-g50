@@ -1,5 +1,6 @@
 const MongoStore = require('connect-mongo');
 
+/* Used for configuring cookie manager configuration)*/
 const sessionConfig = {
     secret: 'password',
     name: 'byebye',
