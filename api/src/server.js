@@ -7,9 +7,10 @@ const cors = require('cors')
 app.use(cors())
 
 // Middlewares:
-const checkJwtToken = require('./middlewares/tokenCheck')
+const session = require('express-session');
+const sessionConfig = require('./middlewares/sessionManager');
 app.use(express.json()) // Body parser middleware
-app.use(checkJwtToken) // JWT Token verification middleware
+app.use(session(sessionConfig)); //Session management middleware
 
 // Routes:
 const routes = require('./routes/routes');
