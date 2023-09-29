@@ -18,9 +18,11 @@ export const addQuestionToRepo = async (formData) => {
 export const deleteQuestionFromRepo = async (id) => {
   console.log('delete: \n' + id);
   try {
-    const response = await axios.delete(`${baseUrl}/${id}`);
-    console.log('delete response: \n' + response);
-    return response.data;
+    var questionRepo = (await getQuestions()).data
+    // Handle deletion.
+    await axios.delete(`${baseUrl}/${id}`);
+    questionRepo = questionRepo.filter((q) => q._id !== id)
+    return {data: questionRepo};
   } catch (error) {
     console.error('There was an error deleting the question:', error);
   }
