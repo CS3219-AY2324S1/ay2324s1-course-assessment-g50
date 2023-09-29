@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { check, validationResult } = require('express-validator') // params validation
 const JsonResponse = require('../common/jsonResponse')
-const { addUser, login, getUserById, updateUserInfo, updateUser, deleteUserById } = require('../controller/userController')
+const { addUser, login, getUserById, getUsers, updateUserInfo, updateUser, deleteUserById } = require('../controller/userController')
 
 // Register a new user:
 router.post('/', [
@@ -20,12 +20,17 @@ router.post('/login', (req, res) => {
     login(req, res)
 })
 
-// Get user info:
-router.get('/:id', (req, res) => {
+// Get current user info:
+router.get('/', (req, res) => {
     getUserById(req, res)
 })
 
-// Update user Info:
+// Get User infos by filter
+router.get('/', (req, res) => {
+    getUsers(req, res)
+})
+
+// Update current user Info:
 router.patch('/info', [
     check('gender').isIn(['male', 'female', 'unknown']),
     check('birth').isDate(),
@@ -37,7 +42,7 @@ router.patch('/info', [
     updateUserInfo(req, res)
 })
 
-// Update user:
+// Update current user email or password:
 router.patch('/', [
     check('email').isEmail(),
 ], (req, res) => {
@@ -49,7 +54,7 @@ router.patch('/', [
     updateUser(req, res)
 })
 
-// Deregister user:
+// Deregister current user:
 router.delete('/', (req, res) => {
     deleteUserById(req, res)
 })

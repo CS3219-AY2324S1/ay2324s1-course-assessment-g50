@@ -20,7 +20,7 @@ async function addUser(req, res) {
 
     // check if email already exists in DB
     const dbUser = await User.findOne({ where: { email: email } }).catch(err => {
-        return JsonResponse.fail(500, err.message).send(res)
+        return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res)
     })
     if (dbUser) {
         return JsonResponse.fail(400, 'User already registered, please change email').send(res)
@@ -29,12 +29,21 @@ async function addUser(req, res) {
     // Encrypt Password
     const now = new Date()
     const salt = String(now.getTime())
+<<<<<<< HEAD
     let rawPassword = password;
     // try {
     //     rawPassword = RSAUtil.decrypt(password);
     // } catch (e) {
     //     return JsonResponse.fail(400, e.message).send(res)
     // }
+=======
+    let rawPassword;
+    try {
+        rawPassword = RSAUtil.decrypt(password);
+    } catch (e) {
+        return JsonResponse.fail(500, 'Internal error, password decryption failed').send(res)
+    }
+>>>>>>> master
     const md5Password = MD5Util.sign(rawPassword, salt, "utf8")
 
     // Create user and default user info in DB.
@@ -80,11 +89,19 @@ async function login(req, res) {
     // Validate Password:
     let rawPassword=password;
     const salt = dbUser.salt
+<<<<<<< HEAD
     // try {
     //     rawPassword = RSAUtil.decrypt(password)
     // } catch (error) {
     //     return JsonResponse.fail(500, error.message).send(res)
     // }
+=======
+    try {
+        rawPassword = RSAUtil.decrypt(password)
+    } catch (error) {
+        return JsonResponse.fail(500, 'Internal error, password decryption failed').send(res)
+    }
+>>>>>>> master
     const md5Password = MD5Util.sign(rawPassword, salt, 'utf8')
     const dbPassword = dbUser.password
     if (md5Password != dbPassword) {
@@ -101,17 +118,16 @@ async function login(req, res) {
         console.log(req.session);
         return JsonResponse.success(200, 'Login is sucessful').send(res);
     } catch (error) {
-        return JsonResponse.fail(500, error.message).send(res)
+        return JsonResponse.fail(500, 'Failed to login').send(res)
     }
 }
 
-// View a user's profile
+// View current user profile
 async function getUserById(req, res) {
-    const id = req.params.id
-
+    const id = req.query.id
     // Get user by id
     const userInfo = await UserInfo.findOne({ where: { userId: id } }).catch(err => {
-        return JsonResponse.fail(500, err.message).send(res)
+        return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res)
     })
     if (userInfo) {
         return JsonResponse.success(200, userInfo).send(res)
@@ -119,7 +135,27 @@ async function getUserById(req, res) {
     return JsonResponse.fail(404, 'User not found').send(res)
 }
 
-// Update user email or password
+// View users profile by filter
+async function getUsers(req, res) {
+    // Get filtered info:
+    const { nickname } = req.query
+    // Get target users by nickname
+    const userInfos = await UserInfo.findOne({
+        where: {
+            nickname: {
+                [sequelize.Op.like]: nickname
+            }
+        }
+    }).catch(err => {
+        return JsonResponse.fail(500, 'Internal error, failed to get users from db').send(res)
+    })
+    if (userInfos) {
+        return JsonResponse.success(200, userInfos).send(res)
+    }
+    return JsonResponse.fail(404, 'User not found').send(res)
+}
+
+// Update current user email or password
 async function updateUser(req, res) {
     const id = req.query.id
 
@@ -129,11 +165,11 @@ async function updateUser(req, res) {
         }
         return JsonResponse.success(201, "User updated successfully").send(res)
     }).catch(err => {
-        return JsonResponse.fail(500, err.message).send(res)
+        return JsonResponse.fail(500, 'Failed to update user').send(res)
     })
 }
 
-// Update user profile
+// Update current user profile
 async function updateUserInfo(req, res) {
     const id = req.query.id
 
@@ -143,11 +179,11 @@ async function updateUserInfo(req, res) {
         }
         return JsonResponse.success(201, "User info updated successfully").send(res)
     }).catch(err => {
-        return JsonResponse.fail(500, err.message).send(res)
+        return JsonResponse.fail(500, 'Failed to update user info').send(res)
     })
 }
 
-// Deregister from platform
+// Deregister current user from platform
 async function deleteUserById(req, res) {
     const id = req.query.id;
 
@@ -156,14 +192,14 @@ async function deleteUserById(req, res) {
         if (user == 0) {
             throw new Error("User not found")
         }
-        const userInfo = await UserInfo.destroy({ where: { id: id } })
+        await UserInfo.destroy({ where: { id: id } })
     }).then(() => {
         console.log('Transaction has been committed successfully')
         return JsonResponse.success(204, "User deregister successfully").send(res)
     }).catch((error) => {
         console.error('Transaction failed, rolled back', error)
-        return JsonResponse.fail(500, error.message).send(res)
+        return JsonResponse.fail(500, 'Internal error, transaction failed').send(res)
     })
 }
 
-module.exports = { addUser, login, getUserById, updateUser, updateUserInfo, deleteUserById }
+module.exports = { addUser, login, getUserById, getUsers, updateUser, updateUserInfo, deleteUserById }

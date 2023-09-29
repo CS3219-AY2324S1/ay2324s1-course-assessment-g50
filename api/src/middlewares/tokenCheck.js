@@ -3,6 +3,10 @@ const TokenUtil = require('../utils/TokenUtil')
 const skippedApis = [
     { url: '/users/login', method: 'POST' },
     { url: '/users', method: 'POST' },
+    { url: '/rsa-pks', method: 'GET' },
+    { url: '/questions', method: 'GET' },
+    { url: '/questions', method: 'POST' },
+    { url: '/questions', method: 'PATCH' },
 ]
 
 function isSkipped(req) {
