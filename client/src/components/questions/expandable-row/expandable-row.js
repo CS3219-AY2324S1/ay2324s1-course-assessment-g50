@@ -11,7 +11,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 
 const ExpandableRow = ({
-  question: { title, description, categories, complexity, id },
+  question: { title, description, categories, complexity, _id },
   row_num,
 }) => {
   const [open, setOpen] = useState(false);
@@ -42,7 +42,7 @@ const ExpandableRow = ({
           <Button
             onClick={(e) => {
               e.stopPropagation();
-              dispatch(deleteQuestion(id));
+              dispatch(deleteQuestion(_id));
             }}
           >
             Delete

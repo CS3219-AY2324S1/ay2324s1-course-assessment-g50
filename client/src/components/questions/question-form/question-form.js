@@ -49,6 +49,7 @@ const QuestionForm = () => {
     const isAllFilled = noneEmpty && hasCat && hasDesc;
 
     if (isAllFilled) {
+      console.log('check: \n' + formData);
       try {
         await dispatch(addNewQuestion(formData)).unwrap();
         setFormData(initialState);
