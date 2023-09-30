@@ -1,9 +1,13 @@
 const express = require('express')
 const { addQuestion, updateQuestion, deleteQuestion, getQuestions } = require('../controller/questionController')
+const { isAdminCheck, isLoggedInCheck } = require('../middlewares/AuthorisationCheck');
 const router = express.Router()
 
+//middleware that verifies user is logged in
+router.use(isLoggedInCheck);
+
 // Create one question
-router.post('/',  (req, res) => {
+router.post('/', isAdminCheck, (req, res) => {
     addQuestion(req, res)
 })
 
@@ -13,12 +17,12 @@ router.get('/', (req, res) => {
 })
 
 // Update one question
-router.patch('/:id', (req, res) => {
+router.patch('/:id', isAdminCheck, (req, res) => {
     updateQuestion(req, res)
 })
 
 // Delete one question
-router.delete('/:id', (req, res) => {
+router.delete('/:id', isAdminCheck, (req, res) => {
     deleteQuestion(req, res)
 })
 

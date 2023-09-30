@@ -9,6 +9,11 @@ module.exports = (sequelize, Sequelize) => {
         salt: {
             type: Sequelize.STRING
         },
+        role: {
+            type: Sequelize.STRING,
+            defaultValue: 'user',
+            allowNull: false,
+        },
     })
 
     return User

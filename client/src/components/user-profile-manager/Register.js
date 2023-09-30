@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
 import axios from 'axios';
-import RSAUtil from './RSAUtil';
+import React, { useState } from 'react';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -9,9 +8,8 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const encryptedPassword = RSAUtil.encrypt(password);
     try {
-      const response = await axios.post('http://localhost:8000/users', { email, password: encryptedPassword });
+      const response = await axios.post('http://localhost:8000/users', { email, password });
       console.log(response.data);  // Handle the response from your server
     } catch (error) {
       console.error(error);  // Handle error

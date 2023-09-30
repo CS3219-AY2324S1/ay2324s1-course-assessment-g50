@@ -4,12 +4,16 @@ const app = express()
 
 // Config cors
 const cors = require('cors')
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:3000',  // your frontend domain
+  credentials: true
+}));
 
 // Middlewares:
-const checkJwtToken = require('./middlewares/tokenCheck')
+const session = require('express-session');
+const sessionConfig = require('./middlewares/sessionManager');
 app.use(express.json()) // Body parser middleware
-app.use(checkJwtToken) // JWT Token verification middleware
+app.use(session(sessionConfig)); //Session management middleware
 
 // Routes:
 const routes = require('./routes/routes');

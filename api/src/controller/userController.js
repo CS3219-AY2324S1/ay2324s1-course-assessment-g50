@@ -29,12 +29,12 @@ async function addUser(req, res) {
     // Encrypt Password
     const now = new Date()
     const salt = String(now.getTime())
-    let rawPassword;
-    try {
-        rawPassword = RSAUtil.decrypt(password);
-    } catch (e) {
-        return JsonResponse.fail(500, 'Internal error, password decryption failed').send(res)
-    }
+    let rawPassword = password;
+    // try {
+    //     rawPassword = RSAUtil.decrypt(password);
+    // } catch (e) {
+    //     return JsonResponse.fail(400, e.message).send(res)
+    // }
     const md5Password = MD5Util.sign(rawPassword, salt, "utf8")
 
     // Create user and default user info in DB.
@@ -44,6 +44,7 @@ async function addUser(req, res) {
             email: email,
             password: md5Password,
             salt: salt,
+            role: 'user'
         }
         const createUser = await User.create(user)
         userinfo = {
@@ -77,24 +78,28 @@ async function login(req, res) {
     }
 
     // Validate Password:
-    let rawPassword
+    let rawPassword=password;
     const salt = dbUser.salt
-    try {
-        rawPassword = RSAUtil.decrypt(password)
-    } catch (error) {
-        return JsonResponse.fail(500, 'Internal error, password decryption failed').send(res)
-    }
+    // try {
+    //     rawPassword = RSAUtil.decrypt(password)
+    // } catch (error) {
+    //     return JsonResponse.fail(500, error.message).send(res)
+    // }
     const md5Password = MD5Util.sign(rawPassword, salt, 'utf8')
     const dbPassword = dbUser.password
     if (md5Password != dbPassword) {
         return JsonResponse.fail(401, `Password does not match. Please check your email or password.`).send(res)
     }
 
-    // Generate user token:
+    // Generate user token and user role:
     const userId = dbUser.id
+    const userRole = dbUser.role;
     try {
-        const accessToken = TokenUtil.generateToken(userId);
-        return JsonResponse.success(200, accessToken).send(res)
+        // const accessToken = TokenUtil.generateToken(userId);
+        req.session.userId = userId;
+        req.session.userRole = userRole;
+        console.log(req.session);
+        return JsonResponse.success(200, 'Login is sucessful').send(res);
     } catch (error) {
         return JsonResponse.fail(500, 'Failed to login').send(res)
     }
