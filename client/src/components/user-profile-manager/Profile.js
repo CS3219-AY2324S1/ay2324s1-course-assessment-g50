@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserDataAction, selectCookie  } from "../../reducers/userSlice";
+import { fetchUserDataAction } from "../../reducers/userSlice";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import "./profile.css";
@@ -12,7 +12,6 @@ const Profile = () => {
   /* Current logged in data */
   const user = useSelector((state) => state.loggedInUser);
 
-
   const goBack = () => {
     navigate('/');
   }
@@ -20,7 +19,6 @@ const Profile = () => {
   useEffect(() => {
     dispatch(fetchUserDataAction());
   }, [user])
-
 
   return (
     <div className="profile-container">

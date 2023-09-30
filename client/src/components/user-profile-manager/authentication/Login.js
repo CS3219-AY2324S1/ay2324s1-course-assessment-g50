@@ -1,5 +1,3 @@
-import axios from 'axios';
-// src/components/Login.js
 import React, { useState } from 'react';
 import "./login.css";
 

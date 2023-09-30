@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuestions, selectAllQuestions,} from "../../../reducers/questionSlice.js";
-import { loginAction, selectCookie } from "../../../reducers/userSlice";
+import { selectCookie } from "../../../reducers/userSlice";
 import UserAvatar from "../../user-profile-manager/userAvatar";
 import "../questions.css";
 import ExpandableRow from "../expandable-row/expandable-row";
@@ -25,6 +25,7 @@ const QuestionTable = () => {
     }
   }, [dispatch, status]);
 
+  /* useEffect that triggers when sucessful login */
   useEffect(() => {
     dispatch(fetchQuestions());
   }, [validCookie])

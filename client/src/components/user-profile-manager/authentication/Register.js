@@ -13,7 +13,7 @@ const Register = ({ handleRegister }) => {
 
   /* verifies that passwords are matching before registering */
   const onClickRegister = async () => {
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setIsNotMatchingPassword(true);
     } else {
       await handleRegister(email, password);
@@ -21,8 +21,7 @@ const Register = ({ handleRegister }) => {
   }
 
   useEffect(() => {
-    console.log(status);
-    if (status == "sucessfulRegistration") {
+    if (status === "sucessfulRegistration") {
       setIsSucessfulRegistration(true);
     }
   }, [status]);
