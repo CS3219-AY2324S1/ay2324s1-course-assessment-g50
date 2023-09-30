@@ -7,6 +7,7 @@ const sessionConfig = {
     resave: false,
     saveUninitialized: true,
     secure: false, //required for non-https server so that client will send cookie
+    sameSite: 'none',
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URL,
         ttl: 60,

@@ -1,9 +1,13 @@
-import "./App.css";
+import axios from 'axios';
 import React from "react";
-import UserProfileManager from "./components/user-profile-manager/UserProfileManager";
-import Question from "./components/questions/questions";
+import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Alerts from "./components/alerts/alerts";
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Question from "./components/questions/questions";
+import UserProfileManager from "./components/user-profile-manager/UserProfileManager";
+import "./App.css";
+
+/* To enable sending of cookies on each request globally*/
+axios.defaults.withCredentials = true;
 
 const App = () => (
   <Router>

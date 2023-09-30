@@ -4,7 +4,10 @@ const app = express()
 
 // Config cors
 const cors = require('cors')
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:3000',  // your frontend domain
+  credentials: true
+}));
 
 // Middlewares:
 const session = require('express-session');

@@ -1,7 +1,6 @@
+import axios from 'axios';
 // src/components/Login.js
 import React, { useState } from 'react';
-import axios from 'axios';
-import RSAUtil from './RSAUtil';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -9,14 +8,9 @@ const Login = ({ onLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const encryptedPassword = RSAUtil.encrypt(password);
     try {
-      const response = await axios.post('http://localhost:8000/users/login', { email, password: encryptedPassword });
+      const response = await axios.post('http://localhost:8000/users/login', { email, password }, { withCredentials: true });
       console.log(response.data);  // Handle the response from your server
-      if (response.data.code === 200) {
-        // successful login
-        onLogin(response.data.data);  
-      }
     } catch (error) {
       console.error(error);  // Handle error
     }
