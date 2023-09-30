@@ -8,8 +8,6 @@ const UserInfo = db.userInfo
 
 // For password encryption/decryption.
 const MD5Util = require('../utils/MD5Util')
-const RSAUtil = require('../utils/RSAUtil')
-const TokenUtil = require('../utils/TokenUtil')
 const JsonResponse = require('../common/jsonResponse')
 
 // --------------------------------------- Service logic -------------------------------------------
@@ -107,7 +105,7 @@ async function login(req, res) {
 
 // View current user profile
 async function getUserById(req, res) {
-    const id = req.query.id
+    const id = req.session.userId;
     // Get user by id
     const userInfo = await UserInfo.findOne({ where: { userId: id } }).catch(err => {
         return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res)
@@ -140,7 +138,7 @@ async function getUsers(req, res) {
 
 // Update current user email or password
 async function updateUser(req, res) {
-    const id = req.query.id
+    const id = req.session.userId;
 
     await User.update(req.body, { where: { id: id } }).then((num) => {
         if (num == 0) {
@@ -154,7 +152,7 @@ async function updateUser(req, res) {
 
 // Update current user profile
 async function updateUserInfo(req, res) {
-    const id = req.query.id
+    const id = req.session.userId;
 
     await UserInfo.update(req.body, { where: { id: id } }).then((num) => {
         if (num == 0) {
@@ -168,7 +166,7 @@ async function updateUserInfo(req, res) {
 
 // Deregister current user from platform
 async function deleteUserById(req, res) {
-    const id = req.query.id;
+    const id = req.session.userId;
 
     sequelize.transaction(async (t) => {
         const user = await User.destroy({ where: { id: id } })

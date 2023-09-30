@@ -1,0 +1,26 @@
+.profile-icon {
+    position: absolute;
+    right: 0;
+    border: 3px solid black;
+    padding: 7px;
+    border-radius: 15px;
+}
+
+.profile-icon .links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+
+.icon {
+    padding: 0 5px;
+    font-size: 30px;
+    color: grey;
+}
+
+.profile-icon:hover {
+    background-color: lightgrey;
+    cursor: pointer;
+}

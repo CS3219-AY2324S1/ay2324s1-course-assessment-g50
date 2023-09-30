@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import { client } from
 import {
   getQuestions,
   addQuestionToRepo,
