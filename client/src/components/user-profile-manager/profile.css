@@ -1,0 +1,26 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-container p {
+    margin: 5px;
+    padding: 0;
+}
+
+.go-back {
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.go-back .return-icon {
+    font-size: 30px;
+
+    padding: 10px;
+    padding-left: 20px;
+}
+
+.go-back .return-icon:hover {
+    color: grey;
+}

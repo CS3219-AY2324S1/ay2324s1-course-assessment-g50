@@ -1,22 +1,38 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserDataAction, selectCookie  } from "../../reducers/userSlice";
+import { BsArrowLeftSquareFill } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
+import "./profile.css";
 
-const Profile = ({ user }) => {
+const Profile = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  console.log(user);
+  /* Current logged in data */
+  const user = useSelector((state) => state.loggedInUser);
+
+
+  const goBack = () => {
+    navigate('/');
+  }
+
+  useEffect(() => {
+    dispatch(fetchUserDataAction());
+  }, [user])
+
+
   return (
-    <div>
+    <div className="profile-container">
       <h2>Profile</h2>
-      {user ? (
-        <>
-          <p>Nickname: {user.nickname || 'Not provided'}</p>
-          <p>Avatar: {user.avatar}</p>
-          <p>Gender: {user.gender || 'Not provided'}</p>
-          <p>Birth: {user.birth || 'Not provided'}</p>
-          <p>Sign: {user.sign || 'Not provided'}</p>
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <p>Nickname: {user.nickname}</p>
+      <p>Avatar: {user.avatar}</p>
+      <p>Gender: {user.gender}</p>
+      <p>Birth: {user.birth}</p>
+      <p>Sign: {user.sign}</p>
+      <div className="go-back" onClick={goBack}>
+        <BsArrowLeftSquareFill  className="return-icon"/>
+      </div>
     </div>
   );
 };

@@ -3,6 +3,12 @@
   margin: auto;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
 .section-title {
   font-size: 24px;
   font-weight: 500;

@@ -10,7 +10,7 @@ const sessionConfig = {
     sameSite: 'none',
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URL,
-        ttl: 60,
+        ttl: 1209600,
         autoRemove: 'native',})
 }
 

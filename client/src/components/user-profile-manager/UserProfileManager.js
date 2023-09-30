@@ -1,117 +1,79 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
-import Register from './Register';
-import Login from './Login';
-import Profile from './Profile';
-import UpdateProfile from './UpdateProfile';
-import Deregister from './Deregister';
-import { Route, Link, Routes, useNavigate } from 'react-router-dom';  // Import useNavigate
+import { useDispatch, useSelector } from "react-redux";
+import Register from "./authentication/Register";
+import Login from "./authentication/Login";
+import "./userProfileManager.css";
+import { BsArrowLeftSquareFill } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
+import { loginAction, selectCookie, registerAction, fetchUserDataAction } from '../../reducers/userSlice';
 
 
 const UserProfileManager = () => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const dispatch = useDispatch();
+  const validCookie = useSelector(selectCookie); 
 
+  const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
 
-  const authorizedAxios = useMemo(() => {
-    return axios.create({
-      headers: {
-        'token': `${token}`
-      }
-    });
-  }, [token]);  // Re-create authorizedAxios whenever token changes
+  /* Return back to questions */
+  const goBack = () => {
+    navigate('/');
+  }
 
-  
-  const fetchUserData = async () => {
-    try {
-      const url = `http://localhost:8000/users`;
-      const response = await authorizedAxios.get(url);
-      setCurrentUser(response.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  /* sends user info to login before retrieving user info */
+  const handleLogin = async (email, password) => {
+    await dispatch(loginAction({email, password}));
+    await dispatch(fetchUserDataAction());
+  }
 
-
+  /* register user info */
   const handleRegister = async (email, password) => {
-    try {
-      await axios.post('http://localhost:8000/users', { email, password });
-      // Assuming registration does not automatically log the user in
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (token) {  // Only call fetchUserData if token is non-null
-      fetchUserData();
-    }
-  }, [token, fetchUserData]); 
-
-  const handleLogin = async (JWTToken) => {
-    try {
-      console.log(JWTToken); // It is not null
-      setToken(JWTToken);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleUpdateUserInfo = async (updateData) => {
-    try {
-      const response = await authorizedAxios.patch(`http://localhost:8000/users/info`, updateData);
-      console.log(response.data);
-      fetchUserData();
-      navigate('/profile');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+    dispatch(registerAction({email, password}));
+  }
   
-  const handleUpdateUser = async (email) => {
-    try {
-      await authorizedAxios.patch('http://localhost:8000/users/', { email });
-      fetchUserData(currentUser.id);  // Assume the id field exists on the currentUser object
-    } catch (error) {
-      console.error(error);
+  /* on sucessful login, navigate to questions */
+  useEffect(() => {
+    if (validCookie){
+      navigate('/');
     }
-  };
+  }, [validCookie])
 
-  const handleDeregister = async () => {
-    try {
-      await authorizedAxios.delete('http://localhost:8000/users/');
-      setCurrentUser(null);
-      setToken(null);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
+  // @TODO: Have to dispatch(login action) and then subsequently check for state before logging in 
+
+  // const fetchUserData = async () => {
+  //   try {
+  //     const url = `http://localhost:8000/users`;
+  //     const response = await axios.get(url);
+  //     setCurrentUser(response.data.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const handleUpdateUser = async (email) => {
+  //   try {
+  //     await axios.patch('http://localhost:8000/users/', { email });
+  //     fetchUserData(currentUser.id);  // Assume the id field exists on the currentUser object
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
-    <div>
-      <Link to="/">Go to Questions</Link>
-      {!currentUser ? (
-        <Routes>
-          <Route path="/" element={<div><Login onLogin={handleLogin} /><Link to="../register">Don't have an account? Register</Link></div>} />
-          <Route path="register" element={<div><Register onRegister={handleRegister} /><Link to="/">Already have an account? Login</Link></div>} />
-        </Routes>
-      ) : (
-        <Routes>
-          <Route path="/" element={
-            <div>
-              <Profile user={currentUser} />
-              <Link to="update-profile">Update Profile</Link>
-              <Deregister onDeregister={handleDeregister} />
-            </div>
-          } />
-          <Route path="update-profile" element={<div><UpdateProfile user={currentUser} onUpdate={handleUpdateUserInfo}/><Link to="/">Back to Profile</Link></div>} />
-        </Routes>
-      )}
+    <div className="authentication-page">
+      <div className="authentication-container">
+        <p className="title">{isLogin ? "LOGIN" : "REGISTER"}</p>
+        {isLogin ? <Login handleLogin={handleLogin}/> : <Register handleRegister={handleRegister}/>}
+        <p className="register-link" onClick={() => setIsLogin(!isLogin)}>{isLogin ? "Not a user? Register here!" : "Back to Login"}</p>
+          <div className="go-back" onClick={goBack}>
+            <BsArrowLeftSquareFill  className="return-icon"/>
+          </div>
+      </div>
+     
     </div>
-  );
+    
+  )
 };
-
 
 export default UserProfileManager;

@@ -1,0 +1,45 @@
+.registration-container {
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    
+}
+
+.registration-container .email, .password, .confirm-password {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 300px;
+}
+
+.registration-container label,input {
+    margin-top: 10px;
+    width: 80%
+}
+
+.registration-container > * {
+    display: flex;
+    flex-direction: column;
+}
+
+.button {
+    margin-top: 30px;
+    border: 2px black solid;
+    border-radius: 7px;
+    padding: 5px;
+    min-width: 100px;
+    text-align: center;
+    background-color: white;
+}
+
+.button:hover {
+    cursor: pointer;
+    background-color: grey;
+}
+
+.registration-container .error-message {
+    color: red;
+}
