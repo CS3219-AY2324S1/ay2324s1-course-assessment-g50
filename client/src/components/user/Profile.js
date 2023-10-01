@@ -10,7 +10,7 @@ const Profile = () => {
   const navigate = useNavigate();
 
   /* Current logged in data */
-  const user = useSelector((state) => state.loggedInUser);
+  const user = useSelector((state) => state.currentUser);
 
   const goBack = () => {
     navigate('/');

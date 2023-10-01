@@ -8,43 +8,33 @@ const initialState = {
     sign: null,
     gender: null,
     avatar: null,
-    cookie: localStorage.getItem('loggedIn') === 'true',
+    isLoggedIn: localStorage.getItem('loggedIn') === 'true',
     register: false,
     status: "idle",
 };
 
 const userSlice = createSlice({
-    name: "loggedInUser",
+    name: "currentUser",
     initialState,
     reducers: {},
     extraReducers(builder) {
         builder
         .addCase(loginAction.fulfilled, (state, action) => {
             state.status = "sucessfulLogin";
-            state.cookie = true;
+            state.isLoggedIn = true;
             localStorage.setItem('loggedIn', 'true');
         })
         .addCase(loginAction.rejected, (state, action) => {
             state.status = "failedLogin";
-            state.cookie = false;
+            state.isLoggedIn = false;
         })
         .addCase(registerAction.fulfilled, (state, action) => {
             state.status = "sucessfulRegistration";
             state.register = true;
         })
         .addCase(fetchUserDataAction.fulfilled, (state, action) => {
+            console.log(action.payload);
             const userData = action.payload;
-            // const newState = {...state,
-            //     userId : userData.userId,
-            //     nickname : userData.nickname,
-            //     birth : userData.birth,
-            //     sign : userData.sign,
-            //     gender : userData.gender,
-            //     avatar : userData.avatar
-            // }
-
-            // state = newState;
-
             state.status = "sucessfulFetch";
             state.userId = userData.userId;
             state.nickname = userData.nickname;
@@ -56,7 +46,7 @@ const userSlice = createSlice({
     },
 });
 
-const selectCookie = (state) => state.loggedInUser.cookie;
+const selectIsLoggedIn = (state) => state.currentUser.isLoggedIn;
 
 const loginAction = createAsyncThunk(
     "user/login",
@@ -97,6 +87,6 @@ const deregisterUserAction = createAsyncThunk(
     }
 )
 
-export { loginAction, registerAction, selectCookie, fetchUserDataAction, updateUserInfoAction, deregisterUserAction };
+export { loginAction, registerAction, selectIsLoggedIn, fetchUserDataAction, updateUserInfoAction, deregisterUserAction };
 
 export default userSlice.reducer;

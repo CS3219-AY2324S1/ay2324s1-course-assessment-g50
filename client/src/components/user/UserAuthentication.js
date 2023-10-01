@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import Register from "./authentication/Register";
 import Login from "./authentication/Login";
-import "./userProfileManager.css";
+import "./userAuthentication.css";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
-import { loginAction, selectCookie, registerAction, fetchUserDataAction } from '../../reducers/userSlice';
+import { loginAction, selectIsLoggedIn, registerAction, fetchUserDataAction } from '../../reducers/userSlice';
 
 
 const UserProfileManager = () => {
   const dispatch = useDispatch();
-  const validCookie = useSelector(selectCookie); 
+  const isLoggedIn = useSelector(selectIsLoggedIn); 
 
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
@@ -33,32 +33,10 @@ const UserProfileManager = () => {
   
   /* on sucessful login, navigate to questions */
   useEffect(() => {
-    if (validCookie){
+    if (isLoggedIn){
       navigate('/');
     }
-  }, [validCookie])
-
-
-  // @TODO: Have to dispatch(login action) and then subsequently check for state before logging in 
-
-  // const fetchUserData = async () => {
-  //   try {
-  //     const url = `http://localhost:8000/users`;
-  //     const response = await axios.get(url);
-  //     setCurrentUser(response.data.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // const handleUpdateUser = async (email) => {
-  //   try {
-  //     await axios.patch('http://localhost:8000/users/', { email });
-  //     fetchUserData(currentUser.id);  // Assume the id field exists on the currentUser object
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  }, [isLoggedIn])
 
   return (
     <div className="authentication-page">

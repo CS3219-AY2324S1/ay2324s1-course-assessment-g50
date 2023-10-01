@@ -7,6 +7,6 @@ export const store = configureStore({
   reducer: {
     questions: questionReducer,
     alerts: alertsReducer,
-    loggedInUser: userReducer,
+    currentUser: userReducer,
   },
 });
