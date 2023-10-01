@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuestions, selectAllQuestions,} from "../../../reducers/questionSlice.js";
-import { selectCookie } from "../../../reducers/userSlice";
-import UserAvatar from "../../user-profile-manager/userAvatar";
+import { selectIsLoggedIn } from "../../../reducers/userSlice";
+import UserAvatar from "../../user/userProfile/userAvatar.js";
 import "../questions.css";
 import ExpandableRow from "../expandable-row/expandable-row";
 import Table from "@mui/material/Table";
@@ -17,7 +17,7 @@ const QuestionTable = () => {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.questions.status);
   const questions = useSelector(selectAllQuestions);
-  const validCookie = useSelector(selectCookie); 
+  const isLoggedIn = useSelector(selectIsLoggedIn); 
 
   useEffect(() => {
     if (status === "idle") {
@@ -25,10 +25,10 @@ const QuestionTable = () => {
     }
   }, [dispatch, status]);
 
-  /* useEffect that triggers when sucessful login */
+  /* useEffect that triggers on successful login */
   useEffect(() => {
     dispatch(fetchQuestions());
-  }, [validCookie])
+  }, [isLoggedIn])
 
   return (
     <div className="post-form">
