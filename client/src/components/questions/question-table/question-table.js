@@ -19,16 +19,10 @@ const QuestionTable = () => {
   const questions = useSelector(selectAllQuestions);
   const isLoggedIn = useSelector(selectIsLoggedIn); 
 
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchQuestions());
-    }
-  }, [dispatch, status]);
-
-  /* useEffect that triggers on successful login */
+  /* Try and retrieve data whenever page is rendered */
   useEffect(() => {
     dispatch(fetchQuestions());
-  }, [isLoggedIn])
+  }, [])
 
   return (
     <div className="post-form">

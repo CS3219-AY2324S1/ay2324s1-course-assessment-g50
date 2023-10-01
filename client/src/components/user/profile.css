@@ -9,18 +9,25 @@
     padding: 0;
 }
 
-.go-back {
+.return-icon {
+    font-size: 30px;
     cursor: pointer;
     border-radius: 10px;
-}
-
-.go-back .return-icon {
-    font-size: 30px;
-
     padding: 10px;
     padding-left: 20px;
 }
 
-.go-back .return-icon:hover {
+.return-icon:hover {
     color: grey;
+}
+
+.profile-container .logout-button {
+    border: 3px solid black;
+    padding: 7px;
+    border-radius: 15px;
+}
+
+.profile-icon:hover {
+    background-color: lightgrey;
+    cursor: pointer;
 }

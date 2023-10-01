@@ -96,11 +96,21 @@ async function login(req, res) {
         // const accessToken = TokenUtil.generateToken(userId);
         req.session.userId = userId;
         req.session.userRole = userRole;
-        console.log(req.session);
         return JsonResponse.success(200, 'Login is sucessful').send(res);
     } catch (error) {
         return JsonResponse.fail(500, 'Failed to login').send(res)
     }
+}
+
+async function logout(req, res) {
+    req.session.destroy((err) => {
+        if (err) {
+            console.log(err);
+            return JsonResponse.fail(500, err).send(res)
+        } else {
+            return JsonResponse.success(200, 'Logout is sucessful').send(res);
+        }
+    })
 }
 
 // View current user profile
@@ -183,4 +193,4 @@ async function deleteUserById(req, res) {
     })
 }
 
-module.exports = { addUser, login, getUserById, getUsers, updateUser, updateUserInfo, deleteUserById }
+module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, deleteUserById }

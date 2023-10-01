@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser, registerUser, getUserData, updateUserInfo, deregisterUser } from "../services/user.service";
+import { loginUser, registerUser, logoutUser, getUserData, updateUserInfo, deregisterUser } from "../services/user.service";
 
 const initialState = {
     userId: null,
@@ -16,7 +16,12 @@ const initialState = {
 const userSlice = createSlice({
     name: "currentUser",
     initialState,
-    reducers: {},
+    reducers: {
+        resetStatus: (state) => {
+            console.log("reseting");
+            state.status = "idle";
+          },
+    },
     extraReducers(builder) {
         builder
         .addCase(loginAction.fulfilled, (state, action) => {
@@ -28,12 +33,16 @@ const userSlice = createSlice({
             state.status = "failedLogin";
             state.isLoggedIn = false;
         })
+        .addCase(logoutAction.fulfilled, (state, action) => {
+            state.status = "sucessfulLogout";
+            state.isLoggedIn = false;
+            localStorage.removeItem('loggedIn');
+        })
         .addCase(registerAction.fulfilled, (state, action) => {
             state.status = "sucessfulRegistration";
             state.register = true;
         })
         .addCase(fetchUserDataAction.fulfilled, (state, action) => {
-            console.log(action.payload);
             const userData = action.payload;
             state.status = "sucessfulFetch";
             state.userId = userData.userId;
@@ -51,17 +60,24 @@ const selectIsLoggedIn = (state) => state.currentUser.isLoggedIn;
 const loginAction = createAsyncThunk(
     "user/login",
     async ({email, password}) => {
-      const response = await loginUser(email, password);
-      return response.data;
+      await loginUser(email, password);
+      return;
+    }
+);
+
+const logoutAction = createAsyncThunk(
+    "user/logout",
+    async () => {
+        await logoutUser();
+        return;
     }
 );
 
 const registerAction = createAsyncThunk(
     "user/register",
     async ({email, password}) => {
-        console.log(`email is ${email} and password is ${password}`);
-        const response = await registerUser(email, password);
-        return response.data;
+        await registerUser(email, password);
+        return;
     }
 );
 
@@ -87,6 +103,8 @@ const deregisterUserAction = createAsyncThunk(
     }
 )
 
-export { loginAction, registerAction, selectIsLoggedIn, fetchUserDataAction, updateUserInfoAction, deregisterUserAction };
+export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, updateUserInfoAction, deregisterUserAction };
+
+export const { resetStatus } = userSlice.actions;
 
 export default userSlice.reducer;

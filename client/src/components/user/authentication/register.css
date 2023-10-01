@@ -43,3 +43,7 @@
 .registration-container .error-message {
     color: red;
 }
+
+.registration-container .successful-registration-message {
+    color: green;
+}

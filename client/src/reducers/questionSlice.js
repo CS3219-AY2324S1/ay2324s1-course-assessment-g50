@@ -1,9 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  getQuestions,
-  addQuestionToRepo,
-  deleteQuestionFromRepo,
-} from "../services/question.service";
+import { getQuestions, addQuestionToRepo,deleteQuestionFromRepo } from "../services/question.service";
 
 const initialState = {
   questions: [],
@@ -27,6 +23,7 @@ export const questionSlice = createSlice({
       })
       .addCase(fetchQuestions.rejected, (state, action) => {
         state.status = "failed";
+        state.questions.length = [];
       })
       .addCase(addNewQuestion.fulfilled, (state, action) => {
         state.questions.push(action.payload);
