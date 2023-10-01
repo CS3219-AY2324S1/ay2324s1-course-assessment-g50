@@ -12,10 +12,19 @@ const loginUser = async (email, password) => {
     }
 };
 
+const logoutUser = async () => {
+    try {
+        const response = await axios.post(baseUrl + '/logout');
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 const registerUser = async (email, password) => {
     try {
-        await axios.post(baseUrl, { email, password });
-        return;
+        const response = await axios.post(baseUrl, { email, password });
+        return response.data;
     } catch (error) {
         console.error(error);
     }
@@ -48,4 +57,4 @@ const deregisterUser = async () => {
     }
 };
 
-export { loginUser, registerUser, getUserData, updateUserInfo, deregisterUser }
+export { loginUser, logoutUser, registerUser, getUserData, updateUserInfo, deregisterUser }

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserDataAction } from "../../reducers/userSlice";
+import { fetchUserDataAction, logoutAction } from "../../reducers/userSlice";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import "./profile.css";
@@ -12,13 +12,20 @@ const Profile = () => {
   /* Current logged in data */
   const user = useSelector((state) => state.currentUser);
 
+  /* retrieve user data whenever profile page is rendered*/
+  useEffect(() => {
+    dispatch(fetchUserDataAction());
+  }, []);
+
   const goBack = () => {
     navigate('/');
   }
 
-  useEffect(() => {
-    dispatch(fetchUserDataAction());
-  }, [user])
+  const logout = () => {
+    dispatch(logoutAction());
+    // window.location.reload();
+    navigate("/login");
+  }
 
   return (
     <div className="profile-container">
@@ -28,9 +35,12 @@ const Profile = () => {
       <p>Gender: {user.gender}</p>
       <p>Birth: {user.birth}</p>
       <p>Sign: {user.sign}</p>
-      <div className="go-back" onClick={goBack}>
-        <BsArrowLeftSquareFill  className="return-icon"/>
-      </div>
+
+
+
+      <BsArrowLeftSquareFill onClick={() => goBack()} className="return-icon"/>
+      <div className="logout-button" onClick={() => logout()}>Log out</div>
+
     </div>
   );
 };

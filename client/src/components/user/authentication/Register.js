@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import "./register.css";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetStatus } from "../../../reducers/userSlice";
 
 const Register = ({ handleRegister }) => {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const [isNotMatchingPassword, setIsNotMatchingPassword] = useState(false);  
   const [isSucessfulRegistration, setIsSucessfulRegistration] = useState(false); 
-  const status = useSelector((state) => state.loggedInUser.register);
+  const status = useSelector((state) => state.currentUser.status);
 
   /* verifies that passwords are matching before registering */
   const onClickRegister = async () => {
+    setIsNotMatchingPassword(false);
     if (password !== confirmPassword) {
       setIsNotMatchingPassword(true);
     } else {
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
       await handleRegister(email, password);
     }
   }
@@ -23,6 +30,11 @@ const Register = ({ handleRegister }) => {
   useEffect(() => {
     if (status === "sucessfulRegistration") {
       setIsSucessfulRegistration(true);
+      setTimeout(() => {
+        dispatch(resetStatus());
+      }, 3000);
+    } else {
+      setIsSucessfulRegistration(false);
     }
   }, [status]);
 
@@ -54,7 +66,7 @@ const Register = ({ handleRegister }) => {
           />
         </div>
 
-        {isSucessfulRegistration && <p className="sucessful-registration-message">Sucessful registration, you may log in now</p>}
+        {isSucessfulRegistration && <p className="successful-registration-message">Sucessful registration, you may log in now</p>}
         {isNotMatchingPassword && <p className="error-message">Your passwords are not matching</p>}
         <div className="button" onClick={onClickRegister}>Register</div>
         
