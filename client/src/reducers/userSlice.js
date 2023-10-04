@@ -51,6 +51,9 @@ const userSlice = createSlice({
             state.sign = userData.sign;
             state.gender = userData.gender;
             state.avatar = userData.avatar;
+        })
+        .addCase(updateUserInfoAction.fulfilled, (state, action) => {
+            state.status = "sucessfulUpdate";
         });
     },
 });
@@ -91,8 +94,9 @@ const fetchUserDataAction = createAsyncThunk(
 
 const updateUserInfoAction = createAsyncThunk(
     "user/updateUserInfo",
-    async () => {
-        await updateUserInfo;
+    async (object) => {
+        await updateUserInfo(object);
+        return;
     }
 );
 

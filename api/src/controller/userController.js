@@ -93,7 +93,6 @@ async function login(req, res) {
     const userId = dbUser.id
     const userRole = dbUser.role;
     try {
-        // const accessToken = TokenUtil.generateToken(userId);
         req.session.userId = userId;
         req.session.userRole = userRole;
         return JsonResponse.success(200, 'Login is sucessful').send(res);
@@ -103,6 +102,7 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
+    /* destroys the session in mongodb which basically clears the current user */
     req.session.destroy((err) => {
         if (err) {
             console.log(err);
@@ -163,7 +163,7 @@ async function updateUser(req, res) {
 // Update current user profile
 async function updateUserInfo(req, res) {
     const id = req.session.userId;
-
+    
     await UserInfo.update(req.body, { where: { id: id } }).then((num) => {
         if (num == 0) {
             throw new Error("User not found")

@@ -1,0 +1,49 @@
+.property-field {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    min-width: 600px;
+    justify-content: space-between;
+    margin: 40px 0;
+}
+
+.edit-property-value {
+    border-radius: 5px;
+    height: 40px;
+    width: 50%;
+    font-size: 20px;
+    justify-content: center;
+    text-align: center;
+}
+
+.property-field  .edit-button {
+    text-decoration: underline;
+    color: rgb(0, 0, 255);
+    cursor: pointer;
+}
+
+.property-field .save-button {
+    text-decoration: underline;
+    color: green;
+    cursor: pointer;
+}
+
+.property-field > p {
+    color: rgb(50, 50, 50, 0.8);
+    font-size: 20px;
+    text-align: center;
+}
+
+.property-field > .property-value  {
+    color: black;
+}
+
+.property-field::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: rgb(0, 0, 0, 0.2);
+}

@@ -36,12 +36,21 @@ router.get('/', isLoggedInCheck, (req, res) => {
     getUsers(req, res)
 })
 
+//  [
+//     check('gender').isIn(['male', 'female', 'unknown']),
+//     check('birth').isDate(),
+// ], 
 // Update current user Info:
-router.patch('/info', isLoggedInCheck, [
-    check('gender').isIn(['male', 'female', 'unknown']),
-    check('birth').isDate(),
-], (req, res) => {
+router.patch('/info', isLoggedInCheck,(req, res) => {
     const errors = validationResult(req);
+    if ('gender' in req.body) {
+        check('gender').isIn(['male', 'female', 'unknown'])(req, res, () => {});
+    }
+
+    if ('birth' in req.body) {
+        check('birth').isDate()(req, res, () => {});
+    }
+
     if (!errors.isEmpty()) {
         return JsonResponse.fail(400, errors.array()).send(res)
     }
