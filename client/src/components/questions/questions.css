@@ -1,3 +1,7 @@
+.App {
+  padding-bottom: 100px;
+}
+
 .post-form {
   width: 70%;
   margin: auto;

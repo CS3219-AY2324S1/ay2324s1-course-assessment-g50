@@ -1,0 +1,32 @@
+.info-table {
+    margin-left: 70px;
+    padding: 30px 70px 30px 30px;
+    padding-left: 30px;
+    position: relative;
+}
+
+.delete-account { 
+    display: flex;
+    padding: 0 5px 0 10px;
+    border-radius: 10px;
+    border: 2px black solid;
+    background-color: coral;
+    position: absolute;
+    bottom: -100px;
+    right: 50px;
+}
+
+.delete-account:hover {
+    background-color: red;
+    cursor: pointer;
+}
+
+.delete-account > p {
+    font-weight: 900;
+    font-size: 17px;
+}
+
+.delete-account-icon {
+    font-size: 50px;
+    margin-left: 10px;
+}

@@ -1,0 +1,33 @@
+.panel {
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 15px;
+    display: flex;
+    width: 100%;
+    position: relative;
+    align-content: center;
+}
+
+.panel:hover {
+    background-color: rgb(173, 216, 230, 0.5);
+    cursor: pointer;
+}
+
+.panel .icon {
+    font-size: 50px;
+    position: absolute;
+    right: 0;
+}
+
+.panel > p {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.selected {
+    background-color: rgb(135, 206, 235);
+}
+
+.selected:hover {
+    background-color: rgb(135, 206, 235);
+}

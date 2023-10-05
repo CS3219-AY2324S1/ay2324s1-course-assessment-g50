@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import Register from "./authentication/Register";
 import Login from "./authentication/Login";
 import "./userAuthentication.css";
@@ -10,8 +10,11 @@ import { loginAction, selectIsLoggedIn, registerAction } from '../../reducers/us
 
 const UserProfileManager = () => {
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.currentUser.isLoggedIn);
+  const status = useSelector((state) => state.currentUser.status);
 
   const [isLogin, setIsLogin] = useState(true);
+  const [isFailedAuthentication, setIsFailedAuthentication] = useState(false);
   const navigate = useNavigate();
 
   /* Return back to questions */
@@ -19,10 +22,24 @@ const UserProfileManager = () => {
     navigate('/');
   }
 
+  /* Goes to question page on sucessful login */ 
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/');
+    }
+  }, [isLoggedIn])
+  
+  /* If failed login */
+  useEffect(() => {
+    if (status === "failedLogin") {
+      setIsFailedAuthentication(true);
+    }
+  }, [status]);
+
+
   /* sends user info to login before retrieving user info */
   const handleLogin = async (email, password) => {
     await dispatch(loginAction({email, password}));
-    navigate('/');
   }
 
   /* register user info */
@@ -35,7 +52,7 @@ const UserProfileManager = () => {
       <div className="authentication-container">
         <p className="title">{isLogin ? "LOGIN" : "REGISTER"}</p>
         {isLogin 
-        ? <Login handleLogin={handleLogin}/> 
+        ? <Login handleLogin={handleLogin} isFailedAuthentication={isFailedAuthentication}/> 
         : <Register handleRegister={handleRegister}/>}
         <p className="register-link" onClick={() => setIsLogin(!isLogin)}>{isLogin ? "Not a user? Register here!" : "Back to Login"}</p>
           <div className="go-back" onClick={goBack}>

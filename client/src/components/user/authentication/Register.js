@@ -27,6 +27,7 @@ const Register = ({ handleRegister }) => {
     }
   }
 
+  /* If API is sucessful */
   useEffect(() => {
     if (status === "sucessfulRegistration") {
       setIsSucessfulRegistration(true);

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuestions, selectAllQuestions,} from "../../../reducers/questionSlice.js";
 import { selectIsLoggedIn } from "../../../reducers/userSlice";
-import UserAvatar from "../../user/userProfile/userAvatar.js";
+import UserAvatar from "../../user/userProfile/UserAvatar.js";
 import "../questions.css";
 import ExpandableRow from "../expandable-row/expandable-row";
 import Table from "@mui/material/Table";
@@ -17,7 +17,6 @@ const QuestionTable = () => {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.questions.status);
   const questions = useSelector(selectAllQuestions);
-  const isLoggedIn = useSelector(selectIsLoggedIn); 
 
   /* Try and retrieve data whenever page is rendered */
   useEffect(() => {

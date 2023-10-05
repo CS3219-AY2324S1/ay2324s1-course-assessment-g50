@@ -31,7 +31,7 @@ const registerUser = async (email, password) => {
 };
 
 /* Managing user profile */
-const getUserData = async () => {
+const fetchUserData = async () => {
     try {
       const response = await axios.get(baseUrl);
       return response.data
@@ -40,10 +40,21 @@ const getUserData = async () => {
     }
 };
 
-const updateUserInfo = async (updateData) => {
+const updateUserBasicInfo = async (updateData) => {
     try {
-        const response = await axios.patch(`http://localhost:8000/users/info`, updateData);
+        const response = await axios.patch(baseUrl + "/info", updateData);
         console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const updateUserAccountInfo = async (updateData) => {
+    try {
+        const response = await axios.patch(baseUrl, updateData);
+        console.log(response.data);
+        return response.data;
     } catch (error) {
         console.error(error);
     }
@@ -51,10 +62,10 @@ const updateUserInfo = async (updateData) => {
 
 const deregisterUser = async () => {
     try {
-        await axios.delete('http://localhost:8000/users/');
+        await axios.delete(baseUrl);
     } catch (error) {
         console.error(error);
     }
 };
 
-export { loginUser, logoutUser, registerUser, getUserData, updateUserInfo, deregisterUser }
+export { loginUser, logoutUser, registerUser, fetchUserData, updateUserBasicInfo, updateUserAccountInfo, deregisterUser }

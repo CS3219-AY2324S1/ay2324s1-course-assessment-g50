@@ -1,33 +1,69 @@
-.profile-container {
+.profile-page {
+    height: 100vh;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(235, 235, 235);
+}
+
+.profile-page * {
+    box-sizing: border-box;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    height: 700px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.profile-content .title {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+}
+
+.profile-content .side-panel {
+    padding: 30px;
+    border-radius: 15px;
+    min-width: 300px;
+    height: 100%;
+}
+
+.side-panel .avatar {
+    background-image: url('../../images/defaultAvatar.jpg');
+    background-position: center;
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+    position: absolute;
+    top: 30px;
+    margin-bottom: 50px;
+}
+
+.side-panel .panels {
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    padding-bottom: 100px;
     flex-direction: column;
     align-items: center;
 }
 
-.profile-container p {
-    margin: 5px;
-    padding: 0;
-}
-
-.return-icon {
-    font-size: 30px;
+.side-panel .return-icon {
+    font-size: 40px;
     cursor: pointer;
     border-radius: 10px;
-    padding: 10px;
-    padding-left: 20px;
+    bottom: 20px;
+    position: absolute;
 }
 
 .return-icon:hover {
     color: grey;
-}
-
-.profile-container .logout-button {
-    border: 3px solid black;
-    padding: 7px;
-    border-radius: 15px;
-}
-
-.profile-icon:hover {
-    background-color: lightgrey;
-    cursor: pointer;
 }
