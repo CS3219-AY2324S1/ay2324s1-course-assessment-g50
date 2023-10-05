@@ -18,6 +18,10 @@
     position: relative;
 }
 
+.authentication-container .failed-login {
+    color: red;
+}
+
 .title {
     text-align: center;
     font-weight: 600;

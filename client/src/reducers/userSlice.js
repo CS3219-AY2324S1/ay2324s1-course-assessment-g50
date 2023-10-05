@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser, registerUser, logoutUser, getUserData, updateUserInfo, deregisterUser } from "../services/user.service";
+import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo, updateUserAccountInfo, deregisterUser } from "../services/user.service";
 
 const initialState = {
     userId: null,
+    email: null,
+    passwordLength: null,
     nickname: null,
     birth: null,
     sign: null,
@@ -18,7 +20,6 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         resetStatus: (state) => {
-            console.log("reseting");
             state.status = "idle";
           },
     },
@@ -45,6 +46,8 @@ const userSlice = createSlice({
         .addCase(fetchUserDataAction.fulfilled, (state, action) => {
             const userData = action.payload;
             state.status = "sucessfulFetch";
+            state.email = userData.email;
+            state.passwordLength = userData.passwordLength;
             state.userId = userData.userId;
             state.nickname = userData.nickname;
             state.birth = userData.birth;
@@ -52,8 +55,22 @@ const userSlice = createSlice({
             state.gender = userData.gender;
             state.avatar = userData.avatar;
         })
-        .addCase(updateUserInfoAction.fulfilled, (state, action) => {
-            state.status = "sucessfulUpdate";
+        .addCase(updateUserBasicInfoAction.fulfilled, (state, action) => {
+            state.status = "sucessfulBasicInfoUpdate";
+        })
+        .addCase(updateUserBasicInfoAction.rejected, (state, action) => {
+            state.status = "failedBasicInfoUpdate";
+        })
+        .addCase(updateUserAccountInfoAction.fulfilled, (state, action) => {
+            state.status = "sucessfulAccountInfoUpdate";
+        })
+        .addCase(updateUserAccountInfoAction.rejected, (state, action) => {
+            state.status = "failedBasicInfoUpdate";
+        })
+        .addCase(deregisterUserAction.fulfilled, (state, action) => {
+            console.log("failed to delete");
+            state.status = "accountDeleted";
+            state.isLoggedIn = false;
         });
     },
 });
@@ -63,8 +80,12 @@ const selectIsLoggedIn = (state) => state.currentUser.isLoggedIn;
 const loginAction = createAsyncThunk(
     "user/login",
     async ({email, password}) => {
-      await loginUser(email, password);
-      return;
+      const response = await loginUser(email, password);
+      if (response.code == 200) {
+        return response.data;
+      } else {
+        throw new Error("Failed to login");
+      }
     }
 );
 
@@ -87,15 +108,32 @@ const registerAction = createAsyncThunk(
 const fetchUserDataAction = createAsyncThunk(
     "user/fetchUserData",
     async () => {
-      const response = await getUserData();
+      const response = await fetchUserData();
       return response.data;
     }
 );
 
-const updateUserInfoAction = createAsyncThunk(
-    "user/updateUserInfo",
+// For basic info
+const updateUserBasicInfoAction = createAsyncThunk(
+    "user/updateUserBasicInfo",
     async (object) => {
-        await updateUserInfo(object);
+        const response = await updateUserBasicInfo(object);
+        if (response.code !== 201) {
+            throw new Error("Failed to update basic info");
+        }
+        return;
+    }
+);
+
+// For account info, email and password
+const updateUserAccountInfoAction = createAsyncThunk(
+    "user/updateUserAccountInfo",
+    async (object) => {
+        const response = await updateUserAccountInfo(object);
+
+        if (response.code !== 201) {
+            throw new Error("Failed to update account info");
+        }
         return;
     }
 );
@@ -103,11 +141,12 @@ const updateUserInfoAction = createAsyncThunk(
 const deregisterUserAction = createAsyncThunk(
     "user/deregisterUser",
     async () => {
-        await deregisterUser;
+        await deregisterUser();
     }
 )
 
-export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, updateUserInfoAction, deregisterUserAction };
+export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, 
+    updateUserBasicInfoAction, updateUserAccountInfoAction, deregisterUserAction };
 
 export const { resetStatus } = userSlice.actions;
 

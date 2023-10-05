@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import "./login.css";
 
-const Login = ({ handleLogin }) => {
+const Login = ({ handleLogin, isFailedAuthentication }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -22,6 +22,7 @@ const Login = ({ handleLogin }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        {isFailedAuthentication && <p className="failed-login">Incorrect login details</p>}
         <div className="button" onClick={() => handleLogin(email, password)}>Login</div>
     </div>
   );

@@ -95,7 +95,9 @@ async function login(req, res) {
     try {
         req.session.userId = userId;
         req.session.userRole = userRole;
-        return JsonResponse.success(200, 'Login is sucessful').send(res);
+        req.session.email = email;
+        req.session.passwordLength = rawPassword.length;
+        return JsonResponse.success(200, "Sucessful logging").send(res);
     } catch (error) {
         return JsonResponse.fail(500, 'Failed to login').send(res)
     }
@@ -121,6 +123,8 @@ async function getUserById(req, res) {
         return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res)
     })
     if (userInfo) {
+        userInfo.dataValues["email"] = req.session.email;
+        userInfo.dataValues["passwordLength"] = req.session.passwordLength;
         return JsonResponse.success(200, userInfo).send(res)
     }
     return JsonResponse.fail(404, 'User not found').send(res)
@@ -149,11 +153,30 @@ async function getUsers(req, res) {
 // Update current user email or password
 async function updateUser(req, res) {
     const id = req.session.userId;
+    let newPassword = req.body.password;
+    let newEmail = req.body.email;
+
+    let salt;
+    let md5Password;
+    if (newPassword) {
+        //getting the salt
+        const dbUser = await User.findOne({ where: { id: id} }).catch(err => {
+            return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res);
+        })
+        salt = dbUser.salt;
+        md5Password = MD5Util.sign(newPassword, salt, 'utf8');
+        req.body.password = md5Password;
+    }
 
     await User.update(req.body, { where: { id: id } }).then((num) => {
         if (num == 0) {
             throw new Error("User not found")
         }
+        // Retrieving new password and email  
+        req.session.email = newEmail === undefined ? req.session.email : newEmail;
+        req.session.passwordLength = newPassword === undefined 
+                                ? req.session.passwordLength 
+                                : newPassword.length;
         return JsonResponse.success(201, "User updated successfully").send(res)
     }).catch(err => {
         return JsonResponse.fail(500, 'Failed to update user').send(res)

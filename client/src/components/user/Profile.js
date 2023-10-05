@@ -8,6 +8,7 @@ import { HiOutlineLogout, HiOutlineInformationCircle } from "react-icons/hi";
 import ProfilePanel from "./userProfile/profileComponents/ProfilePanel";
 import "./profile.css";
 import BasicInfo from "./userProfile/profileComponents/BasicInfo";
+import AccountInfo from "./userProfile/profileComponents/AccountInfo";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const Profile = () => {
 
   /* Current logged in data */
   const user = useSelector((state) => state.currentUser);
-  const status = useSelector((state) => state.status);
+  const isLoggedIn = useSelector((state) => state.currentUser.isLoggedIn);
 
   const PANEL = {
     BASIC_INFO: "Basic Info",
@@ -24,10 +25,21 @@ const Profile = () => {
   }
   const [panel, setPanel] = useState(PANEL.BASIC_INFO)
 
-  /* retrieve user data whenever profile page is rendered*/
+  /* returns to authentication page on log out
+  also used when account is deleted */ 
   useEffect(() => {
-    dispatch(fetchUserDataAction());
-  }, []);
+    if (!isLoggedIn) {
+      navigate('/login');
+    }
+  }, [isLoggedIn])
+
+  /* retrieve user data whenever profile page is rendered */
+  useEffect(() => {
+    console.log("this one is running");
+    if (isLoggedIn) {
+      dispatch(fetchUserDataAction());
+    }
+  }, [user]);
 
   const goBack = () => {
     navigate('/');
@@ -35,7 +47,6 @@ const Profile = () => {
 
   const onclickLogout = (panelName) => {
     dispatch(logoutAction());
-    navigate("/login");
   }
   
   const onclickPanel = (panelName) => {
@@ -69,9 +80,8 @@ const Profile = () => {
           </div>
           <BsArrowLeftSquareFill onClick={() => goBack()} className="return-icon"/>
         </div>
-        
-        {/* TODO: set password and email*/}
-        {panel && <BasicInfo user={user}/>}
+        {panel === PANEL.BASIC_INFO && <BasicInfo user={user}/>}
+        {panel === PANEL.ACCOUNT && <AccountInfo user={user}/>}
       </div>
     </div>
     
