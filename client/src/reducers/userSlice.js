@@ -11,7 +11,6 @@ const initialState = {
     gender: null,
     avatar: null,
     isLoggedIn: localStorage.getItem('loggedIn') === 'true',
-    register: false,
     status: "idle",
 };
 
@@ -41,7 +40,6 @@ const userSlice = createSlice({
         })
         .addCase(registerAction.fulfilled, (state, action) => {
             state.status = "sucessfulRegistration";
-            state.register = true;
         })
         .addCase(fetchUserDataAction.fulfilled, (state, action) => {
             const userData = action.payload;
@@ -68,9 +66,11 @@ const userSlice = createSlice({
             state.status = "failedBasicInfoUpdate";
         })
         .addCase(deregisterUserAction.fulfilled, (state, action) => {
-            console.log("failed to delete");
             state.status = "accountDeleted";
             state.isLoggedIn = false;
+        })
+        .addCase(deregisterUserAction.rejected, (state, action) => {
+            state.status = "accountNotDeleted";
         });
     },
 });
@@ -80,12 +80,8 @@ const selectIsLoggedIn = (state) => state.currentUser.isLoggedIn;
 const loginAction = createAsyncThunk(
     "user/login",
     async ({email, password}) => {
-      const response = await loginUser(email, password);
-      if (response.code == 200) {
+        const response = await loginUser(email, password);
         return response.data;
-      } else {
-        throw new Error("Failed to login");
-      }
     }
 );
 
@@ -117,10 +113,7 @@ const fetchUserDataAction = createAsyncThunk(
 const updateUserBasicInfoAction = createAsyncThunk(
     "user/updateUserBasicInfo",
     async (object) => {
-        const response = await updateUserBasicInfo(object);
-        if (response.code !== 201) {
-            throw new Error("Failed to update basic info");
-        }
+        await updateUserBasicInfo(object);
         return;
     }
 );
@@ -129,11 +122,7 @@ const updateUserBasicInfoAction = createAsyncThunk(
 const updateUserAccountInfoAction = createAsyncThunk(
     "user/updateUserAccountInfo",
     async (object) => {
-        const response = await updateUserAccountInfo(object);
-
-        if (response.code !== 201) {
-            throw new Error("Failed to update account info");
-        }
+        await updateUserAccountInfo(object);
         return;
     }
 );

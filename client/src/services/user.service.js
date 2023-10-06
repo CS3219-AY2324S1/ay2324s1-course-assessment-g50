@@ -9,6 +9,7 @@ const loginUser = async (email, password) => {
         return response.data;
     } catch (error) {
         console.error(error);  // Handle error
+        throw new Error("logging error");
     }
 };
 
@@ -43,10 +44,10 @@ const fetchUserData = async () => {
 const updateUserBasicInfo = async (updateData) => {
     try {
         const response = await axios.patch(baseUrl + "/info", updateData);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.error(error);
+        throw new Error("Failed to update basic info");
     }
 };
 
@@ -57,6 +58,7 @@ const updateUserAccountInfo = async (updateData) => {
         return response.data;
     } catch (error) {
         console.error(error);
+        throw new Error("Failed to update account info");
     }
 };
 
@@ -65,6 +67,7 @@ const deregisterUser = async () => {
         await axios.delete(baseUrl);
     } catch (error) {
         console.error(error);
+        throw new Error("Failed to update account info");
     }
 };
 
