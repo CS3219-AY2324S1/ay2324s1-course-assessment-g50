@@ -50,6 +50,16 @@ const updateUserBasicInfo = async (updateData) => {
     }
 };
 
+const updateUserBasicAvatarInfo = async(updateData) => {
+    try {
+        const response = await axios.post(baseUrl + "/info/avatar", updateData);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 const updateUserAccountInfo = async (updateData) => {
     try {
         const response = await axios.patch(baseUrl, updateData);
@@ -68,4 +78,4 @@ const deregisterUser = async () => {
     }
 };
 
-export { loginUser, logoutUser, registerUser, fetchUserData, updateUserBasicInfo, updateUserAccountInfo, deregisterUser }
+export { loginUser, logoutUser, registerUser, fetchUserData, updateUserBasicInfo, updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser }

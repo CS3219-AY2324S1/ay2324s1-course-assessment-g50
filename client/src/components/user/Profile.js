@@ -55,7 +55,7 @@ const Profile = () => {
 
   // TODO: set dynamic background link
   const avatarStyle = {
-    backgroundImage: "url('../../images/defaultAvatar.jpg')",
+    backgroundImage: `url(${user.avatar})` ,
     backgroundPosition: "center",
     backgroundSize: "contain",
     height: "200px",
@@ -72,7 +72,7 @@ const Profile = () => {
         <h1 className="title">Profile</h1>
         
         <div className="side-panel">
-          <div className="avatar"></div>
+          <div className="avatar" style={avatarStyle}></div>
           <div className="panels">
             <ProfilePanel onclick={onclickPanel} sectionName={PANEL.BASIC_INFO} selected={panel} Icon={<HiOutlineInformationCircle className="icon"/>}/>
             <ProfilePanel onclick={onclickPanel} sectionName={PANEL.ACCOUNT} selected={panel} Icon={<FaUserGear className="icon"/>}/>

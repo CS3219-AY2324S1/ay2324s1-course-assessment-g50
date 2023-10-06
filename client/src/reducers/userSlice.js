@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo, updateUserAccountInfo, deregisterUser } from "../services/user.service";
+import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo,updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser } from "../services/user.service";
 
 const initialState = {
     userId: null,
@@ -60,6 +60,12 @@ const userSlice = createSlice({
         })
         .addCase(updateUserBasicInfoAction.rejected, (state, action) => {
             state.status = "failedBasicInfoUpdate";
+        })
+        .addCase(updateUserBasicAvatarInfoAction.fulfilled, (state, action) => {
+            state.status = "sucessfulBasicAvatarInfoUpdate";
+        })
+        .addCase(updateUserBasicAvatarInfoAction.rejected, (state, action) => {
+            state.status = "failedBasicAvatarInfoUpdate";
         })
         .addCase(updateUserAccountInfoAction.fulfilled, (state, action) => {
             state.status = "sucessfulAccountInfoUpdate";
@@ -125,6 +131,18 @@ const updateUserBasicInfoAction = createAsyncThunk(
     }
 );
 
+// For Avatar info
+const updateUserBasicAvatarInfoAction = createAsyncThunk(
+    "user/updateUserBasicAvatarInfo",
+    async (object) => {
+        const response = await updateUserBasicAvatarInfo(object);
+        if (response.code != 201) {
+            throw new Error('Failed to update user avatar');
+        }
+        return;
+    }
+)
+
 // For account info, email and password
 const updateUserAccountInfoAction = createAsyncThunk(
     "user/updateUserAccountInfo",
@@ -146,7 +164,7 @@ const deregisterUserAction = createAsyncThunk(
 )
 
 export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, 
-    updateUserBasicInfoAction, updateUserAccountInfoAction, deregisterUserAction };
+    updateUserBasicInfoAction, updateUserAccountInfoAction, updateUserBasicAvatarInfoAction, deregisterUserAction };
 
 export const { resetStatus } = userSlice.actions;
 
