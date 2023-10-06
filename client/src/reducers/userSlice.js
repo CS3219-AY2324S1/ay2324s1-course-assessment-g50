@@ -68,7 +68,6 @@ const userSlice = createSlice({
             state.status = "failedBasicInfoUpdate";
         })
         .addCase(deregisterUserAction.fulfilled, (state, action) => {
-            console.log("failed to delete");
             state.status = "accountDeleted";
             state.isLoggedIn = false;
         });
@@ -81,7 +80,7 @@ const loginAction = createAsyncThunk(
     "user/login",
     async ({email, password}) => {
       const response = await loginUser(email, password);
-      if (response.code == 200) {
+      if (response.code === 200) {
         return response.data;
       } else {
         throw new Error("Failed to login");

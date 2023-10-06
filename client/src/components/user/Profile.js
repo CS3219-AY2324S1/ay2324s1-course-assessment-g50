@@ -33,7 +33,8 @@ const Profile = () => {
     }
   }, [isLoggedIn])
 
-  /* retrieve user data whenever profile page is rendered */
+  /* retrieve user data when profile page is rendered 
+  and also whenever there's a change in user state*/
   useEffect(() => {
     console.log("this one is running");
     if (isLoggedIn) {

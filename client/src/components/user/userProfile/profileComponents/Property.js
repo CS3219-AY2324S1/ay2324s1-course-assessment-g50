@@ -35,7 +35,7 @@ const Property = ({ propertyName, propertyValue, dbPropertyName, apiAction }) =>
       <p className="property-name">{propertyName}</p>
       {isEditing 
       ? <input className="edit-property-value" type={dbPropertyName !== "password" ? "text" : "password"} value={currentValue} onChange={handleInputChange}/>
-       : <p className="property-value">{currentValue}</p>}
+       : <p className="property-value" type={dbPropertyName !== "password" ? "text" : "password"} >{currentValue}</p>}
       {isEditing 
       ? <p className="save-button" onClick={handleSaveClick}>Save</p>
       : <p className="edit-button" onClick={handleEditClick}>Edit</p>}

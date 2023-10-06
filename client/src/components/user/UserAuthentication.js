@@ -17,7 +17,7 @@ const UserProfileManager = () => {
   const [isFailedAuthentication, setIsFailedAuthentication] = useState(false);
   const navigate = useNavigate();
 
-  /* Return back to questions */
+  /* Returns back to questions */
   const goBack = () => {
     navigate('/');
   }
@@ -38,12 +38,12 @@ const UserProfileManager = () => {
 
 
   /* sends user info to login before retrieving user info */
-  const handleLogin = async (email, password) => {
-    await dispatch(loginAction({email, password}));
+  const handleLogin = (email, password) => {
+    dispatch(loginAction({ email, password }));
   }
 
   /* register user info */
-  const handleRegister = async (email, password) => {
+  const handleRegister = (email, password) => {
     dispatch(registerAction({email, password}));
   }
 
