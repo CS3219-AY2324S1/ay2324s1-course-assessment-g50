@@ -14,6 +14,18 @@ const Register = ({ handleRegister }) => {
   const [isSucessfulRegistration, setIsSucessfulRegistration] = useState(false); 
   const status = useSelector((state) => state.currentUser.status);
 
+  /* If API is sucessful */
+  useEffect(() => {
+    if (status === "sucessfulRegistration") {
+      setIsSucessfulRegistration(true);
+      setTimeout(() => {
+        dispatch(resetStatus());
+      }, 3000);
+    } else {
+      setIsSucessfulRegistration(false);
+    }
+  }, [status]);
+
   /* verifies that passwords are matching before registering */
   const onClickRegister = async () => {
     setIsNotMatchingPassword(false);
@@ -26,18 +38,6 @@ const Register = ({ handleRegister }) => {
       await handleRegister(email, password);
     }
   }
-
-  /* If API is sucessful */
-  useEffect(() => {
-    if (status === "sucessfulRegistration") {
-      setIsSucessfulRegistration(true);
-      setTimeout(() => {
-        dispatch(resetStatus());
-      }, 3000);
-    } else {
-      setIsSucessfulRegistration(false);
-    }
-  }, [status]);
 
   return (
     <div className="registration-container">

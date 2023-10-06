@@ -14,6 +14,7 @@ const Property = ({ propertyName, propertyValue, dbPropertyName, apiAction }) =>
   const dispatch = useDispatch();
 
   const handleEditClick = () => {
+    //clears the password 
     if (dbPropertyName === "password") {
       setCurrentValue("");
     }

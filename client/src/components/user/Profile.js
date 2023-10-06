@@ -17,6 +17,7 @@ const Profile = () => {
   /* Current logged in data */
   const user = useSelector((state) => state.currentUser);
   const isLoggedIn = useSelector((state) => state.currentUser.isLoggedIn);
+  const status = useSelector((state) => state.currentUser.status);
 
   const PANEL = {
     BASIC_INFO: "Basic Info",
@@ -36,8 +37,8 @@ const Profile = () => {
   /* retrieve user data when profile page is rendered 
   and also whenever there's a change in user state*/
   useEffect(() => {
-    console.log("this one is running");
-    if (isLoggedIn) {
+    //prevent double fetching
+    if (isLoggedIn && status !== "sucessfulFetch" ) {
       dispatch(fetchUserDataAction());
     }
   }, [user]);
