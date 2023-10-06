@@ -20,7 +20,7 @@ const routes = require('./routes/routes');
 app.use('/', routes)
 
 // DB:
-const db = require('./db/db')
+const db = require('./db/db');
 
 // Start the server
 async function startServer() {
