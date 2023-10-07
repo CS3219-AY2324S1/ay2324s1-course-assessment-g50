@@ -26,6 +26,7 @@ const Property = ({ propertyName, propertyValue, dbPropertyName, apiAction }) =>
 
   const handleSaveClick = () => {
     const user = { [dbPropertyName]:currentValue };
+    console.log("This is user: ", user)
     dispatch(apiAction(user));
     setIsEditing(false);
   };

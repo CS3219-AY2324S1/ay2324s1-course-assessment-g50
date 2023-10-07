@@ -35,18 +35,6 @@
     height: 100%;
 }
 
-.side-panel .avatar {
-    background-image: url('../../images/defaultAvatar.jpg');
-    background-position: center;
-    background-size: contain;
-    height: 200px;
-    width: 200px;
-    border-radius: 100px;
-    position: absolute;
-    top: 30px;
-    margin-bottom: 50px;
-}
-
 .side-panel .panels {
     height: 100%;
     display: flex;

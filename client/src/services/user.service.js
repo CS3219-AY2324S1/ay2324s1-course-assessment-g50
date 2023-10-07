@@ -33,10 +33,10 @@ const registerUser = async (email, password) => {
 /* Managing user profile */
 const fetchUserData = async () => {
     try {
-      const response = await axios.get(baseUrl);
-      return response.data
+        const response = await axios.get(baseUrl);
+        return response.data
     } catch (error) {
-      console.error(error);
+        console.error(error);
     }
 };
 
@@ -50,9 +50,13 @@ const updateUserBasicInfo = async (updateData) => {
     }
 };
 
-const updateUserBasicAvatarInfo = async(updateData) => {
+const updateUserBasicAvatarInfo = async (imageData) => {
     try {
-        const response = await axios.post(baseUrl + "/info/avatar", updateData);
+        const response = await axios.post(baseUrl + "/info/avatar", imageData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         console.log(response.data);
         return response.data;
     } catch (error) {

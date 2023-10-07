@@ -1,5 +1,5 @@
 // cloudinary Config
-const { config, uploader, url } = require('cloudinary')
+const { config, uploader } = require('cloudinary')
 const initializeConfigs = () => {
     config({
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -17,6 +17,7 @@ const dataUri = req => parser.format(path.extname(req.file.originalname).toStrin
 
 // Upload image util function
 async function uploadImageToServer(req, prevImgUrl) {
+    console.log(req.body)
     if (!req.file) {
         throw new Error("File not selected")
     }

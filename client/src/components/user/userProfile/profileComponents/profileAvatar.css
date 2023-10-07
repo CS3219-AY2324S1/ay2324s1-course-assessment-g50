@@ -1,0 +1,18 @@
+.avatar-box {
+    position: absolute;
+    height: 200px;
+    margin-bottom: 50px;
+}
+
+.avatar-box .avatar-value {
+    background-position: center;
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+    display: block;
+}
+
+.avatar-box .edit-bottom {
+    margin-top: 10px;
+}
