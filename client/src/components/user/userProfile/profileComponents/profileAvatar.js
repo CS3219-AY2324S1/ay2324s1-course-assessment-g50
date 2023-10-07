@@ -33,12 +33,15 @@ const Avatar = ({ user }) => {
         <div className="avatar-box">
             <img className="avatar-value" src={selectedImage || user.avatar} alt="User Avatar" />
             {isEditing ? (
-                <div>
-                    <input className="edit-avatar-value" type="file" accept="image/*" onChange={handleImageChange} />
-                    <button onClick={handleSaveClick}>Save</button>
+                <div className="avatar-after-edit">
+                    <label htmlFor="upload" className="avatar-upload">
+                        Select Image
+                        <input id="upload" className="avatar-upload-button" type="file" accept="image/*" onChange={handleImageChange} />
+                    </label>
+                    <p className="avatar-save" onClick={handleSaveClick}>Save</p>
                 </div>
             ) : (
-                <button onClick={handleEditClick}>Edit</button>
+                <p className="avatar-edit" onClick={handleEditClick}>Edit</p>
             )}
         </div>
     );

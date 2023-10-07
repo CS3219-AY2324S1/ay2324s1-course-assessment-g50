@@ -229,7 +229,6 @@ async function updateUserAvatar(req, res) {
         const prevImgUrl = dbUser.avatar
         imageUrl = await uploadImageToServer(req, prevImgUrl)
     } catch(err) {
-        console.log(err)
         return JsonResponse.fail(500, 'Failed to upload image to server').send(res)
     }
 
