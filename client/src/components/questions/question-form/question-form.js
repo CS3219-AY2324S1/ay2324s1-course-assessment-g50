@@ -19,10 +19,24 @@ const initialState = {
 
 const EMPTY_DESCRIPTION = "<p><br></p>";
 
+const isFormValid = (formData) => {
+	const noneEmpty = Object.values(formData).every(
+		(field) => field !== null && field !== ""
+	);
+	const hasCat = formData.categories.length > 0;
+	const hasDesc = formData.description
+		.replace(/<(?!img\s)[^>]*>/g, "")
+		.trim().length !== 0;
+
+	return noneEmpty && hasCat && hasDesc;
+};
+
 const QuestionForm = () => {
   const [formData, setFormData] = useState(initialState);
   const { title, categories, description, complexity } = formData;
+
   const dispatch = useDispatch();
+
   const onDescriptionChange = (value) => {
     // If not form data's initial state
     if (value !== EMPTY_DESCRIPTION) {
@@ -34,31 +48,22 @@ const QuestionForm = () => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const emptyDescription = (value) =>
-    value.replace(/<(.|\n)*?>/g, "").trim().length !== 0;
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const noneEmpty = Object.values(formData).every(
-      (field) => field !== null && field !== ""
-    );
-    const hasCat = formData.categories.length > 0;
-    const hasDesc = emptyDescription(formData.description);
+    const isAllFilled = isFormValid(formData);
+		if (!isAllFilled) {
+			sendError(dispatch, "All fields must be filled");
+			return;
+		}
 
-    const isAllFilled = noneEmpty && hasCat && hasDesc;
-
-    if (isAllFilled) {
-      console.log('check: \n' + formData);
-      try {
-        await dispatch(addNewQuestion(formData)).unwrap();
-        setFormData(initialState);
-      } catch (error) {
-        sendError(dispatch, error.message);
-      }
-    } else {
-      sendError(dispatch, "All fields must be filled");
-    }
+		// Set form to empty only on success
+		try {
+			await dispatch(addNewQuestion(formData)).unwrap();
+			setFormData(initialState);
+		} catch (err) {
+			sendError(dispatch, err.message);
+		};
   };
 
   return (

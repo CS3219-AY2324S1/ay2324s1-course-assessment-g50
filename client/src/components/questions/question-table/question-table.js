@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuestions, selectAllQuestions,} from "../../../reducers/questionSlice.js";
 import { selectIsLoggedIn } from "../../../reducers/userSlice";
-import UserAvatar from "../../user/userProfile/UserAvatar.js";
+import UserAvatar from "../../user/userProfile/userAvatar.js";
 import "../questions.css";
 import ExpandableRow from "../expandable-row/expandable-row";
 import Table from "@mui/material/Table";
@@ -20,8 +20,10 @@ const QuestionTable = () => {
 
   /* Try and retrieve data whenever page is rendered */
   useEffect(() => {
-    dispatch(fetchQuestions());
-  }, [])
+    if (status === 'idle' || status === 'outdated') {
+      dispatch(fetchQuestions());
+    }
+  }, [status])
 
   return (
     <div className="post-form">
