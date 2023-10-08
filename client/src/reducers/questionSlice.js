@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getQuestions, addQuestionToRepo,deleteQuestionFromRepo } from "../services/question.service";
+import { getQuestions, addQuestionToRepo, deleteQuestionFromRepo, updateQuestionFromRepo } from "../services/question.service";
 
 const initialState = {
   questions: [],
@@ -29,7 +29,10 @@ export const questionSlice = createSlice({
         state.questions.push(action.payload);
       })
       .addCase(deleteQuestion.fulfilled, (state, action) => {
-        state.questions = action.payload;
+        state.status = "outdated";
+      })
+      .addCase(updateQuestion.fulfilled, (state, action) => {
+        state.status = "outdated";
       });
   },
 });
@@ -37,38 +40,33 @@ export const questionSlice = createSlice({
 // state parameter refers to root redux state object
 export const selectAllQuestions = (state) => state.questions.questions;
 
-// first parameter: action prefix
-// @Todo: await actual api call (replace getQuestions)
 export const fetchQuestions = createAsyncThunk(
   "questions/fetchQuestions",
   async () => {
     const response = await getQuestions();
-    return response.data;
+    return response;
   }
 );
 
-// @Todo: await actual api call (replace addQuestionToRepo)
 export const addNewQuestion = createAsyncThunk(
   "posts/addNewQuestion",
   async (formData) => {
-    try {
-      const response = await addQuestionToRepo(formData);
-
-      // The response includes unique ID
-      return response.data;
-    } catch (error) {
-      // Handle or log error if necessary
-      throw error; // This error will be caught in the onSubmit method
-    }
+    const response = await addQuestionToRepo(formData);
+    return response;
   }
 );
 
-// @Todo: await actual api call (replace deleteQuestionFromRepo)
 export const deleteQuestion = createAsyncThunk(
   "posts/deleteQuestion",
   async (id) => {
-    const response = await deleteQuestionFromRepo(id);
-    return response.data;
+    await deleteQuestionFromRepo(id);
+  }
+);
+
+export const updateQuestion = createAsyncThunk(
+  "posts/updateQuestion",
+  async (id) => {
+    await updateQuestionFromRepo(id);
   }
 );
 
