@@ -41,6 +41,13 @@ const userSlice = createSlice({
         .addCase(registerAction.fulfilled, (state, action) => {
             state.status = "sucessfulRegistration";
         })
+        .addCase(registerAction.rejected, (state, action) => {
+            if (action.error.message === "INVALID_EMAIL") {
+                state.status = "givenInvalidEmail";
+            } else {
+                state.status = "failedRegistration";
+            }
+        })
         .addCase(fetchUserDataAction.fulfilled, (state, action) => {
             const userData = action.payload;
             state.status = "sucessfulFetch";
@@ -57,7 +64,12 @@ const userSlice = createSlice({
             state.status = "sucessfulBasicInfoUpdate";
         })
         .addCase(updateUserBasicInfoAction.rejected, (state, action) => {
-            state.status = "failedBasicInfoUpdate";
+            if (action.error.message === "INVALID_INPUT") {
+                state.status = "givenInvalidInfoUpdate";
+            } else {
+                state.status = "failedBasicInfoUpdate";
+            }
+
         })
         .addCase(updateUserBasicAvatarInfoAction.fulfilled, (state, action) => {
             state.status = "sucessfulBasicAvatarInfoUpdate";

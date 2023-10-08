@@ -28,6 +28,10 @@ const registerUser = async (email, password) => {
         return response.data;
     } catch (error) {
         console.error(error);
+        if (error.response.status === 400) {
+            throw new Error("INVALID_EMAIL");
+        }
+        throw new Error("Failed to register");
     }
 };
 
@@ -46,7 +50,9 @@ const updateUserBasicInfo = async (updateData) => {
         const response = await axios.patch(baseUrl + "/info", updateData);
         return response.data;
     } catch (error) {
-        console.error(error);
+        if (error.response.status === 400) {
+            throw new Error("INVALID_INPUT");
+        }
         throw new Error("Failed to update basic info");
     }
 };
@@ -58,7 +64,6 @@ const updateUserBasicAvatarInfo = async (imageData) => {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.error(error);
@@ -68,7 +73,6 @@ const updateUserBasicAvatarInfo = async (imageData) => {
 const updateUserAccountInfo = async (updateData) => {
     try {
         const response = await axios.patch(baseUrl, updateData);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.error(error);

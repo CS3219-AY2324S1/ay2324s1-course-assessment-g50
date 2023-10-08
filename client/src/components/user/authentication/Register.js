@@ -12,6 +12,7 @@ const Register = ({ handleRegister }) => {
 
   const [isNotMatchingPassword, setIsNotMatchingPassword] = useState(false);  
   const [isSucessfulRegistration, setIsSucessfulRegistration] = useState(false); 
+  const [isFailedRegistration, setIsFailedRegistration] = useState(false); 
   const status = useSelector((state) => state.currentUser.status);
 
   /* If API is sucessful */
@@ -20,13 +21,18 @@ const Register = ({ handleRegister }) => {
       setIsSucessfulRegistration(true);
       setTimeout(() => {
         dispatch(resetStatus());
+        setIsSucessfulRegistration(false);
       }, 3000);
-    } else {
-      setIsSucessfulRegistration(false);
+    } else if (status === "givenInvalidEmail") {
+      setIsFailedRegistration(true);
+      setTimeout(() => {
+        dispatch(resetStatus());
+        setIsFailedRegistration(false);
+      }, 3000);
     }
   }, [status]);
 
-  /* verifies that passwords are matching before registering */
+  /* verifies that passwords are matching before registering backend checks for valid email */
   const onClickRegister = async () => {
     setIsNotMatchingPassword(false);
     if (password !== confirmPassword) {
@@ -69,6 +75,7 @@ const Register = ({ handleRegister }) => {
 
         {isSucessfulRegistration && <p className="successful-registration-message">Sucessful registration, you may log in now</p>}
         {isNotMatchingPassword && <p className="error-message">Your passwords are not matching</p>}
+        {isFailedRegistration && <p className="error-message">Invalid Email provided</p>}
         <div className="button" onClick={onClickRegister}>Register</div>
         
     </div>
