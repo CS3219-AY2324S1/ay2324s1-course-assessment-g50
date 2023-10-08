@@ -1,5 +1,6 @@
 const db = require('../db/mysql/mysql')
 const { DEFAULT_NICK, DEFAULT_BIRTH, DEFAULT_SIGN, DEFAULT_GENDER, DEFAULT_AVATOR } = require('../db/constant/userConstant')
+const { uploadImageToServer } = require('../utils/imageUploadUtil')
 
 // DB models
 const sequelize = db.sequelize
@@ -76,7 +77,7 @@ async function login(req, res) {
     }
 
     // Validate Password:
-    let rawPassword=password;
+    let rawPassword = password;
     const salt = dbUser.salt
     // try {
     //     rawPassword = RSAUtil.decrypt(password)
@@ -160,7 +161,7 @@ async function updateUser(req, res) {
     let md5Password;
     if (newPassword) {
         //getting the salt
-        const dbUser = await User.findOne({ where: { id: id} }).catch(err => {
+        const dbUser = await User.findOne({ where: { id: id } }).catch(err => {
             return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res);
         })
         salt = dbUser.salt;
@@ -174,9 +175,9 @@ async function updateUser(req, res) {
         }
         // Retrieving new password and email  
         req.session.email = newEmail === undefined ? req.session.email : newEmail;
-        req.session.passwordLength = newPassword === undefined 
-                                ? req.session.passwordLength 
-                                : newPassword.length;
+        req.session.passwordLength = newPassword === undefined
+            ? req.session.passwordLength
+            : newPassword.length;
         return JsonResponse.success(201, "User updated successfully").send(res)
     }).catch(err => {
         return JsonResponse.fail(500, 'Failed to update user').send(res)
@@ -186,7 +187,7 @@ async function updateUser(req, res) {
 // Update current user profile
 async function updateUserInfo(req, res) {
     const id = req.session.userId;
-    
+
     await UserInfo.update(req.body, { where: { id: id } }).then((num) => {
         if (num == 0) {
             throw new Error("User not found")
@@ -216,4 +217,31 @@ async function deleteUserById(req, res) {
     })
 }
 
-module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, deleteUserById }
+// Edit user's avator by uploading image to cloud
+async function updateUserAvatar(req, res) {
+    const id = req.session.userId
+    // 1. Upload image to cloudinary and get URL
+    let imageUrl = ""
+    try {
+        const dbUser = await UserInfo.findOne({ where: { id: id } }).catch(err => {
+            return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res);
+        })
+        const prevImgUrl = dbUser.avatar
+        imageUrl = await uploadImageToServer(req, prevImgUrl)
+    } catch(err) {
+        return JsonResponse.fail(500, 'Failed to upload image to server').send(res)
+    }
+
+    // 2. Update user info in DB:
+    console.log("Image upload successful, link: ", imageUrl)
+    await UserInfo.update({ avatar: imageUrl }, { where: { id: id } }).then((num) => {
+        if (num == 0) {
+            throw new Error("User not found")
+        }
+        return JsonResponse.success(201, "User info updated successfully").send(res)
+    }).catch(err => {
+        return JsonResponse.fail(500, 'Failed to update user info').send(res)
+    })
+}
+
+module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, updateUserAvatar: updateUserAvatar, deleteUserById }

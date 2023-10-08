@@ -9,6 +9,7 @@ import ProfilePanel from "./userProfile/profileComponents/ProfilePanel";
 import "./profile.css";
 import BasicInfo from "./userProfile/profileComponents/BasicInfo";
 import AccountInfo from "./userProfile/profileComponents/AccountInfo";
+import ProfileAvatar from "./userProfile/profileComponents/profileAvatar"
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -55,26 +56,13 @@ const Profile = () => {
     setPanel(panelName);
   }
 
-  // TODO: set dynamic background link
-  const avatarStyle = {
-    backgroundImage: "url('../../images/defaultAvatar.jpg')",
-    backgroundPosition: "center",
-    backgroundSize: "contain",
-    height: "200px",
-    width: "200px",
-    borderRadius: "100px",
-    position: "absolute",
-    top: "30px",
-    marginBottom: "50px",
-  };
-
   return (
     <div className="profile-page">
       <div className="profile-content">
         <h1 className="title">Profile</h1>
         
         <div className="side-panel">
-          <div className="avatar"></div>
+          <ProfileAvatar user={user}/>
           <div className="panels">
             <ProfilePanel onclick={onclickPanel} sectionName={PANEL.BASIC_INFO} selected={panel} Icon={<HiOutlineInformationCircle className="icon"/>}/>
             <ProfilePanel onclick={onclickPanel} sectionName={PANEL.ACCOUNT} selected={panel} Icon={<FaUserGear className="icon"/>}/>

@@ -34,10 +34,10 @@ const registerUser = async (email, password) => {
 /* Managing user profile */
 const fetchUserData = async () => {
     try {
-      const response = await axios.get(baseUrl);
-      return response.data
+        const response = await axios.get(baseUrl);
+        return response.data
     } catch (error) {
-      console.error(error);
+        console.error(error);
     }
 };
 
@@ -50,6 +50,20 @@ const updateUserBasicInfo = async (updateData) => {
         throw new Error("Failed to update basic info");
     }
 };
+
+const updateUserBasicAvatarInfo = async (imageData) => {
+    try {
+        const response = await axios.post(baseUrl + "/info/avatar", imageData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 const updateUserAccountInfo = async (updateData) => {
     try {
@@ -71,4 +85,4 @@ const deregisterUser = async () => {
     }
 };
 
-export { loginUser, logoutUser, registerUser, fetchUserData, updateUserBasicInfo, updateUserAccountInfo, deregisterUser }
+export { loginUser, logoutUser, registerUser, fetchUserData, updateUserBasicInfo, updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser }

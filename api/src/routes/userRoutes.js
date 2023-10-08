@@ -2,13 +2,14 @@ const express = require('express')
 const router = express.Router()
 const { check, validationResult } = require('express-validator') // params validation
 const JsonResponse = require('../common/jsonResponse')
-const { addUser, login, logout, getUserById, getUsers, updateUserInfo, updateUser, deleteUserById } = require('../controller/userController')
+const { addUser, login, logout, getUserById, getUsers, updateUserInfo, updateUser, deleteUserById, updateUserAvatar } = require('../controller/userController')
 const { isLoggedInCheck } = require('../middlewares/AuthorisationCheck');
+
 
 // Register a new user:
 router.post('/', [
     check('email').isEmail(),
-],  (req, res) => {
+], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return JsonResponse.fail(400, errors.array()).send(res)
@@ -37,10 +38,10 @@ router.get('/', isLoggedInCheck, (req, res) => {
 })
 
 // Update current user Info:
-router.patch('/info',[
+router.patch('/info', [
     check('gender').optional().isIn(['male', 'female', 'unknown']),
     check('birth').optional().isDate()
-], isLoggedInCheck,(req, res) => {
+], isLoggedInCheck, (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return JsonResponse.fail(400, errors.array()).send(res)
@@ -50,7 +51,7 @@ router.patch('/info',[
 
 router.patch('/', [
     check('email').optional().isEmail()
-], isLoggedInCheck,  (req, res) => {
+], isLoggedInCheck, (req, res) => {
     // Check params:
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -62,6 +63,14 @@ router.patch('/', [
 // Deregister current user:
 router.delete('/', isLoggedInCheck, (req, res) => {
     deleteUserById(req, res)
+})
+
+// Update current user's avator
+const multer = require('multer')
+const storage = multer.memoryStorage(); // Use in memory storage system
+const imgUpload = multer({ storage }).single('avatar');
+router.post('/info/avatar', imgUpload, isLoggedInCheck, (req, res) => {
+    updateUserAvatar(req, res)
 })
 
 module.exports = router

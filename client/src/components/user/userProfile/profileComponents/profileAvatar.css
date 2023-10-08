@@ -1,0 +1,50 @@
+.avatar-box {
+    position: absolute;
+    height: 200px;
+    margin-bottom: 50px;
+}
+
+.avatar-box .avatar-value {
+    background-position: center;
+    background-size: contain;
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+    display: block;
+}
+
+.avatar-box .avatar-edit {
+    margin-top: 10px;
+    text-decoration: underline;
+    color: rgb(0, 0, 255);
+    cursor: pointer;
+}
+
+.avatar-box .avatar-after-edit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.avatar-box .avatar-upload, .avatar-save {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.avatar-box .avatar-upload {
+    color: orange;
+}
+
+.avatar-box .avatar-save {
+    color: green;
+}
+
+.avatar-box .avatar-upload-button {
+    display: none;
+}
+
+.avatar-box>p {
+    color: rgb(50, 50, 50, 0.8);
+    font-size: 20px;
+    text-align: center;
+}
