@@ -6,8 +6,8 @@ const question = require('../db/mongodb/models/question')
 // Add question to repo
 async function addQuestion(req, res) {
     // Create a question model
-    const { title, description, category, complexity } = req.body
-    const newQuestion = new question({ title, description, category, complexity })
+    const { title, description, categories, complexity } = req.body
+    const newQuestion = new question({ title, description, categories, complexity })
 
     // If question title already exisits, return fail
     const dbQuestion = await question.find({title: title}).catch(err => {ß
