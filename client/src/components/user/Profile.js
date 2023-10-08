@@ -25,7 +25,7 @@ const Profile = () => {
     ACCOUNT: "Account",
     LOGOUT: "Logout"
   }
-  const [panel, setPanel] = useState(PANEL.BASIC_INFO)
+  const [panel, setPanel] = useState(PANEL.BASIC_INFO);
 
   /* returns to authentication page on log out
   also used when account is deleted */ 
@@ -42,7 +42,7 @@ const Profile = () => {
     if (isLoggedIn && status !== "sucessfulFetch" ) {
       dispatch(fetchUserDataAction());
     }
-  }, [user]);
+  }, [status]);
 
   const goBack = () => {
     navigate('/');

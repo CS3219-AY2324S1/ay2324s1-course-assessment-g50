@@ -1,15 +1,18 @@
 import "./property.css"
 import { useState, useEffect } from 'react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-const Property = ({ propertyName, propertyValue, dbPropertyName, apiAction }) => {
+
+const Property = ({ propertyName, propertyValue, dbPropertyName, apiAction, setIsTooShort }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentValue, setCurrentValue] = useState("");
+  const status = useSelector((state) => state.currentUser.status);
 
+  /* Encryption of the password */
   useEffect(() => {
     let value = dbPropertyName !== "password" ? propertyValue : "*".repeat(propertyValue);
     setCurrentValue(value);
-  }, [propertyValue])
+  }, [status])
 
   const dispatch = useDispatch();
 
@@ -26,10 +29,16 @@ const Property = ({ propertyName, propertyValue, dbPropertyName, apiAction }) =>
   };
 
   const handleSaveClick = () => {
-    const user = { [dbPropertyName]:currentValue };
-    console.log("This is user: ", user)
-    dispatch(apiAction(user));
-    setIsEditing(false);
+    if (dbPropertyName === "password" && currentValue.length === 0) {
+      setIsTooShort(true);
+      setTimeout(() => {
+        setIsTooShort(false);
+      }, 3000);
+    } else {
+      const user = { [dbPropertyName]: currentValue };
+      setIsEditing(false);
+      dispatch(apiAction(user));
+    }
   };
 
   return (

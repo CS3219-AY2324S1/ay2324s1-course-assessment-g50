@@ -5,6 +5,11 @@
     position: relative;
 }
 
+.invalid-update, .invalid-password {
+    color: red;
+    text-align: center;
+}
+
 .delete-account { 
     display: flex;
     padding: 0 5px 0 10px;
