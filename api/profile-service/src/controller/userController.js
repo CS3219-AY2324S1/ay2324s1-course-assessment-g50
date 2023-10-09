@@ -1,4 +1,4 @@
-const db = require('../db/mysql/mysql')
+const db = require('../db/mysql')
 const { DEFAULT_NICK, DEFAULT_BIRTH, DEFAULT_SIGN, DEFAULT_GENDER, DEFAULT_AVATOR } = require('../db/constant/userConstant')
 const { uploadImageToServer } = require('../utils/imageUploadUtil')
 
