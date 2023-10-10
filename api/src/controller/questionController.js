@@ -56,6 +56,16 @@ async function updateQuestion(req, res) {
     // Get target update info
     const { title, description, category, complexity } = req.body
     const id = req.params.id
+
+    // If same question title as question of different id, return fail
+    const dbQuestion = await question.find({title}).catch(err => {
+        return JsonResponse.fail(500, err).send(res)
+    })
+    const duplicates = dbQuestion.filter(q => q._id.valueOf() !== id)
+    if (duplicates.length > 0) {
+        return JsonResponse.fail(400, 'Another question of the same title already exists').send(res)
+    }
+
     // Update question by Id
     await question.findByIdAndUpdate(id, { title, description, category, complexity }, { new: true }).then(updatedQuestion => {
         if (!updatedQuestion) {
