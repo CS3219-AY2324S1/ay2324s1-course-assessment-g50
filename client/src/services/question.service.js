@@ -24,7 +24,7 @@ const isFormValid = (formData) => {
     .trim()
     .length !== 0;
 
-  isValid = noneEmpty && hasCat && hasDesc;
+  const isValid = noneEmpty && hasCat && hasDesc;
   if (!isValid) {
     const msg = "All fields must be filled";
     throw new Error(msg);
