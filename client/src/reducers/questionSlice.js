@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getQuestions, addQuestionToRepo, deleteQuestionFromRepo, updateQuestionFromRepo } from "../services/question.service";
+import {
+  getQuestions,
+  addQuestionToRepo,
+  deleteQuestionFromRepo,
+  updateQuestionFromRepo,
+} from "../services/question.service";
 
 const initialState = {
   questions: [],
@@ -65,8 +70,8 @@ export const deleteQuestion = createAsyncThunk(
 
 export const updateQuestion = createAsyncThunk(
   "posts/updateQuestion",
-  async (id) => {
-    await updateQuestionFromRepo(id);
+  async (formData) => {
+    await updateQuestionFromRepo(formData);
   }
 );
 

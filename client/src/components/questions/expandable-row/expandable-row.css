@@ -9,3 +9,11 @@
 pre {
   font-size: 16px;
 }
+
+.textbox {
+  margin-bottom: 20px;
+  padding: 10px 10px;
+  width: 70%;
+  font-size: 16px;
+  border-width: 1px;
+}

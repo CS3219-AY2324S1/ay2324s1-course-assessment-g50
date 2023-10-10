@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import RichText from "./rich-text.js";
-import MultipleSelect from "./multi-select.js";
+import { MultipleSelect, SingleSelect } from "./multi-select.js";
 import { addNewQuestion } from "../../../reducers/questionSlice.js";
-import { sendError } from "../../../services/alert.service.js";
+import AlertNotification from "../../../services/alert.service.js";
 import "./question-form.css";
 import "../questions.css";
-
-const difficulties = ["Easy", "Medium", "Hard"];
 
 // Empty Form (question has additional id field set after calling addQuestion)
 const initialState = {
@@ -18,18 +16,6 @@ const initialState = {
 };
 
 const EMPTY_DESCRIPTION = "<p><br></p>";
-
-const isFormValid = (formData) => {
-	const noneEmpty = Object.values(formData).every(
-		(field) => field !== null && field !== ""
-	);
-	const hasCat = formData.categories.length > 0;
-	const hasDesc = formData.description
-		.replace(/<(?!img\s)[^>]*>/g, "")
-		.trim().length !== 0;
-
-	return noneEmpty && hasCat && hasDesc;
-};
 
 const QuestionForm = () => {
   const [formData, setFormData] = useState(initialState);
@@ -51,19 +37,13 @@ const QuestionForm = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const isAllFilled = isFormValid(formData);
-		if (!isAllFilled) {
-			sendError(dispatch, "All fields must be filled");
-			return;
-		}
-
-		// Set form to empty only on success
-		try {
-			await dispatch(addNewQuestion(formData)).unwrap();
-			setFormData(initialState);
-		} catch (err) {
-			sendError(dispatch, err.message);
-		};
+    // Set form to empty only on success
+    try {
+      await dispatch(addNewQuestion(formData)).unwrap();
+      setFormData(initialState);
+    } catch (err) {
+      AlertNotification.error(err.message).notify(dispatch);
+    };
   };
 
   return (
@@ -91,21 +71,7 @@ const QuestionForm = () => {
 
           <div className="column right">
             <MultipleSelect categories={categories} onChange={onChange} />
-            <select
-              name="complexity"
-              value={complexity}
-              onChange={onChange}
-              className="field"
-            >
-              <option value="" disabled hidden>
-                Complexity
-              </option>
-              {difficulties.map((dif, i) => (
-                <option value={dif} key={i}>
-                  {dif}
-                </option>
-              ))}
-            </select>
+            <SingleSelect complexity={complexity} onChange={onChange} />
           </div>
         </div>
       </form>
