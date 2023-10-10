@@ -1,5 +1,5 @@
 const JsonResponse = require('../common/jsonResponse')
-const question = require('../db/mongodb/models/question')
+const question = require('../db/models/question')
 
 // --------------------------------------- Service logic -------------------------------------------
 
@@ -10,7 +10,7 @@ async function addQuestion(req, res) {
     const newQuestion = new question({ title, description, category, complexity })
 
     // If question title already exisits, return fail
-    const dbQuestion = await question.find({title: title}).catch(err => {ß
+    const dbQuestion = await question.find({title: title}).catch(err => {
         return JsonResponse.fail(500, err).send(res)
     })
     if (dbQuestion.length > 0) {

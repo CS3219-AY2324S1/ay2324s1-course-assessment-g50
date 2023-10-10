@@ -3,8 +3,6 @@ const router = express.Router()
 const { check, validationResult } = require('express-validator') // params validation
 const JsonResponse = require('../common/jsonResponse')
 const { addUser, login, logout, getUserById, getUsers, updateUserInfo, updateUser, deleteUserById, updateUserAvatar } = require('../controller/userController')
-const { isLoggedInCheck } = require('../middlewares/AuthorisationCheck');
-
 
 // Register a new user:
 router.post('/', [
@@ -28,12 +26,12 @@ router.post('/logout', (req, res) => {
 })
 
 // Get current user info:
-router.get('/', isLoggedInCheck, (req, res) => {
+router.get('/', (req, res) => {
     getUserById(req, res)
 })
 
 // Get User infos by filter
-router.get('/', isLoggedInCheck, (req, res) => {
+router.get('/', (req, res) => {
     getUsers(req, res)
 })
 
@@ -41,7 +39,7 @@ router.get('/', isLoggedInCheck, (req, res) => {
 router.patch('/info', [
     check('gender').optional().isIn(['male', 'female', 'unknown']),
     check('birth').optional().isDate()
-], isLoggedInCheck, (req, res) => {
+], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return JsonResponse.fail(400, errors.array()).send(res)
@@ -51,7 +49,7 @@ router.patch('/info', [
 
 router.patch('/', [
     check('email').optional().isEmail()
-], isLoggedInCheck, (req, res) => {
+], (req, res) => {
     // Check params:
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -61,7 +59,7 @@ router.patch('/', [
 })
 
 // Deregister current user:
-router.delete('/', isLoggedInCheck, (req, res) => {
+router.delete('/', (req, res) => {
     deleteUserById(req, res)
 })
 
@@ -69,7 +67,7 @@ router.delete('/', isLoggedInCheck, (req, res) => {
 const multer = require('multer')
 const storage = multer.memoryStorage(); // Use in memory storage system
 const imgUpload = multer({ storage }).single('avatar');
-router.post('/info/avatar', imgUpload, isLoggedInCheck, (req, res) => {
+router.post('/info/avatar', imgUpload, (req, res) => {
     updateUserAvatar(req, res)
 })
 
