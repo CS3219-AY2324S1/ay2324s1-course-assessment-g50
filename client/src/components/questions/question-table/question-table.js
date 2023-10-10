@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuestions, selectAllQuestions,} from "../../../reducers/questionSlice.js";
-import { selectIsLoggedIn } from "../../../reducers/userSlice";
 import UserAvatar from "../../user/userProfile/userAvatar.js";
 import "../questions.css";
 import ExpandableRow from "../expandable-row/expandable-row";

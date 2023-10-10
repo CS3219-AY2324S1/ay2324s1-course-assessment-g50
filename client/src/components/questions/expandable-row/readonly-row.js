@@ -23,9 +23,14 @@ const ReadOnlyRow = ({
 	const [open, setOpen] = useState(false);
 	const dispatch = useDispatch();
 
-	const del = (e) => {
+	const del = async (e) => {
 		e.stopPropagation();
-		dispatch(deleteQuestion(_id));
+		try {
+			await dispatch(deleteQuestion(_id)).unwrap();
+		} catch (err) {
+			AlertNotification.error(err.message).notify(dispatch);
+		}
+		
 	};
 
 	const changeToEditMode = () => {
