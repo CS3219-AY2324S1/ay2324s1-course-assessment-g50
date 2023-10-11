@@ -1,7 +1,7 @@
 import axios from 'axios';
 // Question service interects with backend API -> saves to reducer
 
-const baseUrl = 'http://localhost:8000/questions';
+const baseUrl = 'http://localhost:5000/questions';
 
 export const addQuestionToRepo = async (formData) => {
   console.log('add: \n' + formData);
