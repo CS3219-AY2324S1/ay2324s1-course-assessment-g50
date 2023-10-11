@@ -10,7 +10,7 @@ const corsConfig = cors({
 const proxyOptions = {
     changeOrigin: true,
 };
-  
+
 module.exports = {
     corsConfig,
     proxyOptions,
