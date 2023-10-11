@@ -9,7 +9,7 @@ const sessionConfig = {
     secure: false, //required for non-https server so that client will send cookie
     sameSite: 'none',
     store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URL,
+        mongoUrl: process.env.MONGO_URI,
         ttl: 1209600,
         autoRemove: 'native',})
 }

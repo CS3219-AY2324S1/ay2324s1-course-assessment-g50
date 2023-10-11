@@ -2,5 +2,8 @@
 
 # dependencies
 /node_modules
+build/
+tmp/
+temp/
 .env
 route.rest
