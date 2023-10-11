@@ -4,6 +4,7 @@ import Select from "@mui/material/Select";
 import { useTheme } from "@mui/material/styles";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import "./question-form.css";
 
 // Option Fields (hardcode or save to db?)
 // prettier-ignore
@@ -45,7 +46,7 @@ function getStyles(cat, catList, theme) {
   };
 }
 
-const MultipleSelect = ({ categories, onChange }) => {
+export const MultipleSelect = ({ categories, onChange }) => {
   const theme = useTheme();
 
   return (
@@ -77,4 +78,18 @@ const MultipleSelect = ({ categories, onChange }) => {
   );
 };
 
-export default MultipleSelect;
+const difficulties = ["Easy", "Medium", "Hard"]
+export const SingleSelect = ({ complexity, onChange }) => {
+  return (
+    <select name="complexity" value={complexity} onChange={onChange} className="field">
+      <option value="" disabled hidden>
+        Complexity
+      </option>
+      {difficulties.map((dif, i) => (
+        <option value={dif} key={i}>
+          {dif}
+        </option>
+      ))}
+    </select>
+  )
+}
