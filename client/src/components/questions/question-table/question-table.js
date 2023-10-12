@@ -28,7 +28,7 @@ const QuestionTable = () => {
     <div className="post-form">
 
       <div className="header">
-        <p className="section-title" align="left">
+        <p className="section-title">
           Question Table
         </p>
         <UserAvatar/>

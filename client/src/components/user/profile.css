@@ -16,7 +16,7 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-    height: 700px;
+    height: 650px;
     border-radius: 15px;
     position: relative;
 }
@@ -39,7 +39,7 @@
     height: 100%;
     display: flex;
     justify-content: end;
-    padding-bottom: 100px;
+    padding-bottom: 50px;
     flex-direction: column;
     align-items: center;
 }

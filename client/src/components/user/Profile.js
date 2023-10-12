@@ -9,7 +9,7 @@ import ProfilePanel from "./userProfile/profileComponents/ProfilePanel";
 import "./profile.css";
 import BasicInfo from "./userProfile/profileComponents/BasicInfo";
 import AccountInfo from "./userProfile/profileComponents/AccountInfo";
-import ProfileAvatar from "./userProfile/profileComponents/profileAvatar"
+import ProfileAvatar from "./userProfile/profileComponents/Avatar"
 
 const Profile = () => {
   const dispatch = useDispatch();

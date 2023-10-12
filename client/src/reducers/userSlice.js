@@ -11,6 +11,7 @@ const initialState = {
     gender: null,
     avatar: null,
     isLoggedIn: localStorage.getItem('loggedIn') === 'true',
+    userRole: localStorage.getItem("userRole"),
     status: "idle",
 };
 
@@ -28,6 +29,7 @@ const userSlice = createSlice({
             state.status = "sucessfulLogin";
             state.isLoggedIn = true;
             localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('userRole', action.payload.userRole);
         })
         .addCase(loginAction.rejected, (state, action) => {
             state.status = "failedLogin";
@@ -37,6 +39,7 @@ const userSlice = createSlice({
             state.status = "sucessfulLogout";
             state.isLoggedIn = false;
             localStorage.removeItem('loggedIn');
+            localStorage.removeItem('userRole');
         })
         .addCase(registerAction.fulfilled, (state, action) => {
             state.status = "sucessfulRegistration";

@@ -98,7 +98,7 @@ async function login(req, res) {
         req.session.userRole = userRole;
         req.session.email = email;
         req.session.passwordLength = rawPassword.length;
-        return JsonResponse.success(200, "Sucessful logging").send(res);
+        return JsonResponse.success(200, { userRole }).send(res);
     } catch (error) {
         return JsonResponse.fail(500, 'Failed to login').send(res)
     }
