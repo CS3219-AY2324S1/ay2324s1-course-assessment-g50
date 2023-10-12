@@ -1,7 +1,7 @@
 import React from "react";
 import QuestionForm from "./question-form/question-form";
 import QuestionTable from "./question-table/question-table";
-import MatchButton from "../userCollaboration/MatchButton";
+import MatchButton from "../userCollaboration/components/MatchButton";
 
 const Question = () => {
   return (
