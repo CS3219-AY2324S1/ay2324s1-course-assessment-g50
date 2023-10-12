@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import RichText from "./rich-text.js";
-import MultipleSelect from "./multi-select.js";
+import { MultipleSelect, SingleSelect } from "./multi-select.js";
 import { addNewQuestion } from "../../../reducers/questionSlice.js";
-import { sendError } from "../../../services/alert.service.js";
+import AlertNotification from "../../../services/alert.service.js";
 import "./question-form.css";
 import "../questions.css";
-
-const difficulties = ["Easy", "Medium", "Hard"];
 
 // Empty Form (question has additional id field set after calling addQuestion)
 const initialState = {
@@ -22,7 +20,9 @@ const EMPTY_DESCRIPTION = "<p><br></p>";
 const QuestionForm = () => {
   const [formData, setFormData] = useState(initialState);
   const { title, categories, description, complexity } = formData;
+
   const dispatch = useDispatch();
+
   const onDescriptionChange = (value) => {
     // If not form data's initial state
     if (value !== EMPTY_DESCRIPTION) {
@@ -34,31 +34,16 @@ const QuestionForm = () => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const emptyDescription = (value) =>
-    value.replace(/<(.|\n)*?>/g, "").trim().length !== 0;
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const noneEmpty = Object.values(formData).every(
-      (field) => field !== null && field !== ""
-    );
-    const hasCat = formData.categories.length > 0;
-    const hasDesc = emptyDescription(formData.description);
-
-    const isAllFilled = noneEmpty && hasCat && hasDesc;
-
-    if (isAllFilled) {
-      console.log('check: \n' + formData);
-      try {
-        await dispatch(addNewQuestion(formData)).unwrap();
-        setFormData(initialState);
-      } catch (error) {
-        sendError(dispatch, error.message);
-      }
-    } else {
-      sendError(dispatch, "All fields must be filled");
-    }
+    // Set form to empty only on success
+    try {
+      await dispatch(addNewQuestion(formData)).unwrap();
+      setFormData(initialState);
+    } catch (err) {
+      AlertNotification.error(err.message).notify(dispatch);
+    };
   };
 
   return (
@@ -86,21 +71,7 @@ const QuestionForm = () => {
 
           <div className="column right">
             <MultipleSelect categories={categories} onChange={onChange} />
-            <select
-              name="complexity"
-              value={complexity}
-              onChange={onChange}
-              className="field"
-            >
-              <option value="" disabled hidden>
-                Complexity
-              </option>
-              {difficulties.map((dif, i) => (
-                <option value={dif} key={i}>
-                  {dif}
-                </option>
-              ))}
-            </select>
+            <SingleSelect complexity={complexity} onChange={onChange} />
           </div>
         </div>
       </form>

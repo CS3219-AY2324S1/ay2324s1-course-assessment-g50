@@ -40,9 +40,6 @@ const UserProfileManager = () => {
         ? <Login handleLogin={handleLogin}/> 
         : <Register handleRegister={handleRegister}/>}
         <p className="register-link" onClick={() => setIsLogin(!isLogin)}>{isLogin ? "Not a user? Register here!" : "Back to Login"}</p>
-          <div className="go-back" onClick={goBack}>
-            <BsArrowLeftSquareFill  className="return-icon"/>
-          </div>
       </div>
      
     </div>
