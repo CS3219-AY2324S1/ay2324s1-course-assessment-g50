@@ -44,7 +44,6 @@ export const addQuestionToRepo = async (formData) => {
 
 // Delete a question
 export const deleteQuestionFromRepo = async (id) => {
-  console.log("delete: \n" + id);
   try {
     await axios.delete(`${baseUrl}/${id}`);
   } catch (error) {

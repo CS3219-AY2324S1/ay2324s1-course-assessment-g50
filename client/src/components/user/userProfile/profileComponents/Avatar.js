@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { updateUserBasicAvatarInfoAction } from '../../../../reducers/userSlice';
-import "./profileAvatar.css";
+import "./Avatar.css";
 
 const Avatar = ({ user }) => {
     const [isEditing, setIsEditing] = useState(false);
