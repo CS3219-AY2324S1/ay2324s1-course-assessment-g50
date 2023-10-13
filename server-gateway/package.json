@@ -1,0 +1,10 @@
+{
+  "name": "server-gateway",
+  "packageManager": "yarn@3.5.0",
+  "type": "module",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  }
+}

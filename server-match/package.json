@@ -1,0 +1,8 @@
+{
+  "name": "server-match",
+  "packageManager": "yarn@3.5.0",
+  "type": "module",
+  "dependencies": {
+    "amqplib": "^0.10.3"
+  }
+}
