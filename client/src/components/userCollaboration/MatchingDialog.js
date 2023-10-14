@@ -3,6 +3,8 @@ import "./matchingDialog.css";
 import { useState } from "react";
 import { SingleSelect, MultipleSelect } from "./components/MatchingOptions.js";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { establishingConnectionAction } from "../../reducers/matchingSlice";
 
 const initialState = {
   categories: [],
@@ -16,6 +18,7 @@ const MatchingDialog = ({ dialogIsOpen, setDialogIsOpen }) => {
   const [complexity, setComplexity] = useState();
   const [fieldsAreEmpty, setFieldsAreEmpty] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClose = () => {
     setDialogIsOpen(false);
@@ -31,6 +34,7 @@ const MatchingDialog = ({ dialogIsOpen, setDialogIsOpen }) => {
 
   const handleStartMatching = () => {
     if (complexity && categories.length !== 0) {
+      dispatch(establishingConnectionAction());
       navigate("/solve-question");
     } else {
       setFieldsAreEmpty(true);

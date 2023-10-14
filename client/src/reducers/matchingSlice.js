@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { matchWithUser } from "../services/matching.service";
 
 
-const initiaState = {
+const initialState = {
   matchedUserId: null,
   matchedUserName: null,
   matchedQuestionName: null,
@@ -38,3 +38,5 @@ const establishingConnectionAction = createAsyncThunk(
     return;
   }
 );
+
+export {establishingConnectionAction};
