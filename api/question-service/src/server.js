@@ -18,7 +18,7 @@ async function startServer() {
     await db.connectToMongoDB()
     console.log("MongoDB Initialized Successfully")
 
-    const PORT = process.env.PORT
+    const PORT = process.env.PORT || 8100;
     app.listen(PORT, () => {
       console.log(`Question server started on ${PORT}`)
     })

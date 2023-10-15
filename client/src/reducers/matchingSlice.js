@@ -40,3 +40,4 @@ const establishingConnectionAction = createAsyncThunk(
 );
 
 export {establishingConnectionAction};
+export default matchingSlice.reducer;

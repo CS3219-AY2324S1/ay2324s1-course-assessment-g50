@@ -5,13 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 const SolveQuestion = () => {
 
+  const matchingStatus = useSelector(state => state.matching.status);
+
   useEffect(() => {
 
   }, []);
 
   return (
     <div className="solve-question-page">
-      <Loading/>
+      {matchingStatus != 'sucessfullyConnected' ? (<Loading/>) : null}
     </div>
   )
 }
