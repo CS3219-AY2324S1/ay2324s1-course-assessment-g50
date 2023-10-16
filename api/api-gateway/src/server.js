@@ -18,15 +18,9 @@ app.use(session(sessionConfig))
 const routes = require('./routes/apiRoutes');
 app.use('/', routes)
 
-// db
-const db = require('./db/mongodb')
-
 // Start Server
 async function startServer() {
     try {
-        await db.connectToMongoDB()
-        console.log("MongoDB Initialized Successfully")
-
         const PORT = process.env.PORT
         app.listen(PORT, () => {
             console.log(`API Gateway server started on ${PORT}`)
