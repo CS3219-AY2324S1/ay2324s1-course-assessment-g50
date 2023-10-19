@@ -13,7 +13,9 @@ const SolveQuestion = () => {
 
   return (
     <div className="solve-question-page">
-      {matchingStatus != 'sucessfullyConnected' ? (<Loading/>) : null}
+      {matchingStatus == 'loading' ? (<Loading/>) :
+       matchingStatus == 'sucessfullyConnected' ? "✅" :
+       matchingStatus == 'failedConnection' ? "⚠️" : null}
     </div>
   )
 }

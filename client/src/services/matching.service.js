@@ -19,9 +19,9 @@ const cancelMatch = async () => {
   }
 }
 
-const match = (timeout) => new Promise((resolve, reject) => {
+const match = (criteria, timeout) => new Promise((resolve, reject) => {
     socket.connect();
-    socket.emit("start_match");
+    socket.emit("start_match", criteria);
     socket.on("match_made", resolve);
     setTimeout(() => {
       cancelMatch().then(() => {
@@ -31,8 +31,8 @@ const match = (timeout) => new Promise((resolve, reject) => {
     }, timeout);
   });
 
-const matchWithUser = async () => {
-    await match(30000000); // TODO
+const matchWithUser = async (criteria) => {
+    await match(criteria, 3000); // TODO
 };
 
 export { matchWithUser };

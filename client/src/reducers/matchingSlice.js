@@ -33,9 +33,8 @@ const matchingSlice = createSlice({
 
 const establishingConnectionAction = createAsyncThunk(
   "matchingServer/establishingConnections",
-  async () => {
-    await matchWithUser();
-    return;
+  async (criterion) => {
+    await matchWithUser(criterion);
   }
 );
 

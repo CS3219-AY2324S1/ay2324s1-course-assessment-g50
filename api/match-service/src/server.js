@@ -8,17 +8,21 @@ const wchannel = await connection.createChannel();
 await wchannel.assertExchange("match_res", 'fanout', {
 	durable: false
 });
-await rchannel.assertQueue("match_req", {
+await rchannel.assertExchange("match_req", "topic", {
 	durable: false
 });
-await rchannel.consume("match_req", async (msg) => {
+let q = rchannel.assertQueue('', {
+	exclusive: false
+});
+rchannel.bindQueue(q.queue, "match_req", "#"); // TODO one binding queue and waiting for each combination
+await rchannel.consume(q.queue, async (msg) => {
 	// msg should contain the user identifier
 	const user = msg.content.toString(); // session id
 	console.log(user);
 	if (waiting === null) {
 		waiting = user;
 	} else {
-		console.log(`Matched ${waiting} and ${user}`)
+		console.log(`Matched ${waiting} and ${user}`);
 		wchannel.publish("match_res", "", Buffer.from(JSON.stringify([waiting, user])));
 		waiting = null;
 	}

@@ -6,6 +6,8 @@ import { Server } from 'socket.io';
 import session from "express-session";
 import sessionConfig from './configs/sessionConfigs.js';
 
+const MATCH_TIMEOUT = 3000;
+
 const app = express();
 app.get('/', (req, res) => {
 	res.sendFile(new URL('./index.html', import.meta.url).pathname);
@@ -26,7 +28,7 @@ const connMap = new Map();
 const connection = await amqp.connect('amqp://localhost');
 // emit token to queue on match request
 const wchannel = await connection.createChannel();
-await wchannel.assertQueue("match_req", {
+await wchannel.assertExchange("match_req", "topic", {
 	durable: false
 });
 // consume and respond on match success
@@ -59,9 +61,11 @@ io.on('connection', (socket) => {
 	console.log(`session ${socket.request.session.id} connected`);
 	connMap.set(socket.request.session.id, socket.id);
 	console.log(connMap);
-	socket.on('start_match', () => {
-		console.log(`Starting match with ${socket.request.session.id}`);
-		wchannel.sendToQueue('match_req', Buffer.from(socket.request.session.id)); // FIXME user id
+	socket.on('start_match', ({complexity, categories}) => {
+		console.log(`Starting match as ${socket.request.session.id} with complexity ${complexity} and catagory ${categories}`);
+		wchannel.publish('match_req', `${complexity}.${categories.join(".")}`, Buffer.from(socket.request.session.id), {
+			expiration: MATCH_TIMEOUT,
+		}); // FIXME user id
 	});
 	socket.on('cancel_match', (callback) => {
 		console.log('Cancelling match');

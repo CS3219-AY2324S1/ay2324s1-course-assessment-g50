@@ -34,7 +34,10 @@ const MatchingDialog = ({ dialogIsOpen, setDialogIsOpen }) => {
 
   const handleStartMatching = () => {
     if (complexity && categories.length !== 0) {
-      dispatch(establishingConnectionAction());
+      dispatch(establishingConnectionAction({
+        complexity: complexity,
+        categories: categories,
+      }));
       navigate("/solve-question");
     } else {
       setFieldsAreEmpty(true);
