@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { matchWithUser } from "../services/matching.service";
+import { matchWithUser, retrieveQuestionDetails } from "../services/matching.service";
 
-
-const initiaState = {
+const initialState = {
   matchedUserId: null,
   matchedUserName: null,
   matchedQuestionName: null,
+  matchedQuestionDetails: null,
   status: "idle",
 }
-
 
 const matchingSlice = createSlice({
   name: "matchingService",
@@ -28,6 +27,14 @@ const matchingSlice = createSlice({
       .addCase(establishingConnectionAction.rejected, (state, action) => {
         state.status = "failedConnection";
       })
+      .addCase(retrieveQuestionDetailsAction.fulfilled, (state, action) => {
+        state.status = "sucessfullyFetchQuestion";
+        state.matchedQuestionDetails = action.payload;
+      })
+      .addCase(retrieveQuestionDetailsAction.rejected, (state, action) => {
+        console.log("failed");
+        state.status = "failedToFetchQuestion";
+      })
   },
 });
 
@@ -38,3 +45,15 @@ const establishingConnectionAction = createAsyncThunk(
     return;
   }
 );
+
+const retrieveQuestionDetailsAction = createAsyncThunk(
+  "matchingServer/getQuestionDetails",
+  async ({ questionID }) => {
+    const response = await retrieveQuestionDetails(questionID);
+    return response.data;
+  }
+)
+
+export { establishingConnectionAction, retrieveQuestionDetailsAction };
+
+export default matchingSlice.reducer;

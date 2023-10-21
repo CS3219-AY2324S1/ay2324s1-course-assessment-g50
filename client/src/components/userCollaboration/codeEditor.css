@@ -1,0 +1,35 @@
+.code-editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1px
+}
+
+.editor-container {
+  flex: 9 9;
+  min-width: 0;
+  margin-bottom: 5px;
+  box-sizing: border-box;
+}
+
+.console-result {
+  display: flex;
+  overflow: hidden;
+  max-height: 0;
+}
+
+.visible {
+  max-height: 100px;
+  background-color: white;
+  padding: 7px 20px;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.editor {
+  border-radius: 8px;
+  padding: 10px;
+  background-color: white;
+}
+

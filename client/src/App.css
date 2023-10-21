@@ -44,3 +44,6 @@
     transform: rotate(360deg);
   }
 }
+
+/* important don't remove!! Deals with RESIZEOBSERVER LOOP COMPLETED WITH UNDELIVERED NOTIFICATIONS IN REACTJS */
+iframe#webpack-dev-server-client-overlay{display:none!important}

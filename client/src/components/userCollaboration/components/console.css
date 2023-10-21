@@ -1,0 +1,58 @@
+.console-container {
+    padding: 7px 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-shrink: 1;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+}
+
+.console-container > p {
+    text-align: center;
+    font-size: 18px;
+    margin: 0;
+    color: rgb(50, 50, 50, 0.8);
+}
+
+
+.submit-code-button {
+    padding: 5px 15px;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    background-color: rgba(50, 205, 50);
+}
+
+.submit-code-button > p {
+    width: 100%;
+    font-weight: 600;
+    text-align: center;
+    font-size: 16px;
+    margin: 0;
+    color: white;
+}
+
+.show-console-button {
+    display: flex;
+    align-items: center;
+}
+
+.show-console-button:hover {
+    cursor: pointer;
+}
+
+.show-console-button > .arrow-up-icon {
+    font-size: 30px;
+    color: rgb(50, 50, 50, 0.8);
+}
+
+.show-console-button:hover > p, .arrow-up-icon {
+    color: rgb(50, 50, 50);
+}
+  
+.submit-code-button:hover {
+    cursor: pointer;
+    background-color: rgb(50, 205, 50, 0.7);
+}
