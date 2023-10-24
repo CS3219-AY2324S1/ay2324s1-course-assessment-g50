@@ -1,0 +1,40 @@
+.info-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .match-info,
+  .language-selector,
+  .match-users {
+    text-align: left;
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .language-selector {
+    margin: 64px;
+  }
+
+  .match-users ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .match-users li {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+  }
+  
+  .match-users li img {
+    width: 55px;
+    height: 55px;
+    border-radius: 55px;
+    margin-right: 10px;
+  }

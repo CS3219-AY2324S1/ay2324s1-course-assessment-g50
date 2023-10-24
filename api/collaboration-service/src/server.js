@@ -1,6 +1,6 @@
+require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
-const { createServer } = require('http');
 const WebSocketServer = require('ws').Server;
 
 const setupWSConnection = require('y-websocket/bin/utils').setupWSConnection;
@@ -13,8 +13,6 @@ const app = express();
 app.use(cors(
   {
     origin: allowedOrigins,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Content-Type",
     credentials: true
   }
 ));
