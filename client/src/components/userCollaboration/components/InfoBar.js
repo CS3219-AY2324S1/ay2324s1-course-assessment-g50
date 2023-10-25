@@ -1,14 +1,14 @@
 import "./infoBar.css";
 import LanguageSelector from "./LanguageSelector";
 
-const InfoBar = ({ matchInfo, selectedLanguage, onLanguageChange }) => {
+const InfoBar = ({ matchInfo, selectedLanguage, handleLanguageChange }) => {
     const users = matchInfo.users
 
     return (
-        <div className="info-bar">
+        <div className="info-bar-container">
             <div className="match-info">{`MatchID: ${matchInfo.id}`}</div>
             <div className="language-selector">
-                <LanguageSelector selectedLanguage={selectedLanguage} onLanguageChange={onLanguageChange} />
+                <LanguageSelector selectedLanguage={selectedLanguage} handleLanguageChange={handleLanguageChange} />
             </div>
             <div className="match-users">
                 <p>Match Participants</p>
