@@ -20,14 +20,26 @@ rchannel.bindQueue(q.queue, "match_req", "#"); // TODO one binding queue and wai
 await rchannel.consume(q.queue, async (msg) => {
 	// msg should contain the user identifier
 	const user = msg.content.toString(); // session id
-	console.log(user);
+	const correlation = msg.properties.correlationId;
+	console.log(user, correlation);
+	let resp;
 	if (waiting === null) {
-		waiting = user;
+		waiting = {uid: user, cid: correlation};
 	} else {
-		assert.notEqual(waiting, user);
-		console.log(`Matched ${waiting} and ${user}`);
-		wchannel.publish("match_res", "", Buffer.from(JSON.stringify([waiting, user])));
-		waiting = null;
+		if (waiting.uid === user) {
+			// fail the match if same user
+			// should be handled by checking if user is already in match
+			resp = {success: false, reason: "Cannot match with oneself"};
+		} else {
+			resp = {success: true, users: [waiting.uid, user]};
+			console.log(`Matched ${waiting.uid} and ${user}`);
+			wchannel.publish("match_res", "", Buffer.from(JSON.stringify(resp)), {
+				correlationId: waiting.cid,
+			});
+		}
+		wchannel.publish("match_res", "", Buffer.from(JSON.stringify(resp)), {
+			correlationId: msg.properties.correlationId,
+		});
 	}
 	rchannel.ack(msg);
 });

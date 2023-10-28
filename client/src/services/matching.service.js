@@ -24,12 +24,16 @@ const match = async (criteria, timeout) => {
         return { matchId: "Match: " + userIds, matchUsers: userInfos.data }
     } catch (error) {
         console.error("Failed match:", error);
-        throw new Error(error.response.data.data);
+        throw new Error(error.response.data || error.message);
     }
 };
 
-const matchWithUser = async (criteria) => {
-    return await match(criteria, 30000); // TODO
+const matchWithUser = async (criteria, { rejectWithValue }) => {
+    try {
+        return await match(criteria, 30000); // TODO
+    } catch (err) {
+        throw rejectWithValue(err.message);
+    }
 };
 
 export { matchWithUser };
