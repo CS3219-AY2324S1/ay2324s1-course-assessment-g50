@@ -6,6 +6,7 @@ import { WebsocketProvider } from 'y-websocket';
 import { MonacoBinding } from 'y-monaco'
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 import InfoBar from "./components/InfoBar";
+import { useSelector } from "react-redux";
 
 const serverWsUrl = "ws://localhost:8200";
 
@@ -15,9 +16,11 @@ const languageDict = {
     "javascript": "//"
 };
 
-const CodeEditor = (matchInfo) => {
+const CodeEditor = () => {
+    const matchInfo = useSelector(state => state.matching);
     const doc = new Y.Doc();
     const editorRef = useRef();
+
 
     const [language, setLanguage] = useState("python");
     const [isShowConsole, setIsShowConsole] = useState(false);

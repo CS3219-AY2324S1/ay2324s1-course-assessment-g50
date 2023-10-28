@@ -72,6 +72,34 @@ services:
       - ./api/collaboration-service:/app
     env_file:
       - .env
+
+  matching-service:
+    container_name: matching-service
+    build:
+      context: ./api/matching-service/
+      dockerfile: Dockerfile
+    ports:
+      - 8300:8300
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./api/matching-service:/app
+    env_file:
+      - .env
+
+  matchmaking-service:
+    container_name: matchmaking-service
+    build:
+      context: ./api/matchmaking-service/
+      dockerfile: Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./api/matchmaking-service:/app
+    env_file:
+      - .env
       
   mysql:
     image: mysql
@@ -103,6 +131,17 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
+
+  rabbitmq:
+    image: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 30s
+      retries: 3
 
 volumes:
   user-service-db-data:
