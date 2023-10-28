@@ -10,7 +10,6 @@ services:
       - 3000:3000
     volumes:
       - ./client:/app
-      - /app/node_modules  
 
   api-gateway:
     container_name: api-gateway
@@ -24,7 +23,6 @@ services:
         condition: service_healthy
     volumes:
       - ./api/api-gateway:/app
-      - /app/node_modules
     env_file:
       - .env  
 
@@ -42,7 +40,6 @@ services:
         condition: service_healthy
     volumes:
       - ./api/user-service:/app
-      - /app/node_modules
     env_file:
       - .env
 
@@ -58,10 +55,52 @@ services:
         condition: service_healthy
     volumes:
       - ./api/question-service:/app
-      - /app/node_modules
     env_file:
       - .env
 
+  collaboration-service:
+    container_name: collboration-service
+    build:
+      context: ./api/collaboration-service/
+      dockerfile: Dockerfile
+    ports:
+      - 8200:8200
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./api/collaboration-service:/app
+    env_file:
+      - .env
+
+  matching-service:
+    container_name: matching-service
+    build:
+      context: ./api/matching-service/
+      dockerfile: Dockerfile
+    ports:
+      - 8300:8300
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./api/matching-service:/app
+    env_file:
+      - .env
+
+  matchmaking-service:
+    container_name: matchmaking-service
+    build:
+      context: ./api/matchmaking-service/
+      dockerfile: Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./api/matchmaking-service:/app
+    env_file:
+      - .env
+      
   mysql:
     image: mysql
     restart: always    
@@ -92,6 +131,17 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
+
+  rabbitmq:
+    image: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 30s
+      retries: 3
 
 volumes:
   user-service-db-data:

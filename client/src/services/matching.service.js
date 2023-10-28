@@ -3,16 +3,27 @@ import axios from "axios";
 
 
 //Insert the matching route here
-const baseUrl = "";
+const baseUrl = "http://localhost:5000/matching";
 
 const questionServiceUrl = "http://localhost:5000/questions";
 
-const matchWithUser = async () => {
-  try {
-    return axios.get(baseUrl);
-  } catch (error) {
-    throw new Error(error);
-  }
+const controller = new AbortController();
+
+const cancelMatch = async () => {
+    controller.abort();
+}
+
+const match = async (criteria, timeout) => {
+    try {
+        let resp = await axios.post(baseUrl, criteria, {
+            timeout: timeout,
+            signal: controller.signal,
+        });
+        return resp.data;
+    } catch (error) {
+        console.error("Failed match:", error);
+        throw new Error(error.response.data.data);
+    }
 };
 
 const retrieveQuestionDetails = async (questionID) => {
@@ -24,5 +35,9 @@ const retrieveQuestionDetails = async (questionID) => {
     throw new Error(error);
   }
 }
+
+const matchWithUser = async (criteria) => {
+    return await match(criteria, 30000); // TODO
+};
 
 export { matchWithUser, retrieveQuestionDetails };
