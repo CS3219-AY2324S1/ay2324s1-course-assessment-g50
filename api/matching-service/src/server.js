@@ -40,7 +40,7 @@ await rchannel.consume(queue.queue, (msg) => {
 });
 
 app.post('/matching', (req, res) => {
-	const uid = req.session.id;  // FIXME user id
+	const uid = req.session.userId.toString();
 	const {complexity, categories} = req.body;
 	console.log(`Starting match as ${uid} with complexity ${complexity} and category ${categories}`);
 	connMap.set(uid, res);
