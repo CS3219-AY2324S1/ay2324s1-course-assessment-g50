@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import "./codeEditor.css";
 import Console from "./components/Console";
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
+import { runCode } from "../../services/sandbox.service";
 
 const supportedLanguages = ["java", "python", "javascript"];
 
@@ -14,6 +15,7 @@ const languageDict = {
 const CodeEditor = () => {
     const editorRef = useRef(null);
     const [language, setLanguage] = useState("python");
+    const [result, setResult] = useState('');
 
     const [isShowConsole, setIsShowConsole] = useState(false);
 
@@ -24,8 +26,10 @@ const CodeEditor = () => {
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
     }
-    const handleSubmitCode = () => {
-        console.log(editorRef.current.getValue());
+    const handleSubmitCode = async () => {
+        const codeResponse = await runCode(editorRef.current.getValue(), language);
+        setIsShowConsole(true);
+        setResult(codeResponse)
     }
 
     return (
@@ -45,6 +49,7 @@ const CodeEditor = () => {
         </div>
         <div className={ isShowConsole ? 'console-result visible' : 'console-result'}>
             <p>Result:</p>
+            <p>{`${result}`}</p>
         </div>
         <Console handleSubmitCode={handleSubmitCode} handleShowConsole={handleShowConsole}/>
     </div>

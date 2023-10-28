@@ -27,4 +27,14 @@ router.use(
   })
 );
 
+// Question apis: 
+router.use(
+  "/sandbox",
+  isExceptionApi(exceptionUserApis, [isLoggedInCheck]),
+  createProxyMiddleware({
+    target: process.env.SANDBOX_SERVICE_URL,
+    ...proxyOptions,
+  })
+);
+
 module.exports = router
