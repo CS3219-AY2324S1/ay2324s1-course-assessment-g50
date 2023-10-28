@@ -27,7 +27,7 @@ router.use(
   })
 );
 
-// Question apis: 
+// Sandbox apis: 
 router.use(
   "/sandbox",
   isExceptionApi(exceptionUserApis, [isLoggedInCheck]),
@@ -35,6 +35,15 @@ router.use(
     target: process.env.SANDBOX_SERVICE_URL,
     ...proxyOptions,
   })
+);
+
+router.use(
+    "/matching",
+    isLoggedInCheck,
+    createProxyMiddleware({
+        target: process.env.MATCHING_SERVICE_URL,
+        ...proxyOptions,
+    })
 );
 
 module.exports = router

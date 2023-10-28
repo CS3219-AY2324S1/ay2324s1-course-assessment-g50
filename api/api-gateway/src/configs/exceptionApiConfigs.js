@@ -20,9 +20,12 @@ const isExceptionApi = (exceptionApis, middlewares) => (req, res, next) => {
             next();
         }
     }
-    
+
     // Request api does not need to execute middleware functions
-    if (exceptionApis.some(api => req.path === api.url && req.method === api.method)) {
+    if (exceptionApis.some(api => {
+        const regex = new RegExp(`^${api.url}`);
+        return regex.test(req.path) && req.method === api.method;
+    })) {
         next();
     } else {
         executeMiddleware(0);

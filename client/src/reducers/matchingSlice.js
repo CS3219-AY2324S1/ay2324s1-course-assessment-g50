@@ -23,6 +23,7 @@ const matchingSlice = createSlice({
       })
       .addCase(establishingConnectionAction.fulfilled, (state, action) => {
         state.status = "sucessfullyConnected";
+        state.matchedUserId = action.payload;
       })
       .addCase(establishingConnectionAction.rejected, (state, action) => {
         state.status = "failedConnection";
@@ -40,10 +41,7 @@ const matchingSlice = createSlice({
 
 const establishingConnectionAction = createAsyncThunk(
   "matchingServer/establishingConnections",
-  async () => {
-    await matchWithUser();
-    return;
-  }
+  matchWithUser
 );
 
 const retrieveQuestionDetailsAction = createAsyncThunk(
