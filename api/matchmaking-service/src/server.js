@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import amqp from 'amqplib';
+import assert from 'node:assert/strict';
 
-var waiting = null; // the waiting user
+let waiting = null; // the waiting user
 
 const connection = await amqp.connect(process.env.RABBITMQ_URI);
 const rchannel = await connection.createChannel();
@@ -23,6 +24,7 @@ await rchannel.consume(q.queue, async (msg) => {
 	if (waiting === null) {
 		waiting = user;
 	} else {
+		assert.notEqual(waiting, user);
 		console.log(`Matched ${waiting} and ${user}`);
 		wchannel.publish("match_res", "", Buffer.from(JSON.stringify([waiting, user])));
 		waiting = null;
