@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { matchWithUser, retrieveQuestionDetails } from "../services/matching.service";
 
 const initialState = {
-  matchedUserId: null,
-  matchedUserName: null,
+  matchedId: null,
+  matchedUserInfo: null, 
   matchedQuestionName: null,
   matchedQuestionDetails: null,
   status: "idle",
@@ -23,7 +23,8 @@ const matchingSlice = createSlice({
       })
       .addCase(establishingConnectionAction.fulfilled, (state, action) => {
         state.status = "sucessfullyConnected";
-        state.matchedUserId = action.payload;
+        state.matchedId = action.payload.matchId;
+        state.matchedUserInfo = action.payload.matchUsers
       })
       .addCase(establishingConnectionAction.rejected, (state, action) => {
         state.status = "failedConnection";

@@ -3,6 +3,7 @@ const { DEFAULT_NICK, DEFAULT_BIRTH, DEFAULT_SIGN, DEFAULT_GENDER, DEFAULT_AVATO
 const { uploadImageToServer } = require('../utils/imageUploadUtil')
 
 // DB models
+const Sequelize = db.Sequelize
 const sequelize = db.sequelize
 const User = db.user
 const UserInfo = db.userInfo
@@ -134,17 +135,20 @@ async function getUserById(req, res) {
 // View users profile by filter
 async function getUsers(req, res) {
     // Get filtered info:
-    const { nickname } = req.query
-    // Get target users by nickname
-    const userInfos = await UserInfo.findOne({
-        where: {
-            nickname: {
-                [sequelize.Op.like]: nickname
-            }
-        }
+    const { userIds } = req.body
+    // Build the WHERE clause based on user IDs
+    let whereClause = {};
+    if (userIds && userIds.length > 0) {
+        whereClause.userId = {
+            [Sequelize.Op.in]: userIds
+        };
+    }
+    // Get target users based on the WHERE clause
+    const userInfos = await UserInfo.findAll({
+        where: whereClause
     }).catch(err => {
-        return JsonResponse.fail(500, 'Internal error, failed to get users from db').send(res)
-    })
+        return JsonResponse.fail(500, 'Internal error, failed to get users from the database').send(res);
+    });
     if (userInfos) {
         return JsonResponse.success(200, userInfos).send(res)
     }
@@ -228,7 +232,7 @@ async function updateUserAvatar(req, res) {
         })
         const prevImgUrl = dbUser.avatar
         imageUrl = await uploadImageToServer(req, prevImgUrl)
-    } catch(err) {
+    } catch (err) {
         return JsonResponse.fail(500, 'Failed to upload image to server').send(res)
     }
 

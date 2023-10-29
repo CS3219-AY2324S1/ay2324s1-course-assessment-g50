@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { fetchTargetUserData } from "./user.service";
 
 
 //Insert the matching route here
@@ -19,7 +19,9 @@ const match = async (criteria, timeout) => {
             timeout: timeout,
             signal: controller.signal,
         });
-        return resp.data;
+        const userIds = resp.data;
+        const userInfos = await fetchTargetUserData(userIds);
+        return { matchId: "Match: " + userIds, matchUsers: userInfos.data }
     } catch (error) {
         console.error("Failed match:", error);
         throw new Error(error.response.data.data);

@@ -10,6 +10,7 @@ services:
       - 3000:3000
     volumes:
       - ./client:/app
+      - /app/node_modules
 
   api-gateway:
     container_name: api-gateway
