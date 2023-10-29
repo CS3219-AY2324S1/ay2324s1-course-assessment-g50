@@ -1,12 +1,13 @@
 .info-bar-container {
+    min-width: 100px;
+    background-color: white;
     display: flex;
+    flex: 1;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     padding: 10px;
     font-size: 18px;
     border-radius: 8px;
-    margin-bottom: 10px;
   }
   
   .match-info,
