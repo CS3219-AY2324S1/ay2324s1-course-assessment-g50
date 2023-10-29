@@ -13,7 +13,7 @@ const InfoBar = ({ matchInfo, selectedLanguage, handleLanguageChange }) => {
             <div className="match-users">
                 <p>Match Participants</p>
                 <ul>
-                    {users.map((user, index) => (
+                    {users && users.map((user, index) => (
                         <li key={index}>
                             <img src={user.avatar} alt={user.nickname} />
                             <span>{user.nickname}</span>

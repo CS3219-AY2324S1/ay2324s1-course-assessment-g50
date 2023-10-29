@@ -1,9 +1,10 @@
 import "./matchButton.css";
 import { FaPlay } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import MatchingDialog from "../MatchingDialog";
+import MatchingDialog from "./MatchingDialog";
 import { useState } from "react";
 
+/* Button component on the question page to allow users to start collaboration */
 const MatchButton = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 

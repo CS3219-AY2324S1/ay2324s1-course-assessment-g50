@@ -1,9 +1,9 @@
 import { Dialog } from "@mui/material";
 import "./matchingDialog.css";
 import { useState } from "react";
-import { SingleSelect, MultipleSelect } from "./components/MatchingOptions.js";
+import { SingleSelect, MultipleSelect } from "./MatchingOptions";
 import { useNavigate } from "react-router-dom";
-import {establishingConnectionAction} from "../../reducers/matchingSlice";
+import {establishingConnectionAction} from "../../../reducers/matchingSlice";
 import { useDispatch } from "react-redux";
 
 const initialState = {
@@ -13,6 +13,8 @@ const initialState = {
 
 const EMPTY_FIELDS = 'Please select all options';
 
+
+/* Pop out window for users to select various options regarding matching with another user */
 const MatchingDialog = ({ dialogIsOpen, setDialogIsOpen }) => {
   const [categories, setCategories] = useState([]);
   const [complexity, setComplexity] = useState();

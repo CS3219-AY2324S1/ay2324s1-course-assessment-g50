@@ -1,13 +1,14 @@
-import "./questionDetails.css";
-import CodeEditor from "./CodeEditor";
-import { retrieveQuestionDetailsAction } from "../../reducers/matchingSlice";
-import { fetchQuestions } from "../../reducers/questionSlice";
+import "./collabView.css";
+import CodeEditor from "../collabViewComponents/CodeEditor";
+import { retrieveQuestionDetailsAction } from "../../../reducers/matchingSlice";
+import { fetchQuestions } from "../../../reducers/questionSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-const QuestionDetails = () => {
+/* Component which shows the question details */
+const CollabView = () => {
     const questionArr = useSelector(state => state.questions.questions);
     const question = useSelector(state => state.matching.matchedQuestionDetails);
     const dispatch = useDispatch();
@@ -44,4 +45,4 @@ const QuestionDetails = () => {
     )
 }
 
-export default QuestionDetails;
+export default CollabView;

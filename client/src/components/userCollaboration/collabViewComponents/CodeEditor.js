@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import "./codeEditor.css";
-import Console from "./components/Console";
+import Console from "./Console";
 import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
 import { MonacoBinding } from 'y-monaco'
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
-import InfoBar from "./components/InfoBar";
+import InfoBar from "./InfoBar";
 import { useSelector } from "react-redux";
 
 const serverWsUrl = "ws://localhost:8200";
