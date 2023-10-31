@@ -8,7 +8,7 @@ import "./question-form.css";
 
 // Option Fields (hardcode or save to db?)
 // prettier-ignore
-const category_list = [
+export const category_list = [
     "Algorithms", "Array", "String", "Hash Table", "Math", "Data Structures", "Dynamic Programming", "Sorting", 
     "Greedy", "Depth-First Search", "Binary Search", "Database", "Breadth-First Search", 
     "Tree", "Matrix", "Two Pointers", "Binary Tree", "Bit Manipulation", 

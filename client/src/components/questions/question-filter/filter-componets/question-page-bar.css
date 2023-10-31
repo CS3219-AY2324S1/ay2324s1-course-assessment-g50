@@ -1,0 +1,15 @@
+.question-page-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1vh 0
+}
+
+.question-page-seletor {
+    flex: 1;
+}
+
+.question-page-number {
+    margin-left: auto;
+}

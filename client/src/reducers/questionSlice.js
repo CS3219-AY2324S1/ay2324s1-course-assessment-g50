@@ -8,6 +8,15 @@ import {
 
 const initialState = {
   questions: [],
+  // filter state
+  filters: {
+    sort: null, 
+    complexity: null,
+    keyword: null, 
+    topicSlugs: null,
+    page: null,
+    pageSize: null,
+  },
   // add loading status/error here when integrating with backend
   status: "idle",
 };
@@ -15,7 +24,14 @@ const initialState = {
 export const questionSlice = createSlice({
   name: "questions",
   initialState,
-  reducers: {},
+  reducers: {
+    updateFilter: (state, action) => {
+      state.filters = {
+        ...state.filters,
+        ...action.payload,
+      };
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchQuestions.pending, (state, action) => {
@@ -44,11 +60,13 @@ export const questionSlice = createSlice({
 
 // state parameter refers to root redux state object
 export const selectAllQuestions = (state) => state.questions.questions;
+export const selectFilters = (state) => state.questions.filters;
+export const { updateFilter } = questionSlice.actions;
 
 export const fetchQuestions = createAsyncThunk(
   "questions/fetchQuestions",
-  async () => {
-    const response = await getQuestions();
+  async (filters) => {
+    const response = await getQuestions(filters);
     return response;
   }
 );

@@ -31,6 +31,18 @@ const isFormValid = (formData) => {
   }
 };
 
+const buildFilteredURL = (filters) => {
+  const queryParams = new URLSearchParams();
+  for (const key in filters) {
+      if (filters[key]) {
+          queryParams.append(key, filters[key]);
+      }
+  }
+  const queryString = queryParams.toString();
+  const filteredURL = queryString ? `/questions?${queryString}` : '/questions';
+  return filteredURL;
+}
+
 export const addQuestionToRepo = async (formData) => {
   isFormValid(formData);
   try {
@@ -64,12 +76,42 @@ export const updateQuestionFromRepo = async (formData) => {
 };
 
 // Get questions
-export const getQuestions = async () => {
+export const getQuestions = async (filters = {}) => {
   try {
-    const response = await axios.get(baseUrl);
+    const filteredURL = buildFilteredURL(filters);
+    const response = await axios.get(filteredURL);
     return response.data.data;
   } catch (error) {
     console.error("There was an error retrieving the questions:", error);
     throw new Error(error.response.data.data);
   }
 };
+
+// Filter tag questions
+export const getFilteredQuestions = async (topicSlugs) => {
+  try {
+    // Encode lists to URI Component:
+    const encodedTopicSlugs = encodeURIComponent(topicSlugs);
+    const url = `${baseUrl}?topicSlugs=${encodedTopicSlugs}`;
+    // Get filtered questions:
+    const response = await axios.get(url);
+    return response.data.data;
+  } catch (error) {
+    console.error("There was an error retrieving the questions:", error);
+    throw new Error(error.response.data.data);
+  }
+}
+
+// Search questions:
+export const getSearchedQuestions = async (keyword) => {
+  try {
+    // Encode keyword to certain URI Component:
+    const url = `${baseUrl}?keyword=${keyword}`;
+    // Get searched questions:
+    const response = await axios.get(url);
+    return response.data.data;
+  } catch (error) {
+    console.error("There was an error retrieving the questions: ", error);
+    throw new Error(error.response.data.data);
+  }
+}
