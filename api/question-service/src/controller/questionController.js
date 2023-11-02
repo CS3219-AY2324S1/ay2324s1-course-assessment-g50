@@ -25,17 +25,6 @@ async function addQuestion(req, res) {
     });
 }
 
-// Get a question details including examples and test cases
-async function getQuestionByID(req, res) {
-    const id = req.params.id;
-
-    const dbQuestion = await question.findById(id).then(question => {
-        return JsonResponse.success(200, question).send(res);
-    }).catch(err => {
-        return JsonResponse.fail(500, err).send(res);
-    });
-}
-
 // Get questions by filter
 async function getQuestions(req, res) {
     // Get Filter, sort and page info
@@ -131,4 +120,14 @@ async function deleteQuestion(req, res) {
     });
 }
 
-module.exports = { addQuestion, getQuestions, updateQuestion, deleteQuestion, getQuestionByID };
+// Get total question count
+async function getTotalQuestionCount(req, res) {
+    try {
+        const totalQuestionCount = await question.countDocuments({});
+        return JsonResponse.success(200, totalQuestionCount).send(res);
+    } catch (err) {
+        return JsonResponse.fail(500, err).send(res);
+    }
+}
+
+module.exports = { addQuestion, getQuestions, getTotalQuestionCount, updateQuestion, deleteQuestion };

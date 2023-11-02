@@ -80,7 +80,6 @@ export const getQuestions = async (filters = {}) => {
   try {
     const filteredURL = buildFilteredURL(filters);
     const response = await axios.get(baseUrl + filteredURL);
-    console.log("Response: ", response)
     return response.data.data;
   } catch (error) {
     console.error("There was an error retrieving the questions:", error);
@@ -88,31 +87,12 @@ export const getQuestions = async (filters = {}) => {
   }
 };
 
-// Filter tag questions
-export const getFilteredQuestions = async (topicSlugs) => {
+export const getTotalQuestionCount = async () => {
   try {
-    // Encode lists to URI Component:
-    const encodedTopicSlugs = encodeURIComponent(topicSlugs);
-    const url = `${baseUrl}?topicSlugs=${encodedTopicSlugs}`;
-    // Get filtered questions:
-    const response = await axios.get(url);
+    const response = await axios.get(baseUrl + "/count");
     return response.data.data;
   } catch (error) {
-    console.error("There was an error retrieving the questions:", error);
-    throw new Error(error.response.data.data);
-  }
-}
-
-// Search questions:
-export const getSearchedQuestions = async (keyword) => {
-  try {
-    // Encode keyword to certain URI Component:
-    const url = `${baseUrl}?keyword=${keyword}`;
-    // Get searched questions:
-    const response = await axios.get(url);
-    return response.data.data;
-  } catch (error) {
-    console.error("There was an error retrieving the questions: ", error);
+    console.error("There was an error retrieving the question count: ", error);
     throw new Error(error.response.data.data);
   }
 }

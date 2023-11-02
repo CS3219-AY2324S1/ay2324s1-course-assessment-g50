@@ -1,13 +1,20 @@
-import React, { useState, } from 'react';
-import { useDispatch, } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Select, MenuItem, FormControl, Pagination } from '@mui/material';
 import './question-page-bar.css';
-import { updateFilter } from '../../../../reducers/questionSlice';
+import { selectTotalQuestionCount, updateFilter } from '../../../../reducers/questionSlice';
 
-const QuestionPageBar = ({ totalPages }) => {
+const QuestionPageBar = () => {
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(50);
+    const totalQuestionCount = useSelector(selectTotalQuestionCount);
+    const [totalPages, setTotalPages] = useState(0);
+
+    useEffect(() => {
+        const newTotalPages = Math.ceil(totalQuestionCount / pageSize);
+        setTotalPages(newTotalPages)
+    }, [totalQuestionCount, pageSize])
 
     const handlePageChange = (newPage) => {
         setPage(newPage);

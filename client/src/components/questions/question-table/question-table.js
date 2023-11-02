@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchQuestions, selectAllQuestions, selectFilters, } from "../../../reducers/questionSlice.js";
+import { fetchQuestions, fetchTotalQuestionCount, selectAllQuestions, selectFilters, } from "../../../reducers/questionSlice.js";
 import UserAvatar from "../../user/userProfile/userAvatar.js";
 import "../questions.css";
 import ExpandableRow from "../expandable-row/expandable-row";
@@ -19,15 +19,12 @@ const QuestionTable = () => {
   const status = useSelector((state) => state.questions.status);
   const questions = useSelector(selectAllQuestions);
   const filters = useSelector(selectFilters);
-  let totalPages = 1;
-  if (filters.pageSize) {
-    totalPages = Math.ceil(questions.length / filters.pageSize);
-  }
-
+  
   /* Try and retrieve data whenever page is rendered */
   useEffect(() => {
     if (status === 'idle' || status === 'outdated') {
       dispatch(fetchQuestions());
+      dispatch(fetchTotalQuestionCount());
     }
   }, [status])
 
@@ -54,7 +51,7 @@ const QuestionTable = () => {
               <TableCell align="left">Title</TableCell>
               <TableCell align="left">Category</TableCell>
               <TableCell align="left">Complexity</TableCell>
-              <TableCell align="left">Actions</TableCell> 
+              <TableCell align="left">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -64,7 +61,7 @@ const QuestionTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <QuestionPageBar totalPages={totalPages}/>
+      <QuestionPageBar />
     </div>
   );
 };

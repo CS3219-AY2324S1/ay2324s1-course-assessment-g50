@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getTotalQuestionCount } from "../services/question.service";
 import {
   getQuestions,
   addQuestionToRepo,
@@ -8,6 +9,7 @@ import {
 
 const initialState = {
   questions: [],
+  totalQuestionCount: 0,
   // filter state
   filters: {
     sort: null, 
@@ -48,19 +50,25 @@ export const questionSlice = createSlice({
       })
       .addCase(addNewQuestion.fulfilled, (state, action) => {
         state.questions.push(action.payload);
+        state.totalQuestionCount++;
       })
       .addCase(deleteQuestion.fulfilled, (state, action) => {
         state.status = "outdated";
+        state.totalQuestionCount--;
       })
       .addCase(updateQuestion.fulfilled, (state, action) => {
         state.status = "outdated";
-      });
+      })
+      .addCase(fetchTotalQuestionCount.fulfilled, (state, action) => {
+        state.totalQuestionCount = action.payload;
+      })
   },
 });
 
 // state parameter refers to root redux state object
 export const selectAllQuestions = (state) => state.questions.questions;
 export const selectFilters = (state) => state.questions.filters;
+export const selectTotalQuestionCount = (state) => state.questions.totalQuestionCount;
 export const { updateFilter } = questionSlice.actions;
 
 export const fetchQuestions = createAsyncThunk(
@@ -90,6 +98,14 @@ export const updateQuestion = createAsyncThunk(
   "posts/updateQuestion",
   async (formData) => {
     await updateQuestionFromRepo(formData);
+  }
+);
+
+export const fetchTotalQuestionCount = createAsyncThunk(
+  "questions/fetchQuestionCount",
+  async () => {
+    const response = await getTotalQuestionCount();
+    return response;
   }
 );
 
