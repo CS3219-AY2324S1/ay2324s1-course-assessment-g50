@@ -74,7 +74,7 @@ async function getQuestions(req, res) {
 
     /* Calculate pagination options */
     const pageNumber = parseInt(page) || 1; // Default to page 1
-    const itemsPerPage = parseInt(pageSize) || 10; // Default to 10 items per page
+    const itemsPerPage = parseInt(pageSize) || 50; // Default to 50 items per page
     const skip = (pageNumber - 1) * itemsPerPage;
 
     /* Get target questions by filtering options, pagination, and sorting logic */

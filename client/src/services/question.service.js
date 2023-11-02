@@ -39,7 +39,7 @@ const buildFilteredURL = (filters) => {
       }
   }
   const queryString = queryParams.toString();
-  const filteredURL = queryString ? `/questions?${queryString}` : '/questions';
+  const filteredURL = queryString ? `?${queryString}` : '';
   return filteredURL;
 }
 
@@ -79,7 +79,8 @@ export const updateQuestionFromRepo = async (formData) => {
 export const getQuestions = async (filters = {}) => {
   try {
     const filteredURL = buildFilteredURL(filters);
-    const response = await axios.get(filteredURL);
+    const response = await axios.get(baseUrl + filteredURL);
+    console.log("Response: ", response)
     return response.data.data;
   } catch (error) {
     console.error("There was an error retrieving the questions:", error);

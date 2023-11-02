@@ -1,8 +1,8 @@
-import React, { useState, useEffect  } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Select, MenuItem, FormControl, InputLabel, Pagination } from '@mui/material';
+import React, { useState, } from 'react';
+import { useDispatch, } from 'react-redux';
+import { Select, MenuItem, FormControl, Pagination } from '@mui/material';
 import './question-page-bar.css';
-import { fetchQuestions, selectFilters, updateFilter } from '../../../../reducers/questionSlice';
+import { updateFilter } from '../../../../reducers/questionSlice';
 
 const QuestionPageBar = ({ totalPages }) => {
     const dispatch = useDispatch();

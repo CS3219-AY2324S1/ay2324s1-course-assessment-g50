@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectFilters, updateFilter } from '../../../reducers/questionSlice';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { updateFilter } from '../../../reducers/questionSlice';
 import QuestionSearchBar from '../question-filter/filter-componets/question-search-bar'
 import { Autocomplete, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { fetchQuestions } from '../../../reducers/questionSlice';
 import { category_list } from '../question-form/multi-select';
 import './question-filter-bar.css'
 
@@ -27,10 +26,11 @@ const QuestionFilterBar = () => {
       <div className='question-difficulty-container'>
         <FormControl className='difficulty'>
           <InputLabel id="difficulty-filter-label">Difficulty</InputLabel>
-          <Select labelId="difficulty-filter-label" onChange={handleDifficultyChange} value={''}>
-            <MenuItem value="easy">Easy</MenuItem>
-            <MenuItem value="medium">Medium</MenuItem>
-            <MenuItem value="hard">Hard</MenuItem>
+          <Select labelId="difficulty-filter-label" onChange={handleDifficultyChange}>
+            <MenuItem value="Easy">Easy</MenuItem>
+            <MenuItem value="Medium">Medium</MenuItem>
+            <MenuItem value="Hard">Hard</MenuItem>
+            <MenuItem value="" style={{ background: 'red', color: 'white' }}>Reset</MenuItem>
           </Select>
         </FormControl>
       </div>
