@@ -31,6 +31,18 @@ const isFormValid = (formData) => {
   }
 };
 
+const buildFilteredURL = (filters) => {
+  const queryParams = new URLSearchParams();
+  for (const key in filters) {
+      if (filters[key]) {
+          queryParams.append(key, filters[key]);
+      }
+  }
+  const queryString = queryParams.toString();
+  const filteredURL = queryString ? `?${queryString}` : '';
+  return filteredURL;
+}
+
 export const addQuestionToRepo = async (formData) => {
   isFormValid(formData);
   try {
@@ -64,12 +76,23 @@ export const updateQuestionFromRepo = async (formData) => {
 };
 
 // Get questions
-export const getQuestions = async () => {
+export const getQuestions = async (filters = {}) => {
   try {
-    const response = await axios.get(baseUrl);
+    const filteredURL = buildFilteredURL(filters);
+    const response = await axios.get(baseUrl + filteredURL);
     return response.data.data;
   } catch (error) {
     console.error("There was an error retrieving the questions:", error);
     throw new Error(error.response.data.data);
   }
 };
+
+export const getTotalQuestionCount = async () => {
+  try {
+    const response = await axios.get(baseUrl + "/count");
+    return response.data.data;
+  } catch (error) {
+    console.error("There was an error retrieving the question count: ", error);
+    throw new Error(error.response.data.data);
+  }
+}

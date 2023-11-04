@@ -1,0 +1,20 @@
+.question-filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2vh 0 0 0;
+}
+
+.question-search-bar {
+  flex: 2;
+}
+
+.question-difficulty-container,
+.question-tag-container {
+  flex: 1;
+  margin-right: 5vh;
+}
+
+.difficulty {
+  width: 100%;
+}

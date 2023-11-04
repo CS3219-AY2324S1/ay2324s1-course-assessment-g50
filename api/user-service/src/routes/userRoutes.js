@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
 })
 
 // Get User infos by filter
-router.get('/', (req, res) => {
+router.post('/target', (req, res) => {
     getUsers(req, res)
 })
 

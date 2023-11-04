@@ -1,21 +1,13 @@
-.code-editor-container {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 1px
-}
-
 .code-container {
-  flex: 5;
+  flex: 3 3;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1px
+  padding: 1px;
 }
 
 .editor-container {
-  flex: 1;
+  flex: 1 1;
   min-width: 0;
   margin-bottom: 5px;
   box-sizing: border-box;
@@ -44,12 +36,4 @@
 
 p {
   white-space: pre-wrap;
-}
-
-.editor-info-container {
-  flex: 1;
-  min-width: 0px;
-  border-radius: 8px;
-  padding: 10px;
-  background-color: white;
 }

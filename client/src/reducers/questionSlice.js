@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getTotalQuestionCount } from "../services/question.service";
 import {
   getQuestions,
   addQuestionToRepo,
@@ -8,6 +9,16 @@ import {
 
 const initialState = {
   questions: [],
+  totalQuestionCount: 0,
+  // filter state
+  filters: {
+    sort: null, 
+    complexity: null,
+    keyword: null, 
+    topicSlugs: null,
+    page: null,
+    pageSize: null,
+  },
   // add loading status/error here when integrating with backend
   status: "idle",
 };
@@ -15,7 +26,14 @@ const initialState = {
 export const questionSlice = createSlice({
   name: "questions",
   initialState,
-  reducers: {},
+  reducers: {
+    updateFilter: (state, action) => {
+      state.filters = {
+        ...state.filters,
+        ...action.payload,
+      };
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchQuestions.pending, (state, action) => {
@@ -32,23 +50,31 @@ export const questionSlice = createSlice({
       })
       .addCase(addNewQuestion.fulfilled, (state, action) => {
         state.questions.push(action.payload);
+        state.totalQuestionCount++;
       })
       .addCase(deleteQuestion.fulfilled, (state, action) => {
         state.status = "outdated";
+        state.totalQuestionCount--;
       })
       .addCase(updateQuestion.fulfilled, (state, action) => {
         state.status = "outdated";
-      });
+      })
+      .addCase(fetchTotalQuestionCount.fulfilled, (state, action) => {
+        state.totalQuestionCount = action.payload;
+      })
   },
 });
 
 // state parameter refers to root redux state object
 export const selectAllQuestions = (state) => state.questions.questions;
+export const selectFilters = (state) => state.questions.filters;
+export const selectTotalQuestionCount = (state) => state.questions.totalQuestionCount;
+export const { updateFilter } = questionSlice.actions;
 
 export const fetchQuestions = createAsyncThunk(
   "questions/fetchQuestions",
-  async () => {
-    const response = await getQuestions();
+  async (filters) => {
+    const response = await getQuestions(filters);
     return response;
   }
 );
@@ -72,6 +98,14 @@ export const updateQuestion = createAsyncThunk(
   "posts/updateQuestion",
   async (formData) => {
     await updateQuestionFromRepo(formData);
+  }
+);
+
+export const fetchTotalQuestionCount = createAsyncThunk(
+  "questions/fetchQuestionCount",
+  async () => {
+    const response = await getTotalQuestionCount();
+    return response;
   }
 );
 

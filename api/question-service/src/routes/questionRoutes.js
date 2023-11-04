@@ -1,5 +1,5 @@
 const express = require('express')
-const { addQuestion, updateQuestion, deleteQuestion, getQuestions, getQuestionByID } = require('../controller/questionController')
+const { addQuestion, updateQuestion, deleteQuestion, getQuestions, getTotalQuestionCount } = require('../controller/questionController')
 const router = express.Router()
 
 // Create one question
@@ -7,14 +7,14 @@ router.post('/', (req, res) => {
     addQuestion(req, res)
 })
 
+// Get total question count
+router.get('/count', (req, res) => {
+    getTotalQuestionCount(req, res)
+})
+
 // Get questions by filter
 router.get('/', (req, res) => {
     getQuestions(req, res)
-})
-
-// Get question details by ID
-router.get('/:id', (req, res) => {
-    getQuestionByID(req, res)
 })
 
 // Update one question

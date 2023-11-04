@@ -45,6 +45,16 @@ const fetchUserData = async () => {
     }
 };
 
+/* View targeted users profile */
+const fetchTargetUserData = async (userIds) => {
+    try {
+        const response = await axios.post(baseUrl + "/target", { userIds });
+        return response.data
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 const updateUserBasicInfo = async (updateData) => {
     try {
         const response = await axios.patch(baseUrl + "/info", updateData);
@@ -89,4 +99,4 @@ const deregisterUser = async () => {
     }
 };
 
-export { loginUser, logoutUser, registerUser, fetchUserData, updateUserBasicInfo, updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser }
+export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser }

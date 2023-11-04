@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./loading.css";
 
-const Loading = () => {
+const LoadingView = () => {
     const navigate = useNavigate();
     return (
         <div className="loading-page">
@@ -36,4 +36,4 @@ const Loading = () => {
     )
 }
 
-export default Loading;
+export default LoadingView;
