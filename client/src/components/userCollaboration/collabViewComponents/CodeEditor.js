@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import "./codeEditor.css";
 import Console from "./Console";
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
+import { runCode } from "../../../services/sandbox.service";
 
 const languageDict = {
     "java": "//",
@@ -9,19 +10,21 @@ const languageDict = {
     "javascript": "//"
 };
 
-const CodeEditor = ({ language, handleEditorDidMount }) => {
-    const editorRef = useRef();
-
+const CodeEditor = ({ language, handleEditorDidMount, getEditorCode }) => {
     const [isShowConsole, setIsShowConsole] = useState(false);
+    const [result, setResult] = useState('');
 
     // Handle Console state change
     const handleShowConsole = (e) => {
         setIsShowConsole(!isShowConsole);
     }
 
-    // Handle editor code submission
-    const handleSubmitCode = () => {
-        console.log(editorRef.current.getValue());
+    const handleSubmitCode = async () => {
+        const editorCode = getEditorCode();
+        const codeResponse = await runCode(editorCode, language);
+        
+        setResult(codeResponse)
+        setIsShowConsole(true);
     }
 
     return (
@@ -40,7 +43,8 @@ const CodeEditor = ({ language, handleEditorDidMount }) => {
                     }} />
             </div>
             <div className={isShowConsole ? 'console-result visible' : 'console-result'}>
-                <p>Result:</p>
+                    <p>Result:</p>
+                    <p>{`${result}`}</p>
             </div>
             <Console handleSubmitCode={handleSubmitCode} handleShowConsole={handleShowConsole} />
         </div>

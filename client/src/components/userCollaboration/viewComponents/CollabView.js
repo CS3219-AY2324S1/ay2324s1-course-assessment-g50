@@ -43,6 +43,11 @@ const CollabView = () => {
         const binding = new MonacoBinding(manacoText, editorRef.current.getModel(), new Set([editorRef.current]))
     }
 
+    // Handle editor code submission
+    const getEditorCode = () => {
+        return editorRef.current.getValue()
+    }
+
     const handleLanguageChange = (event) => {
         const newLanguage = event.target.value
 
@@ -86,7 +91,7 @@ const CollabView = () => {
                 <BsArrowLeftSquareFill onClick={() => goBack()} className="return-icon"/>
             </div>}
 
-            <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language}/>
+            <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language} getEditorCode={getEditorCode}/>
 
             <InfoBar matchInfo={matchInfo} selectedLanguage={language} handleLanguageChange={handleLanguageChange}/>
         </div>
