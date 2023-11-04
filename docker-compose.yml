@@ -101,6 +101,21 @@ services:
       - ./api/matchmaking-service:/app
     env_file:
       - .env
+
+  communication-service:
+    container_name: communication-service
+    build:
+      context: ./api/communication-service/
+      dockerfile: Dockerfile
+    ports:
+      - 8400:8400
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./api/communication-service:/app
+    env_file:
+      - .env
       
   mysql:
     image: mysql

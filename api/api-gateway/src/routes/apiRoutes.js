@@ -36,4 +36,13 @@ router.use(
     })
 );
 
+router.use(
+  "/messages",
+  isLoggedInCheck,
+  createProxyMiddleware({
+    target: process.env.COMMUNICATION_SERVICE_URL,
+    ...proxyOptions,
+  })
+)
+
 module.exports = router
