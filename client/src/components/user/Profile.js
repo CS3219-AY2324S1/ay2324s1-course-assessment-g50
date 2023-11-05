@@ -5,11 +5,11 @@ import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { FaUserGear } from "react-icons/fa6";
 import { HiOutlineLogout, HiOutlineInformationCircle } from "react-icons/hi";
-import ProfilePanel from "./userProfile/profileComponents/ProfilePanel";
+import ProfilePanel from "./profileComponents/ProfilePanel";
 import "./profile.css";
-import BasicInfo from "./userProfile/profileComponents/BasicInfo";
-import AccountInfo from "./userProfile/profileComponents/AccountInfo";
-import ProfileAvatar from "./userProfile/profileComponents/Avatar"
+import BasicInfo from "./profileViewComponents/BasicInfo";
+import AccountInfo from "./profileViewComponents/AccountInfo";
+import ProfileAvatar from "./profileComponents/Avatar"
 
 const Profile = () => {
   const dispatch = useDispatch();
