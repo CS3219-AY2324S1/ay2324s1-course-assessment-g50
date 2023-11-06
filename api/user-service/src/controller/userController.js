@@ -250,22 +250,39 @@ async function updateUserAvatar(req, res) {
 }
 
 // Retrieves the history of attempted questions
-
 async function getAttemptedQuestionsHistory(req, res) {
-    console.log("running");
+    const PAGE_SIZE = 8;
+    const page = parseInt(req.params.page, 10) || 1;
     const id = req.session.userId
     try {
         const questions = await AttemptHistory.findAll({
             where: {
                 userId: id
-            }
+            }, 
+            order: [['attemptDate', 'DESC']],
+            limit: PAGE_SIZE,
+            offset: (page-1) * PAGE_SIZE
         });
-        console.log(questions);
         return JsonResponse.success(200, questions).send(res);
     } catch (error) {
         return JsonResponse.fail(500, 'Failed to upload image to server').send(res);
     }
 }
 
+async function getAttemptedQuestionsHistoryPageCount(req, res) {
+    const id = req.session.userId
+    try {
+        const questionCount = await AttemptHistory.count({
+            where: {
+                userId: id
+            }
+        });
+        console.log(questionCount);
+        return JsonResponse.success(200, questionCount).send(res);
+    } catch (error) {
+        return JsonResponse.fail(500, 'Failed to upload image to server').send(res);
+    }
+}
+
 module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, 
-    updateUserAvatar: updateUserAvatar, deleteUserById, getAttemptedQuestionsHistory }
+    updateUserAvatar: updateUserAvatar, deleteUserById, getAttemptedQuestionsHistory, getAttemptedQuestionsHistoryPageCount }

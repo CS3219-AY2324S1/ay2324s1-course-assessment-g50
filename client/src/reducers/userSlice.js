@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo,updateUserBasicAvatarInfo, 
-    updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory } from "../services/user.service";
+    updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount } from "../services/user.service";
 
 const initialState = {
     userId: null,
@@ -15,6 +15,7 @@ const initialState = {
     userRole: localStorage.getItem("userRole"),
     status: "idle",
     attemptedQuestionHistory: [],
+    attemptedQuestionHistoryPageCount: 1,
 };
 
 const userSlice = createSlice({
@@ -97,7 +98,12 @@ const userSlice = createSlice({
         .addCase(fetchUserAttemptHistoryAction.fulfilled, (state, action) => {
             state.status = "fetchHistorySucessful";
             state.attemptedQuestionHistory = action.payload
-        });
+        })
+        .addCase(fetchUserAttemptHistoryPageCountAction.fulfilled, (state, action) => {
+            state.status = "fetchHistoryPageCountSucessful";
+            state.attemptedQuestionHistoryPageCount = action.payload
+        })
+        ;
     },
 });
 
@@ -172,7 +178,7 @@ const deregisterUserAction = createAsyncThunk(
     }
 )
 
-// For fetching the attempt histroy of the user
+// For fetching the attempt history of the user
 const fetchUserAttemptHistoryAction = createAsyncThunk(
     "user/retrieveUserHistory",
     async ({ pageNumber }) => {
@@ -181,8 +187,18 @@ const fetchUserAttemptHistoryAction = createAsyncThunk(
     }
 )
 
+
+// For fetching the attempt history page count of the user
+const fetchUserAttemptHistoryPageCountAction = createAsyncThunk(
+    "user/retrieveUserHistoryPageCount",
+    async () => {
+        const response = await fetchUserAttemptHistoryPageCount();
+        return response.data;
+    }
+)
+
 export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, fetchUserAttemptHistoryAction,
-    updateUserBasicInfoAction, updateUserAccountInfoAction, updateUserBasicAvatarInfoAction, deregisterUserAction };
+    updateUserBasicInfoAction, updateUserAccountInfoAction, updateUserBasicAvatarInfoAction, deregisterUserAction, fetchUserAttemptHistoryPageCountAction };
 
 export const { resetStatus } = userSlice.actions;
 

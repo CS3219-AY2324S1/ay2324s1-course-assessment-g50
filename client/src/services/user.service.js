@@ -102,9 +102,7 @@ const deregisterUser = async () => {
 // For fetching the attempt histroy of the user
 const fetchUserAttemptHistory = async (pageNumber) => {
     try {
-        console.log(baseUrl + "/history" + `/${pageNumber}`);
-        const response = await axios.get(baseUrl + "/history");
-        console.log(response);
+        const response = await axios.get(baseUrl + "/history" + `/${pageNumber}`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -112,5 +110,15 @@ const fetchUserAttemptHistory = async (pageNumber) => {
     }
 }
 
+const fetchUserAttemptHistoryPageCount = async () => {
+    try {
+        const response = await axios.get(baseUrl + "/history");
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to get page count user history");
+    }
+}
+
 export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, 
-    updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory  }
+    updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount }

@@ -1,0 +1,9 @@
+.attempt-history {
+    display: flex;
+    flex-direction: column;
+}
+
+.pagination {
+    margin-top: 10px;
+    align-self: center;
+}

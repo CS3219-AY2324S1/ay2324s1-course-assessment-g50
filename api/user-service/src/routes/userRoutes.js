@@ -3,7 +3,7 @@ const router = express.Router()
 const { check, validationResult } = require('express-validator') // params validation
 const JsonResponse = require('../common/jsonResponse')
 const { addUser, login, logout, getUserById, getUsers, updateUserInfo, updateUser, deleteUserById, 
-    updateUserAvatar, getAttemptedQuestionsHistory } = require('../controller/userController')
+    updateUserAvatar, getAttemptedQuestionsHistory, getAttemptedQuestionsHistoryPageCount } = require('../controller/userController')
 
 // Register a new user:
 router.post('/', [
@@ -74,9 +74,13 @@ router.post('/info/avatar', imgUpload, (req, res) => {
 
 
 // get user attempt history
-router.get('/history', (req, res) => {
-    console.log("ok");
+router.get('/history/:page', (req, res) => {
     getAttemptedQuestionsHistory(req, res)
+})
+
+router.get('/history', (req, res) => {
+    console.log("working");
+    getAttemptedQuestionsHistoryPageCount(req, res);
 })
 
 

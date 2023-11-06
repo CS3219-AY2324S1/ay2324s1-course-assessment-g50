@@ -29,7 +29,7 @@
 }
 
 .profile-content .side-panel {
-    padding: 50px 30px;
+    padding: 60px 30px;
     border-radius: 15px;
     min-width: 300px;
     display: flex;
@@ -51,10 +51,10 @@
     font-size: 40px;
     cursor: pointer;
     border-radius: 10px;
-    bottom: 20px;
+    bottom: 10px;
     position: absolute;
 }
 
-.return-icon:hover {
+.profile-content .side-panel .return-icon:hover {
     color: grey;
 }
