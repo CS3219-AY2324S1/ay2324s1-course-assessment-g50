@@ -7,6 +7,7 @@ const Sequelize = db.Sequelize
 const sequelize = db.sequelize
 const User = db.user
 const UserInfo = db.userInfo
+const AttemptHistory = db.attemptHistory;
 
 // For password encryption/decryption.
 const MD5Util = require('../utils/MD5Util')
@@ -248,4 +249,23 @@ async function updateUserAvatar(req, res) {
     })
 }
 
-module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, updateUserAvatar: updateUserAvatar, deleteUserById }
+// Retrieves the history of attempted questions
+
+async function getAttemptedQuestionsHistory(req, res) {
+    console.log("running");
+    const id = req.session.userId
+    try {
+        const questions = await AttemptHistory.findAll({
+            where: {
+                userId: id
+            }
+        });
+        console.log(questions);
+        return JsonResponse.success(200, questions).send(res);
+    } catch (error) {
+        return JsonResponse.fail(500, 'Failed to upload image to server').send(res);
+    }
+}
+
+module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, 
+    updateUserAvatar: updateUserAvatar, deleteUserById, getAttemptedQuestionsHistory }

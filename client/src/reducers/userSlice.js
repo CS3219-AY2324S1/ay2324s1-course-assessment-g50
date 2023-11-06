@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo,updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser } from "../services/user.service";
+import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo,updateUserBasicAvatarInfo, 
+    updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory } from "../services/user.service";
 
 const initialState = {
     userId: null,
@@ -13,6 +14,7 @@ const initialState = {
     isLoggedIn: localStorage.getItem('loggedIn') === 'true',
     userRole: localStorage.getItem("userRole"),
     status: "idle",
+    attemptedQuestionHistory: [],
 };
 
 const userSlice = createSlice({
@@ -72,7 +74,6 @@ const userSlice = createSlice({
             } else {
                 state.status = "failedBasicInfoUpdate";
             }
-
         })
         .addCase(updateUserBasicAvatarInfoAction.fulfilled, (state, action) => {
             state.status = "sucessfulBasicAvatarInfoUpdate";
@@ -92,6 +93,10 @@ const userSlice = createSlice({
         })
         .addCase(deregisterUserAction.rejected, (state, action) => {
             state.status = "accountNotDeleted";
+        })
+        .addCase(fetchUserAttemptHistoryAction.fulfilled, (state, action) => {
+            state.status = "fetchHistorySucessful";
+            state.attemptedQuestionHistory = action.payload
         });
     },
 });
@@ -167,7 +172,16 @@ const deregisterUserAction = createAsyncThunk(
     }
 )
 
-export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, 
+// For fetching the attempt histroy of the user
+const fetchUserAttemptHistoryAction = createAsyncThunk(
+    "user/retrieveUserHistory",
+    async ({ pageNumber }) => {
+        const response = await fetchUserAttemptHistory(pageNumber);
+        return response.data;
+    }
+)
+
+export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, fetchUserAttemptHistoryAction,
     updateUserBasicInfoAction, updateUserAccountInfoAction, updateUserBasicAvatarInfoAction, deregisterUserAction };
 
 export const { resetStatus } = userSlice.actions;

@@ -1,14 +1,14 @@
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-const AttemptedQuestion = () => {
+const AttemptedQuestion = ({ questionName, attemptDate }) => {
     return (
         <TableRow sx={{ backgroundColor: "rgba(247, 248, 250, 0.3)" }}>
             <TableCell sx={{ fontSize: "18px" , fontWeight: 700}}>
-                LinkedList
+                {questionName}
             </TableCell>
             <TableCell sx={{ fontSize: "18px" , fontWeight: 600}}>
-                28 Dec 2023
+                {attemptDate}
             </TableCell>
         </TableRow>
     )

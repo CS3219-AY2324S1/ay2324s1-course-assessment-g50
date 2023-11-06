@@ -2,7 +2,8 @@ const express = require('express')
 const router = express.Router()
 const { check, validationResult } = require('express-validator') // params validation
 const JsonResponse = require('../common/jsonResponse')
-const { addUser, login, logout, getUserById, getUsers, updateUserInfo, updateUser, deleteUserById, updateUserAvatar } = require('../controller/userController')
+const { addUser, login, logout, getUserById, getUsers, updateUserInfo, updateUser, deleteUserById, 
+    updateUserAvatar, getAttemptedQuestionsHistory } = require('../controller/userController')
 
 // Register a new user:
 router.post('/', [
@@ -70,5 +71,13 @@ const imgUpload = multer({ storage }).single('avatar');
 router.post('/info/avatar', imgUpload, (req, res) => {
     updateUserAvatar(req, res)
 })
+
+
+// get user attempt history
+router.get('/history', (req, res) => {
+    console.log("ok");
+    getAttemptedQuestionsHistory(req, res)
+})
+
 
 module.exports = router

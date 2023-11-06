@@ -99,4 +99,18 @@ const deregisterUser = async () => {
     }
 };
 
-export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser }
+// For fetching the attempt histroy of the user
+const fetchUserAttemptHistory = async (pageNumber) => {
+    try {
+        console.log(baseUrl + "/history" + `/${pageNumber}`);
+        const response = await axios.get(baseUrl + "/history");
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to get user history");
+    }
+}
+
+export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, 
+    updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory  }
