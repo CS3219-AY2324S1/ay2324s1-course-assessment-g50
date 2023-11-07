@@ -33,3 +33,17 @@
     right: 20px;
     position: absolute;
 }
+
+.collab-view .return-icon:hover + .hover-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.collab-view .hover-text {
+    position: absolute;
+    visibility: hidden;
+    top: 50px;
+    right: 8px;
+    opacity: 0;
+}
+

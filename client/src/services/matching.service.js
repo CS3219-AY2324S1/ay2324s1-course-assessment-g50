@@ -30,7 +30,7 @@ const match = async (criteria, timeout) => {
 
 const retrieveQuestionDetails = async (questionID) => {
   try {
-    console.log(questionID);
+    console.log(questionServiceUrl + "/" + questionID);
     const response = await axios.get(questionServiceUrl + "/" + questionID);
     return response.data;
   } catch (error) {

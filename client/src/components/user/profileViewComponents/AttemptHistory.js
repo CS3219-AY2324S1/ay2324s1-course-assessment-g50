@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import "./attemptHistory.css";
 
+const ITEMS_PER_PAGE = 8;
+
 /* Display view of the questions attempted by user */
 const AttemptHistory = () => {
     const [pageNumber, setPageNumber] = useState(1);
@@ -13,16 +15,14 @@ const AttemptHistory = () => {
     const attemptedQuestions = useSelector(state => state.currentUser.attemptedQuestionHistory);
     const attemptedQuestionCount = useSelector(state => state.currentUser.attemptedQuestionHistoryPageCount); 
 
-    //get number of pages possible and then render about 8 items per page
-    //Always send the 
-
     //Retrieves the total number of pages possible for user history
     useEffect(() => {
         dispatch(fetchUserAttemptHistoryPageCountAction());
     }, []);
 
+    // Sets the total number of pages of questions
     useEffect(() => {
-        setPageCount(Math.ceil(attemptedQuestionCount / 8));
+        setPageCount(Math.ceil(attemptedQuestionCount / ITEMS_PER_PAGE));
     }, [attemptedQuestionCount])
 
     //lazy fetching of attempted questions, only fetches 8 items at one go

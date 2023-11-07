@@ -2,13 +2,14 @@ import "./solveQuestion.css";
 import LoadingView from "./viewComponents/LoadingView";
 import CollabView from "./viewComponents/CollabView";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 /* Component which shows the question details */
-const SolveQuestion = () => {
+const SolveQuestion = ({ isOpenedFromHistory = false }) => {
   const matchingStatus = useSelector(state => state.matching.status);
-  const navigate = useNavigate();
+  const location = useLocation();
+  const { isAccessedFromHistory } = location.state;
   
   const [isSuccessfulMatch, setIsSucessfulMatch] = useState(false);
   
@@ -20,7 +21,7 @@ const SolveQuestion = () => {
 
   return (
     <div className="solve-question-page">
-      { isSuccessfulMatch
+      { isSuccessfulMatch || isAccessedFromHistory
       ? <CollabView/>
       : <LoadingView/> }
     </div>

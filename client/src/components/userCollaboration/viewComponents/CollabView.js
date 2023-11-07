@@ -28,11 +28,6 @@ const CollabView = () => {
     const doc = new Y.Doc();
     const editorRef = useRef();
 
-    // Handle language change
-    useEffect(() => {
-
-    }, [language]);
-
     // Handle editor code change
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
@@ -69,27 +64,31 @@ const CollabView = () => {
         navigate('/');
     }
 
-    /* For testing purposes to retrieve questions data on refresh since no way to get to this page from the home page */
+    /* Replace this logic by passing down the question title to retrieve by */
     useEffect(() => {
         dispatch(fetchQuestions());
     }, [])
 
     useEffect(() => {
         if (questionArr.length > 0) {
-            console.log(questionArr[0]._id)
-            dispatch(retrieveQuestionDetailsAction({ questionID:questionArr[0]._id }));
+            console.log(questionArr[0].title);
+            dispatch(retrieveQuestionDetailsAction({ questionTitle:questionArr[0].title }));
         }
     }, [questionArr])
 
     return (
         <div className="collab-view">
-            {question && 
             <div className="question-details">
+            {question && 
+            <>
                 <p className="question-title">{question.title}</p>
                 <p className="question-complexity">{question.complexity}</p>
                 <div  dangerouslySetInnerHTML={{ __html: question.description }} />
-                <BsArrowLeftSquareFill onClick={() => goBack()} className="return-icon"/>
-            </div>}
+                
+            </>}
+            <BsArrowLeftSquareFill onClick={() => goBack()} className="return-icon"/>
+            <p class="hover-text">End Session</p>
+            </div>
 
             <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language} getEditorCode={getEditorCode}/>
 
