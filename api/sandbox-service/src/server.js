@@ -1,6 +1,9 @@
 require('dotenv').config()
 const express = require('express')
-import axios from 'axios';
+const axios = require('axios');
+const requester = require('./requester')
+const poolmanager = require('./poolmanager')
+const JsonResponse = require('./common/jsonResponse')
 
 const app = express()
 
@@ -8,24 +11,28 @@ const app = express()
 app.use(express.json())
 
 // Routes:
-app.post('/', async (req, res) => {
+app.post('/sandbox', async (req, res) => {
   const body = req.body
-
-  // start container
-  const container_name = poolmanager.createContainer(body.language)
-
-  // run code
-  const baseUrl = `http://${container_name}:8500/`;
-  const response = await axios.post(baseUrl, body);
-
-  // terminate and delete container
-  poolmanager.rmContainer(container_name)
-
-  return JsonResponse.success(201, result).send(res);
-
-  // error handling (container fail to build/run, fail to connect to container etc.)
-  return JsonResponse.fail(400, err.message).send(res);
+  let containerName;
   
+  try {
+    // start sandbox environment
+    containerName = await requester.requestCreateContainer(body.language)
+
+    // Run code on sandbox (timeout to let sandbox start up) 
+    return setTimeout(async () => {
+      const baseUrl = `http://${containerName}:8500/`;
+      const response = await axios.post(baseUrl, body);
+      return JsonResponse.success(201, response.data.data).send(res);
+    }, 1000)
+
+  } catch (err) {
+    // error handling (container fail to build/run, fail to connect to container etc.)
+    return JsonResponse.fail(400, err.message).send(res);
+  } finally {
+    // terminate and delete container
+    poolmanager.removeContainer(containerName)
+  }
 })
 
 

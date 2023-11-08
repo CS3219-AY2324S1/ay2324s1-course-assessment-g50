@@ -15,7 +15,7 @@ DOCKERFILE="../images/javascript-image/Dockerfile"
 echo "building"
 cd $SHARED_FOLDER
 docker build -t js_box -f $DOCKERFILE .
-docker run -d --name js_box${version} -p 850${version}:8500 --network peerprep-network js_box
+docker run -d --name jsbox_${version} -p 850${version}:8500 --network peerprep-network js_box
 
 # Check if the container is running
 if [ $? -ne 0 ]; then

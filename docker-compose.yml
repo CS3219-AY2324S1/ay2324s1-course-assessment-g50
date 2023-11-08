@@ -108,6 +108,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8400:8400
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     volumes:
       - ./api/code-sandbox-service:/app
       - /var/run/docker.sock:/var/run/docker.sock

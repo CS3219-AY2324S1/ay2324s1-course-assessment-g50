@@ -2,7 +2,7 @@ const child_process = require('child_process')
 const fs = require('fs')
 
 class Runner {
-    constructor (code, ext, name='solution') {
+    constructor (code, ext, name='Solution') {
         this.code = code
         this.name = name
         this.file = `${name}.${ext}`

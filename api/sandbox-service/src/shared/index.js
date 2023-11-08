@@ -18,7 +18,7 @@ app.post('/', async (req, res) => {
         const result = await runner.run();
 		return JsonResponse.success(201, result).send(res);
     } catch(err) {
-        return JsonResponse.fail(400, err.message).send(res);
+        return JsonResponse.success(201, err.message).send(res);
     }	
 })
 
