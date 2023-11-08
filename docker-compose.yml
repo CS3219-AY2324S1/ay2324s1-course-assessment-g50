@@ -11,6 +11,8 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
+    networks:
+      - default
 
   api-gateway:
     container_name: api-gateway
@@ -25,7 +27,9 @@ services:
     volumes:
       - ./api/api-gateway:/app
     env_file:
-      - .env  
+      - .env 
+    networks:
+      - default
 
   user-service:
     container_name: user-service
@@ -43,6 +47,8 @@ services:
       - ./api/user-service:/app
     env_file:
       - .env
+    networks:
+      - default 
 
   question-service:
     container_name: question-service
@@ -58,6 +64,8 @@ services:
       - ./api/question-service:/app
     env_file:
       - .env
+    networks:
+      - default
 
   collaboration-service:
     container_name: collboration-service
@@ -73,6 +81,8 @@ services:
       - ./api/collaboration-service:/app
     env_file:
       - .env
+    networks:
+      - default
 
   matching-service:
     container_name: matching-service
@@ -88,6 +98,23 @@ services:
       - ./api/matching-service:/app
     env_file:
       - .env
+    networks:
+      - default
+
+  sandbox-service:
+    container_name: sandbox-service
+    build:
+      context: ./api/sandbox-service/
+      dockerfile: Dockerfile
+    ports:
+      - 8400:8400
+    volumes:
+      - ./api/code-sandbox-service:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - .env
+    networks:
+      - default
 
   matchmaking-service:
     container_name: matchmaking-service
@@ -101,6 +128,8 @@ services:
       - ./api/matchmaking-service:/app
     env_file:
       - .env
+    networks:
+      - default
       
   mysql:
     image: mysql
@@ -118,6 +147,8 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    networks:
+      - default
 
   mongodb:
     image: mongo
@@ -132,6 +163,8 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
+    networks:
+      - default
 
   rabbitmq:
     image: rabbitmq
@@ -143,7 +176,15 @@ services:
       interval: 10s
       timeout: 30s
       retries: 3
+    networks:
+      - default
 
 volumes:
   user-service-db-data:
   question-service-db-data:     
+
+networks:
+  default:
+    name: peerprep-network
+
+  
