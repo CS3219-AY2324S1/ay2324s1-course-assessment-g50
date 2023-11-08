@@ -41,6 +41,11 @@ class Runner {
         let errorData = '';
         
         return new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                process.kill();
+                reject(new Error('Time Limit Exceeded'))
+            }, 15000);
+
             process.stdout.on('data', data => { 
                 outputData += data; 
             }) 
@@ -51,10 +56,9 @@ class Runner {
             
             //@todo: add timeout timer
             process.on('exit', code => { 
+                clearTimeout(timeout)
                 if (code !== 0 || errorData.length > 0) {
-                    const errorLines = errorData.split('\n')
-                    const withoutDirPath = errorLines.slice(1).join('\n')
-                    reject(new Error(withoutDirPath))
+                    reject(new Error(errorData))
                 }
             
                 resolve(outputData)

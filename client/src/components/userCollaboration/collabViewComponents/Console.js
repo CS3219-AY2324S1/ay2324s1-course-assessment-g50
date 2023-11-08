@@ -11,9 +11,9 @@ const Console = ({ handleSubmitCode, handleShowConsole }) => {
                 <MdArrowDropUp className="arrow-up-icon"/>
             </div>
 
-            <div className="submit-code-button" onClick={handleSubmitCode}>
-                <p>Submit</p>
-            </div>
+            <button className="submit-code-button" onClick={handleSubmitCode}>
+                Submit
+            </button>
         </div>
     )
 }
