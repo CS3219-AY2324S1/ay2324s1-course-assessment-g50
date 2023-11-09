@@ -48,3 +48,13 @@
   cursor: pointer;
   background-color: rgb(50, 205, 50, 0.7);
 }
+
+.post-form {
+  width: 70%;
+  margin: auto;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 500;
+}

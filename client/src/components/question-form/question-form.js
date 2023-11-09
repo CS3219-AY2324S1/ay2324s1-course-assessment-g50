@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import RichText from "./rich-text.js";
 import { MultipleSelect, SingleSelect } from "./multi-select.js";
-import { addNewQuestion } from "../../../reducers/questionSlice.js";
-import AlertNotification from "../../../services/alert.service.js";
+import { addNewQuestion } from "../../reducers/questionSlice.js";
+import AlertNotification from "../../services/alert.service.js";
 import "./question-form.css";
-import "../questions.css";
 
 // Empty Form (question has additional id field set after calling addQuestion)
 const initialState = {

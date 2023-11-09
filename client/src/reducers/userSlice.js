@@ -30,6 +30,7 @@ const userSlice = createSlice({
             state.isLoggedIn = true;
             localStorage.setItem('loggedIn', 'true');
             localStorage.setItem('userRole', action.payload.userRole);
+            state.userRole = action.payload.userRole;
         })
         .addCase(loginAction.rejected, (state, action) => {
             state.status = "failedLogin";
