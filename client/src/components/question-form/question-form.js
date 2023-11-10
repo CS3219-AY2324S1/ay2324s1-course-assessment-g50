@@ -39,28 +39,23 @@ const QuestionForm = () => {
   }
   
   // solution code
-  const [solutionCode, setSolutionCode] = useState('');
+  const [solutionCode, setSolutionCode] = useState({
+    javascript: ''
+  });
 
   // template code
   const [templateLang, setTemplateLang] = useState('python');
+  const handleLanguageChange = (event) => {
+    setTemplateLang(event.target.value)
+  }
+
   const [templateCode, setTemplateCode] = useState({
     javascript: '',
     python: '',
     java: ''
   })
-  const [currCode, setCurrCode] = useState('');
 
-  const handleLanguageChange = (event) => {
-    setTemplateLang(event.target.value)
-    console.log('old lang' + currCode)
 
-    setTemplateCode(prev => {
-      return {...prev, [templateLang]: currCode}
-    })
-
-    console.log('changed to' +templateCode[event.target.value])
-    setCurrCode(templateCode[event.target.value]);
-  }
 
   // testcases
   const [testCases, setTestCases] = useState([]);
@@ -106,13 +101,13 @@ const QuestionForm = () => {
         <div className="solution"> 
           <h2>Solution Code for Question</h2>
           <label>Javascript</label>
-          <CodeBox code={solutionCode} setCode={setSolutionCode}/>
+          <CodeBox code={solutionCode} setCode={setSolutionCode} language="javascript"/>
         </div>
 
         <div className="solution"> 
           <h2>Template Code for User</h2>
           <LanguageSelector selectedLanguage={templateLang} handleLanguageChange={handleLanguageChange} className="right"/>
-          <CodeBox code={currCode} setCode={setCurrCode} language={templateLang}/>
+          <CodeBox code={templateCode} setCode={setTemplateCode} language={templateLang}/>
         </div>
        
         <TestCases testCases={testCases} setTestCases={setTestCases}/>

@@ -6,10 +6,16 @@ const CodeBox = ({code, setCode, language}) => {
     const handleEditorDidMount = (editor, monaco) => {
       editorRef.current = editor;
     }
+    function handleEditorChange(value, event) {
+      // here is the current value
+      setCode(prev => {
+        return {...prev, [language]: value}
+      })
+    }
 
     useEffect(() => {
       if (editorRef.current !== undefined) {
-        editorRef.current.setValue(code || '')
+        editorRef.current.setValue(code[language] || '')
       }
     }, [language])
 
@@ -18,7 +24,7 @@ const CodeBox = ({code, setCode, language}) => {
         defaultValue="#Type your code here`"
         language={language}
         onMount={handleEditorDidMount}
-        onChange={setCode}
+        onChange={handleEditorChange}
         options={{
             scrollBeyondLastLine: false,
             fontSize: "14px",
