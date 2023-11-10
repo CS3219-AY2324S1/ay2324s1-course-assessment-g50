@@ -4,10 +4,10 @@ import RichText from "./rich-text.js";
 import { MultipleSelect, SingleSelect } from "./multi-select.js";
 import { addNewQuestion } from "../../reducers/questionSlice.js";
 import AlertNotification from "../../services/alert.service.js";
-import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
-import LanguageSelector from "../userCollaboration/collabViewComponents/LanguageSelector.js";
 import TestCases from "./testcase-field.js";
+import CodeBox from "./code-box.js";
 import "./question-form.css";
+import LanguageSelector from "../userCollaboration/collabViewComponents/LanguageSelector.js";
 
 // Empty Form (question has additional id field set after calling addQuestion)
 const initialState = {
@@ -20,16 +20,11 @@ const initialState = {
 const EMPTY_DESCRIPTION = "<p><br></p>";
 
 const QuestionForm = () => {
-  const [formData, setFormData] = useState(initialState);
-  const [testCases, setTestCases] = useState([]);
-  
-  const { title, categories, description, complexity } = formData;
   const dispatch = useDispatch();
-  const editorRef = useRef();
 
-  const handleEditorDidMount = (editor, monaco) => {
-    editorRef.current = editor;
-  }
+  // Main form
+  const [formData, setFormData] = useState(initialState);
+  const { title, categories, description, complexity } = formData;
 
   const onDescriptionChange = (value) => {
     // If not form data's initial state
@@ -41,12 +36,38 @@ const QuestionForm = () => {
   // Update the state with the selected values
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log('why')
   }
+  
+  // solution code
+  const [solutionCode, setSolutionCode] = useState('');
+
+  // template code
+  const [templateLang, setTemplateLang] = useState('python');
+  const [templateCode, setTemplateCode] = useState({
+    javascript: '',
+    python: '',
+    java: ''
+  })
+  const [currCode, setCurrCode] = useState('');
+
+  const handleLanguageChange = (event) => {
+    setTemplateLang(event.target.value)
+    console.log('old lang' + currCode)
+
+    setTemplateCode(prev => {
+      return {...prev, [templateLang]: currCode}
+    })
+
+    console.log('changed to' +templateCode[event.target.value])
+    setCurrCode(templateCode[event.target.value]);
+  }
+
+  // testcases
+  const [testCases, setTestCases] = useState([]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(solutionCode)
     // Set form to empty only on success
     try {
       await dispatch(addNewQuestion(formData)).unwrap();
@@ -82,39 +103,19 @@ const QuestionForm = () => {
           </div>
         </div>
 
-          <div className="solution"> 
-            <h2>Solution Code for Question</h2>
-            <LanguageSelector  className="right"/>
-            <Editor className="editor " height={400} defaultLanguage="python"
-              defaultValue={`#Type your code here`}
-              language='python'
-              onMount={handleEditorDidMount}
-              options={{
-                  scrollBeyondLastLine: false,
-                  fontSize: "14px",
-                  minimap: {
-                      enabled: false,
-                  }
-              }} />
-          </div>
+        <div className="solution"> 
+          <h2>Solution Code for Question</h2>
+          <label>Javascript</label>
+          <CodeBox code={solutionCode} setCode={setSolutionCode}/>
+        </div>
 
-          <div className="solution"> 
-            <h2>Boilerplate Code for User</h2>
-            <LanguageSelector  className="right"/>
-            <Editor className="editor " height={300} defaultLanguage="python"
-              defaultValue={`#Type your code here`}
-              language='python'
-              onMount={handleEditorDidMount}
-              options={{
-                  scrollBeyondLastLine: false,
-                  fontSize: "14px",
-                  minimap: {
-                      enabled: false,
-                  }
-              }} />
-          </div>
-            
-          <TestCases testCases={testCases} setTestCases={setTestCases}/>
+        <div className="solution"> 
+          <h2>Template Code for User</h2>
+          <LanguageSelector selectedLanguage={templateLang} handleLanguageChange={handleLanguageChange} className="right"/>
+          <CodeBox code={currCode} setCode={setCurrCode} language={templateLang}/>
+        </div>
+       
+        <TestCases testCases={testCases} setTestCases={setTestCases}/>
 
         <div className="btn-container">
           <input type="submit" className="btn" value="Submit"></input>
