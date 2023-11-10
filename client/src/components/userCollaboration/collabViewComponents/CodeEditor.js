@@ -4,13 +4,7 @@ import Console from "./Console";
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 import { runCode } from "../../../services/sandbox.service";
 
-const languageDict = {
-    "java": "//",
-    "python": "#",
-    "javascript": "//"
-};
-
-const CodeEditor = ({ language, handleEditorDidMount, getEditorCode }) => {
+const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, isReadMode}) => {
     const [isShowConsole, setIsShowConsole] = useState(false);
     const [result, setResult] = useState('');
 
@@ -31,7 +25,6 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode }) => {
         <div className="code-container">
             <div className="editor-container">
                 <Editor className="editor" height="99%" defaultLanguage="python"
-                    defaultValue={`#Type your code here`}
                     language={language}
                     onMount={handleEditorDidMount}
                     options={{
@@ -39,7 +32,8 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode }) => {
                         fontSize: "14px",
                         minimap: {
                             enabled: false,
-                        }
+                        },
+                        readOnly: isReadMode,
                     }} />
             </div>
             <div className={isShowConsole ? 'console-result visible' : 'console-result'}>

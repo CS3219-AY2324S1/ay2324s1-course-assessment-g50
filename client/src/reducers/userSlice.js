@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo,updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser } from "../services/user.service";
+import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo,updateUserBasicAvatarInfo, 
+    updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, fetchUserAttemptDetails } from "../services/user.service";
 
 const initialState = {
     userId: null,
@@ -13,6 +14,9 @@ const initialState = {
     isLoggedIn: localStorage.getItem('loggedIn') === 'true',
     userRole: localStorage.getItem("userRole"),
     status: "idle",
+    attemptedQuestionHistory: [],
+    attemptedQuestionHistoryPageCount: 1,
+    attemptedQuestionDetails: [] //is an array of various attempts with different languages
 };
 
 const userSlice = createSlice({
@@ -72,7 +76,6 @@ const userSlice = createSlice({
             } else {
                 state.status = "failedBasicInfoUpdate";
             }
-
         })
         .addCase(updateUserBasicAvatarInfoAction.fulfilled, (state, action) => {
             state.status = "sucessfulBasicAvatarInfoUpdate";
@@ -92,6 +95,18 @@ const userSlice = createSlice({
         })
         .addCase(deregisterUserAction.rejected, (state, action) => {
             state.status = "accountNotDeleted";
+        })
+        .addCase(fetchUserAttemptHistoryAction.fulfilled, (state, action) => {
+            state.status = "fetchHistorySucessful";
+            state.attemptedQuestionHistory = action.payload
+        })
+        .addCase(fetchUserAttemptHistoryPageCountAction.fulfilled, (state, action) => {
+            state.status = "fetchHistoryPageCountSucessful";
+            state.attemptedQuestionHistoryPageCount = action.payload
+        })
+        .addCase(fetchUserAttemptDetailsAction.fulfilled, (state, action) => {
+            state.status = "fetchAttemptDetailsSucessfully";
+            state.attemptedQuestionDetails = action.payload;
         });
     },
 });
@@ -167,8 +182,37 @@ const deregisterUserAction = createAsyncThunk(
     }
 )
 
-export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, 
-    updateUserBasicInfoAction, updateUserAccountInfoAction, updateUserBasicAvatarInfoAction, deregisterUserAction };
+// For fetching the attempt history of the user
+const fetchUserAttemptHistoryAction = createAsyncThunk(
+    "user/retrieveUserHistory",
+    async ({ pageNumber }) => {
+        const response = await fetchUserAttemptHistory(pageNumber);
+        return response.data;
+    }
+)
+
+
+// For fetching the attempt history page count of the user
+const fetchUserAttemptHistoryPageCountAction = createAsyncThunk(
+    "user/retrieveUserHistoryPageCount",
+    async () => {
+        const response = await fetchUserAttemptHistoryPageCount();
+        return response.data;
+    }
+)
+
+// For fetching the attempt history page count of the user
+const fetchUserAttemptDetailsAction = createAsyncThunk(
+    "user/retrieveUserAttemptDetails",
+    async ({ questionName }) => {
+        const response = await fetchUserAttemptDetails(questionName);
+        return response.data;
+    }
+)
+
+export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, fetchUserAttemptHistoryAction,
+    updateUserBasicInfoAction, updateUserAccountInfoAction, updateUserBasicAvatarInfoAction, deregisterUserAction, 
+    fetchUserAttemptHistoryPageCountAction, fetchUserAttemptDetailsAction };
 
 export const { resetStatus } = userSlice.actions;
 

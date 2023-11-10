@@ -99,4 +99,37 @@ const deregisterUser = async () => {
     }
 };
 
-export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser }
+// For fetching the attempt histroy of the user
+const fetchUserAttemptHistory = async (pageNumber) => {
+    try {
+        const response = await axios.get(baseUrl + "/history" + `/${pageNumber}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to get user history");
+    }
+}
+
+const fetchUserAttemptHistoryPageCount = async () => {
+    try {
+        const response = await axios.get(baseUrl + "/history");
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to get page count user history");
+    }
+}
+
+const fetchUserAttemptDetails = async (questionName) => {
+    try {
+        const response = await axios.get(baseUrl + "/history" + "/question" + `/${questionName}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to get user attempt details");
+    }
+}
+
+export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, 
+    updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, 
+    fetchUserAttemptDetails }

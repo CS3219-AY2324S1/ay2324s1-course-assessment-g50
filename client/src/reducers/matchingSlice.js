@@ -47,8 +47,8 @@ const establishingConnectionAction = createAsyncThunk(
 
 const retrieveQuestionDetailsAction = createAsyncThunk(
   "matchingServer/getQuestionDetails",
-  async ({ questionID }) => {
-    const response = await retrieveQuestionDetails(questionID);
+  async ({ questionTitle }) => {
+    const response = await retrieveQuestionDetails(questionTitle);
     return response.data;
   }
 )

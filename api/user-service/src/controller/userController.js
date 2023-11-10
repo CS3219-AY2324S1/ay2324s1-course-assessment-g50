@@ -7,6 +7,8 @@ const Sequelize = db.Sequelize
 const sequelize = db.sequelize
 const User = db.user
 const UserInfo = db.userInfo
+const Attempt = db.attempts;
+const attemptDetails = db.attemptDetails;
 
 // For password encryption/decryption.
 const MD5Util = require('../utils/MD5Util')
@@ -248,4 +250,60 @@ async function updateUserAvatar(req, res) {
     })
 }
 
-module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, updateUserAvatar: updateUserAvatar, deleteUserById }
+// Retrieves the history of attempted questions
+async function getAttemptedQuestionsHistory(req, res) {
+    const PAGE_SIZE = 8;
+    const page = parseInt(req.params.page, 10) || 1;
+    const id = req.session.userId
+    try {
+        const questions = await Attempt.findAll({
+            attributes: ['questionName', 'attemptDate', 'attemptStatus'],
+            where: {
+                userId: id
+            }, 
+            order: [['attemptDate', 'DESC']],
+            limit: PAGE_SIZE,
+            offset: (page-1) * PAGE_SIZE
+        });
+        return JsonResponse.success(200, questions).send(res);
+    } catch (error) {
+        return JsonResponse.fail(500, 'Failed to upload image to server').send(res);
+    }
+}
+
+// Retrieves the total number of questions attempted for paging purposes
+async function getAttemptedQuestionsHistoryPageCount(req, res) {
+    const id = req.session.userId
+    try {
+        const questionCount = await Attempt.count({
+            where: {
+                userId: id
+            }
+        });
+        return JsonResponse.success(200, questionCount).send(res);
+    } catch (error) {
+        return JsonResponse.fail(500, 'Failed to upload image to server').send(res);
+    }
+}
+
+async function getAttemptedQuestionsDetails(req, res) {
+    const questionName = req.params.questionName;
+    const id = req.session.userId
+    try {
+        const questions = await Attempt.findAll({
+            attributes: ['questionName', 'attemptStatus', 'codeLanguage', 'savedCode'],
+            where: {
+                userId: id,
+                questionName: questionName
+            }, 
+            order: [['attemptDate', 'DESC']],
+        });
+        return JsonResponse.success(200, questions).send(res);
+    } catch (error) {
+        return JsonResponse.fail(500, 'Failed to upload image to server').send(res);
+    }
+}
+
+module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, 
+    updateUserAvatar: updateUserAvatar, deleteUserById, getAttemptedQuestionsHistory, getAttemptedQuestionsHistoryPageCount,
+    getAttemptedQuestionsDetails }

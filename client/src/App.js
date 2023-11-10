@@ -3,10 +3,10 @@ import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Alerts from "./components/alerts/alerts";
 import Question from "./components/questions/questions";
-import UserProfileManager from "./components/user/UserAuthentication";
+import UserProfileManager from "./components/authentication/UserAuthentication";
 import Profile from "./components/user/Profile";
 import PrivateRoute from "./components/routing/privateRoute";
-import SolveQuestion from "./components/userCollaboration/SolveQuestion.js";
+import SolveQuestion from "./components/userCollaboration/SolveQuestion";
 import "./App.css";
 
 /* To enable sending of cookies on each request globally */
