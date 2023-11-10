@@ -33,17 +33,18 @@ const AttemptHistory = () => {
     }, [pageNumber]);
 
     //use to navigate to attempt and retrieve past attempts 
-    const handleQuestionOnClick = (code) => {
-        navigate("/solve-question", { state: { isAccessedFromHistory: true, savedCode: code }})
+    const handleQuestionOnClick = (questionName) => {
+        navigate("/solve-question", { state: { isAccessedFromHistory: true, questionName: questionName}})
     }
 
     return (
         <div className="info-table attempt-history"> 
+            <h2>Past Attempts</h2>
             <TableContainer component={Paper}>
                 <Table>
                     {attemptedQuestions && attemptedQuestions.map((question, index) => 
                         <AttemptedQuestion key={index} questionName={question.questionName} attemptDate={question.attemptDate}
-                        savedCode={question.savedCode} handleQuestionOnClick={handleQuestionOnClick}/>
+                        attemptStatus={question.attemptStatus} handleQuestionOnClick={handleQuestionOnClick}/>
                     )}
                 </Table>
             </TableContainer>

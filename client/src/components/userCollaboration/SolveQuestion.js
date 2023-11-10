@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 const SolveQuestion = () => {
   const matchingStatus = useSelector(state => state.matching.status);
   const location = useLocation();
-  const { isAccessedFromHistory, savedCode } = location.state;
+  const { isAccessedFromHistory = false, questionName = null } = location.state || {};
   const [isSuccessfulMatch, setIsSucessfulMatch] = useState(false);
   
   useEffect(() => {
@@ -22,7 +22,7 @@ const SolveQuestion = () => {
   return (
     <div className="solve-question-page">
       { isSuccessfulMatch || isAccessedFromHistory
-      ? isAccessedFromHistory ? <AttemptView savedCode={savedCode}/> : <CollabView/>
+      ? isAccessedFromHistory ? <AttemptView questionName={questionName}/> : <CollabView/>
       : <LoadingView/> }
     </div>
   )

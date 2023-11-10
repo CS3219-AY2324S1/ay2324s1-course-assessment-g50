@@ -3,6 +3,10 @@
     flex-direction: column;
 }
 
+.attempt-history h2 {
+    text-align: center;
+}
+
 .pagination {
     margin-top: 10px;
     align-self: center;

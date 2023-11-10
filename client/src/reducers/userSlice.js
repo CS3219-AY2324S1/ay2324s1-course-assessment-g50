@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo,updateUserBasicAvatarInfo, 
-    updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount } from "../services/user.service";
+    updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, fetchUserAttemptDetails } from "../services/user.service";
 
 const initialState = {
     userId: null,
@@ -16,6 +16,7 @@ const initialState = {
     status: "idle",
     attemptedQuestionHistory: [],
     attemptedQuestionHistoryPageCount: 1,
+    attemptedQuestionDetails: [] //is an array of various attempts with different languages
 };
 
 const userSlice = createSlice({
@@ -103,7 +104,10 @@ const userSlice = createSlice({
             state.status = "fetchHistoryPageCountSucessful";
             state.attemptedQuestionHistoryPageCount = action.payload
         })
-        ;
+        .addCase(fetchUserAttemptDetailsAction.fulfilled, (state, action) => {
+            state.status = "fetchAttemptDetailsSucessfully";
+            state.attemptedQuestionDetails = action.payload;
+        });
     },
 });
 
@@ -197,8 +201,18 @@ const fetchUserAttemptHistoryPageCountAction = createAsyncThunk(
     }
 )
 
+// For fetching the attempt history page count of the user
+const fetchUserAttemptDetailsAction = createAsyncThunk(
+    "user/retrieveUserAttemptDetails",
+    async ({ questionName }) => {
+        const response = await fetchUserAttemptDetails(questionName);
+        return response.data;
+    }
+)
+
 export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, fetchUserAttemptHistoryAction,
-    updateUserBasicInfoAction, updateUserAccountInfoAction, updateUserBasicAvatarInfoAction, deregisterUserAction, fetchUserAttemptHistoryPageCountAction };
+    updateUserBasicInfoAction, updateUserAccountInfoAction, updateUserBasicAvatarInfoAction, deregisterUserAction, 
+    fetchUserAttemptHistoryPageCountAction, fetchUserAttemptDetailsAction };
 
 export const { resetStatus } = userSlice.actions;
 

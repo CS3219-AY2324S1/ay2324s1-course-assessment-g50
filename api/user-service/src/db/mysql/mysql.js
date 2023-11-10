@@ -30,7 +30,7 @@ db.sequelize = sequelize
 
 db.user = require("./models/user")(sequelize, Sequelize)
 db.userInfo = require("./models/userInfo")(sequelize, Sequelize)
-db.attemptHistory = require("./models/attemptHistory")(sequelize, Sequelize)
+db.attempts = require("./models/attempt")(sequelize, Sequelize)
 
 // Create association between 2 tables.
 db.user.belongsTo(db.userInfo, {
@@ -39,7 +39,7 @@ db.user.belongsTo(db.userInfo, {
     constraints: false
 })
 
-db.attemptHistory.belongsTo(db.userInfo, {
+db.attempts.belongsTo(db.userInfo, {
     foreignKey: 'userId',
     targetKey: 'userId',
     constraints: false

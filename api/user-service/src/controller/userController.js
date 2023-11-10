@@ -7,7 +7,8 @@ const Sequelize = db.Sequelize
 const sequelize = db.sequelize
 const User = db.user
 const UserInfo = db.userInfo
-const AttemptHistory = db.attemptHistory;
+const Attempt = db.attempts;
+const attemptDetails = db.attemptDetails;
 
 // For password encryption/decryption.
 const MD5Util = require('../utils/MD5Util')
@@ -255,7 +256,8 @@ async function getAttemptedQuestionsHistory(req, res) {
     const page = parseInt(req.params.page, 10) || 1;
     const id = req.session.userId
     try {
-        const questions = await AttemptHistory.findAll({
+        const questions = await Attempt.findAll({
+            attributes: ['questionName', 'attemptDate', 'attemptStatus'],
             where: {
                 userId: id
             }, 
@@ -269,20 +271,39 @@ async function getAttemptedQuestionsHistory(req, res) {
     }
 }
 
+// Retrieves the total number of questions attempted for paging purposes
 async function getAttemptedQuestionsHistoryPageCount(req, res) {
     const id = req.session.userId
     try {
-        const questionCount = await AttemptHistory.count({
+        const questionCount = await Attempt.count({
             where: {
                 userId: id
             }
         });
-        console.log(questionCount);
         return JsonResponse.success(200, questionCount).send(res);
     } catch (error) {
         return JsonResponse.fail(500, 'Failed to upload image to server').send(res);
     }
 }
 
+async function getAttemptedQuestionsDetails(req, res) {
+    const questionName = req.params.questionName;
+    const id = req.session.userId
+    try {
+        const questions = await Attempt.findAll({
+            attributes: ['questionName', 'attemptStatus', 'codeLanguage', 'savedCode'],
+            where: {
+                userId: id,
+                questionName: questionName
+            }, 
+            order: [['attemptDate', 'DESC']],
+        });
+        return JsonResponse.success(200, questions).send(res);
+    } catch (error) {
+        return JsonResponse.fail(500, 'Failed to upload image to server').send(res);
+    }
+}
+
 module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, 
-    updateUserAvatar: updateUserAvatar, deleteUserById, getAttemptedQuestionsHistory, getAttemptedQuestionsHistoryPageCount }
+    updateUserAvatar: updateUserAvatar, deleteUserById, getAttemptedQuestionsHistory, getAttemptedQuestionsHistoryPageCount,
+    getAttemptedQuestionsDetails }

@@ -120,5 +120,16 @@ const fetchUserAttemptHistoryPageCount = async () => {
     }
 }
 
+const fetchUserAttemptDetails = async (questionName) => {
+    try {
+        const response = await axios.get(baseUrl + "/history" + "/question" + `/${questionName}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to get user attempt details");
+    }
+}
+
 export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, 
-    updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount }
+    updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, 
+    fetchUserAttemptDetails }
