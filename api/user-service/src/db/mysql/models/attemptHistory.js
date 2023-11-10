@@ -14,6 +14,9 @@ module.exports = (sequelize, Sequelize) => {
         attemptStatus: {
             type: Sequelize.STRING,
         },
+        savedCode: {
+            type: Sequelize.TEXT,
+        }
     }, {
         timestamps: false
     })

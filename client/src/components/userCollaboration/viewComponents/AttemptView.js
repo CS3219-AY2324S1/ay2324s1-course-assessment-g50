@@ -1,20 +1,15 @@
-import "./collabView.css";
+import "./attemptView.css";
 import CodeEditor from "../collabViewComponents/CodeEditor";
-import InfoBar from "../collabViewComponents/InfoBar";
+import LanguageSelector from "../collabViewComponents/LanguageSelector";
 import { retrieveQuestionDetailsAction } from "../../../reducers/matchingSlice";
 import { fetchQuestions } from "../../../reducers/questionSlice";
 import { useEffect, useState, useRef } from "react";
-import { WebsocketProvider } from 'y-websocket';
-import { MonacoBinding } from 'y-monaco'
 import { useDispatch, useSelector } from "react-redux";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
-import * as Y from 'yjs';
+import { useNavigate } from "react-router-dom";;
 
-const serverWsUrl = "ws://localhost:8200";
-
-/* Component which shows the collaboration view */
-const CollabView = () => {
+/* Component which shows past attempts */
+const AttemptView = ({ savedCode }) => {
     const questionArr = useSelector(state => state.questions.questions);
     const question = useSelector(state => state.matching.matchedQuestionDetails);
     
@@ -23,19 +18,12 @@ const CollabView = () => {
 
     /* Props info for CodeEditor & InfoBar */
     const [language, setLanguage] = useState("python");
-    const matchInfo = useSelector(state => state.matching);
 
-    const doc = new Y.Doc();
     const editorRef = useRef();
 
-    // Handle editor code change
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
-
-        // Code Collaboration part:
-        const manacoText = doc.getText("manaco")
-        const provider = new WebsocketProvider(serverWsUrl, "matchId", doc);
-        const binding = new MonacoBinding(manacoText, editorRef.current.getModel(), new Set([editorRef.current]))
+        editorRef.current.setValue(savedCode);
     }
 
     // Handle editor code submission
@@ -44,24 +32,12 @@ const CollabView = () => {
     }
 
     const handleLanguageChange = (event) => {
-        const newLanguage = event.target.value
-
-        // Language Synchronize part:
-        const languageText = doc.getText("language")
-        const provider = new WebsocketProvider(serverWsUrl, "matchId", doc);
-        languageText.delete(0, languageText.length);
-        languageText.insert(0, newLanguage);
-
-        // Handle language change
-        const updatedLanguageText = doc.getText("language")
-        updatedLanguageText.observe(event => {
-            setLanguage(languageText.toString());
-        });
+        setLanguage(event.target.value)
     }
     /* ********************************************* */
 
     const goBack = () => {
-        navigate(-1);
+        navigate("/profile", {state: {isAccessedFromHistory: true}});
     }
 
     /* Replace this logic by passing down the allocated question title
@@ -72,13 +48,12 @@ const CollabView = () => {
 
     useEffect(() => {
         if (questionArr.length > 0) {
-            console.log(questionArr[0].title);
             dispatch(retrieveQuestionDetailsAction({ questionTitle:questionArr[0].title }));
         }
     }, [questionArr])
 
     return (
-        <div className="collab-view">
+        <div className="attemptView">
             <div className="question-details">
             {question && 
             <>
@@ -88,14 +63,18 @@ const CollabView = () => {
                 
             </>}
             <BsArrowLeftSquareFill onClick={() => goBack()} className="return-icon"/>
-            <p className="hover-text">End Session</p>
+            <p className="hover-text">Back</p>
             </div>
 
-            <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language} getEditorCode={getEditorCode} isReadMode={false}/>
+            <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language} getEditorCode={getEditorCode} isReadMode={true}/>
 
-            <InfoBar matchInfo={matchInfo} selectedLanguage={language} handleLanguageChange={handleLanguageChange}/>
+            <div className="info-bar-container">
+                <div className="language-selector">
+                    <LanguageSelector selectedLanguage={language} handleLanguageChange={handleLanguageChange} />
+                </div>
+            </div>
         </div>
     )
 }
 
-export default CollabView;
+export default AttemptView;

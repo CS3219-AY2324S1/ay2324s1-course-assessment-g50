@@ -1,16 +1,16 @@
 import "./solveQuestion.css";
 import LoadingView from "./viewComponents/LoadingView";
 import CollabView from "./viewComponents/CollabView";
+import AttemptView from "./viewComponents/AttemptView";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-/* Component which shows the question details */
-const SolveQuestion = ({ isOpenedFromHistory = false }) => {
+/* Component which shows the question details page be it for attempt or collaboration view */
+const SolveQuestion = () => {
   const matchingStatus = useSelector(state => state.matching.status);
   const location = useLocation();
-  const { isAccessedFromHistory } = location.state;
-  
+  const { isAccessedFromHistory, savedCode } = location.state;
   const [isSuccessfulMatch, setIsSucessfulMatch] = useState(false);
   
   useEffect(() => {
@@ -22,7 +22,7 @@ const SolveQuestion = ({ isOpenedFromHistory = false }) => {
   return (
     <div className="solve-question-page">
       { isSuccessfulMatch || isAccessedFromHistory
-      ? <CollabView/>
+      ? isAccessedFromHistory ? <AttemptView savedCode={savedCode}/> : <CollabView/>
       : <LoadingView/> }
     </div>
   )

@@ -4,6 +4,7 @@ import { fetchUserAttemptHistoryAction, fetchUserAttemptHistoryPageCountAction }
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import "./attemptHistory.css";
+import { useNavigate } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -12,6 +13,7 @@ const AttemptHistory = () => {
     const [pageNumber, setPageNumber] = useState(1);
     const [pageCount, setPageCount] = useState(1);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const attemptedQuestions = useSelector(state => state.currentUser.attemptedQuestionHistory);
     const attemptedQuestionCount = useSelector(state => state.currentUser.attemptedQuestionHistoryPageCount); 
 
@@ -30,13 +32,18 @@ const AttemptHistory = () => {
         dispatch(fetchUserAttemptHistoryAction({ pageNumber }));
     }, [pageNumber]);
 
+    //use to navigate to attempt and retrieve past attempts 
+    const handleQuestionOnClick = (code) => {
+        navigate("/solve-question", { state: { isAccessedFromHistory: true, savedCode: code }})
+    }
 
     return (
         <div className="info-table attempt-history"> 
             <TableContainer component={Paper}>
                 <Table>
                     {attemptedQuestions && attemptedQuestions.map((question, index) => 
-                        <AttemptedQuestion key={index} questionName={question.questionName} attemptDate={question.attemptDate}/>
+                        <AttemptedQuestion key={index} questionName={question.questionName} attemptDate={question.attemptDate}
+                        savedCode={question.savedCode} handleQuestionOnClick={handleQuestionOnClick}/>
                     )}
                 </Table>
             </TableContainer>

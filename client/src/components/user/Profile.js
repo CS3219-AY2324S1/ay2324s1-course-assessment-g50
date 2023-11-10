@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserDataAction, logoutAction } from "../../reducers/userSlice";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FaUserGear } from "react-icons/fa6";
 import { HiOutlineLogout, HiOutlineInformationCircle } from "react-icons/hi";
 import { TbHistoryToggle } from "react-icons/tb";
@@ -11,11 +11,13 @@ import "./profile.css";
 import BasicInfo from "./profileViewComponents/BasicInfo";
 import AccountInfo from "./profileViewComponents/AccountInfo";
 import AttemptHistory from "./profileViewComponents/AttemptHistory";
-import ProfileAvatar from "./profileComponents/Avatar"
+import ProfileAvatar from "./profileComponents/Avatar";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isAccessedFromHistory = location.state ? location.state.isAccessedFromHistory : false;
 
   /* Current logged in data */
   const user = useSelector((state) => state.currentUser);
@@ -28,7 +30,7 @@ const Profile = () => {
     LOGOUT: "Logout",
     ATTEMPT_HISTORY: "Attempt History"
   }
-  const [panel, setPanel] = useState(PANEL.BASIC_INFO);
+  const [panel, setPanel] =  useState(isAccessedFromHistory ? PANEL.ATTEMPT_HISTORY : PANEL.BASIC_INFO);
 
   /* returns to authentication page on log out
   also used when account is deleted */ 
