@@ -1,5 +1,11 @@
 const mongoose = require('mongoose')
 
+const codeSchema = new mongoose.Schema({
+    javascript: String,
+    python: String,
+    java: String
+})
+
 const questionSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -18,6 +24,9 @@ const questionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    solutionCode: codeSchema,
+    templateCode: codeSchema,
+    testCases: [String]
 }, {
     timestamps: true
 })

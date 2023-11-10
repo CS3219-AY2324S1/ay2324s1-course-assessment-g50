@@ -43,10 +43,11 @@ const buildFilteredURL = (filters) => {
   return filteredURL;
 }
 
-export const addQuestionToRepo = async (formData) => {
+export const addQuestionToRepo = async (formData, optionalFields) => {
   isFormValid(formData);
   try {
-    const response = await axios.post(baseUrl, formData);
+    const fullForm = {...formData, ...optionalFields};
+    const response = await axios.post(baseUrl, fullForm);
     return response.data.data;
   } catch (error) {
     const msg = error.response.data.data || error.response.statusText;

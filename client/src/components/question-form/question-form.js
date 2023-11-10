@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import RichText from "./rich-text.js";
 import { MultipleSelect, SingleSelect } from "./multi-select.js";
@@ -13,7 +13,7 @@ import LanguageSelector from "../userCollaboration/collabViewComponents/Language
 const initialState = {
   title: "",
   categories: [],
-  description: "~Question Description~",
+  description: "",
   complexity: "",
 };
 
@@ -39,34 +39,48 @@ const QuestionForm = () => {
   }
   
   // solution code
-  const [solutionCode, setSolutionCode] = useState({
+  const initialSoln = {
     javascript: ''
-  });
+  }
+  const [solutionCode, setSolutionCode] = useState(initialSoln);
 
   // template code
+  const initialTemplate = {
+    javascript: '',
+    python: '',
+    java: ''
+  }
   const [templateLang, setTemplateLang] = useState('python');
   const handleLanguageChange = (event) => {
     setTemplateLang(event.target.value)
   }
-
-  const [templateCode, setTemplateCode] = useState({
-    javascript: '',
-    python: '',
-    java: ''
-  })
-
-
+  const [templateCode, setTemplateCode] = useState(initialTemplate)
 
   // testcases
   const [testCases, setTestCases] = useState([]);
 
+  const [resetTrigger, setResetTrigger] = useState(Math.random());
+  const resetOptional = () => {
+    setSolutionCode(initialSoln);
+    setTemplateCode(initialTemplate);
+    setTestCases([]);
+    setResetTrigger(Math.random());
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(solutionCode)
+
+    const optionalFields = {solutionCode, templateCode, testCases}
+    const allFields = {
+      required: formData,
+      optionalFields
+    }
+
     // Set form to empty only on success
     try {
-      await dispatch(addNewQuestion(formData)).unwrap();
+      await dispatch(addNewQuestion(allFields)).unwrap();
       setFormData(initialState);
+      resetOptional();
     } catch (err) {
       AlertNotification.error(err.message).notify(dispatch);
     };
@@ -101,13 +115,13 @@ const QuestionForm = () => {
         <div className="solution"> 
           <h2>Solution Code for Question</h2>
           <label>Javascript</label>
-          <CodeBox code={solutionCode} setCode={setSolutionCode} language="javascript"/>
+          <CodeBox code={solutionCode} setCode={setSolutionCode} language="javascript" resetTrigger={resetTrigger}/>
         </div>
 
         <div className="solution"> 
           <h2>Template Code for User</h2>
           <LanguageSelector selectedLanguage={templateLang} handleLanguageChange={handleLanguageChange} className="right"/>
-          <CodeBox code={templateCode} setCode={setTemplateCode} language={templateLang}/>
+          <CodeBox code={templateCode} setCode={setTemplateCode} language={templateLang} resetTrigger={resetTrigger}/>
         </div>
        
         <TestCases testCases={testCases} setTestCases={setTestCases}/>
