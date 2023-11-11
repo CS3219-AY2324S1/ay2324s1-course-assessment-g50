@@ -16,7 +16,7 @@ const serverWsUrl = "ws://localhost:8200";
 /* Component which shows the collaboration view */
 const CollabView = () => {
     const questionArr = useSelector(state => state.questions.questions);
-    const question = questionArr[0] //useSelector(state => state.matching.matchedQuestionDetails);
+    const question = useSelector(state => state.matching.matchedQuestionDetails);
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -75,25 +75,27 @@ const CollabView = () => {
     /* ********************************************* */
 
     const goBack = () => {
-        navigate('/');
+        navigate(-1);
     }
 
-    /* For testing purposes to retrieve questions data on refresh since no way to get to this page from the home page */
+    /* Replace this logic by passing down the allocated question title
+    for both users to retrieve the question details */
     useEffect(() => {
         dispatch(fetchQuestions());
     }, [])
 
     useEffect(() => {
         if (questionArr.length > 0) {
-            console.log(questionArr[0]._id)
-            dispatch(retrieveQuestionDetailsAction({ questionID:questionArr[0]._id }));
+            console.log(questionArr[0].title);
+            dispatch(retrieveQuestionDetailsAction({ questionTitle:questionArr[0].title }));
         }
     }, [questionArr])
 
     return (
         <div className="collab-view">
-            {question && 
             <div className="question-details">
+            {question && 
+            <>
                 <p className="question-title">{question.title}</p>
                 <p className="question-complexity">{question.complexity}</p>
                 <div  dangerouslySetInnerHTML={{ __html: question.description }} />
@@ -101,11 +103,13 @@ const CollabView = () => {
                 {question.testCases && question.testCases.map((testCase, i) => 
                     <p className="testCase">{`Sample Test case ${i}:\n ${testCase}`}</p>
                 )}
-                <BsArrowLeftSquareFill onClick={() => goBack()} className="return-icon"/>
-            </div>}
-
+            </>}
+            <BsArrowLeftSquareFill onClick={() => goBack()} className="return-icon"/>
+            <p className="hover-text">End Session</p>
+            </div>              
+            
             <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language} 
-                getEditorCode={getEditorCode} setUserCode={setUserCode} solutionCode={solutionCode}/>
+                getEditorCode={getEditorCode} setUserCode={setUserCode} solutionCode={solutionCode} isReadMode={false}/>
 
             <InfoBar matchInfo={matchInfo} selectedLanguage={language} handleLanguageChange={handleLanguageChange}/>
         </div>

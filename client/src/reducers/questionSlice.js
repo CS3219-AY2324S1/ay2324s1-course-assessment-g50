@@ -6,6 +6,8 @@ import {
   deleteQuestionFromRepo,
   updateQuestionFromRepo,
 } from "../services/question.service";
+import { retrieveQuestionDetails } from "../services/question.service";
+
 
 const initialState = {
   questions: [],
@@ -21,6 +23,7 @@ const initialState = {
   },
   // add loading status/error here when integrating with backend
   status: "idle",
+  attemptedQuestionDetails: null,
 };
 
 export const questionSlice = createSlice({
@@ -62,6 +65,10 @@ export const questionSlice = createSlice({
       .addCase(fetchTotalQuestionCount.fulfilled, (state, action) => {
         state.totalQuestionCount = action.payload;
       })
+      .addCase(fetchAttemptedQuestionDetails.fulfilled, (state, action) => {
+        state.attemptedQuestionDetails = action.payload;
+      })
+      
   },
 });
 
@@ -109,5 +116,14 @@ export const fetchTotalQuestionCount = createAsyncThunk(
     return response;
   }
 );
+
+export const fetchAttemptedQuestionDetails = createAsyncThunk(
+  "questions/fetchAttemptedQuestionDetails",
+  async ({ questionName }) => {
+    //technically this is being used in matchingSlice for retrieving question details instead of userSlice
+    const response = await retrieveQuestionDetails(questionName); 
+    return response.data;
+  }
+)
 
 export default questionSlice.reducer;

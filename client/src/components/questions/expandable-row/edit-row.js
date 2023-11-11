@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { IconButton } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
@@ -11,12 +11,14 @@ import { MultipleSelect, SingleSelect } from "../../question-form/multi-select";
 import RichText from "../../question-form/rich-text";
 import AlertNotification from "../../../services/alert.service";
 import { updateQuestion } from "../../../reducers/questionSlice";
+import { updateAttemptQuestionNameAction } from "../../../reducers/userSlice"; 
 
 const WARNING_DISCARD_UNSAVED = "Unsaved changes have been discarded";
 const NOTICE_SUCCESS = "Changes saved";
 
 const EditRow = ({ question, row_num, rowColor, setReadOnly }) => {
 	const dispatch = useDispatch();
+	const prevQuestionName = useRef();
 
 	// Send warning and set to readOnly
 	const discard = () => {
@@ -28,6 +30,7 @@ const EditRow = ({ question, row_num, rowColor, setReadOnly }) => {
 	const save = async () => {
 		try {
 			await dispatch(updateQuestion(formData)).unwrap();
+			await dispatch(updateAttemptQuestionNameAction({ oldQuestionName: question.title,  newQuestionName: formData.title }));
 			AlertNotification.success(NOTICE_SUCCESS).notify(dispatch);
 			setReadOnly(true);
 		} catch (err) {
@@ -41,6 +44,10 @@ const EditRow = ({ question, row_num, rowColor, setReadOnly }) => {
 	const onDescriptionChange = (value) => {
 		return setFormData({ ...formData, description: value });
 	};
+
+	// useEffect(() => {
+	// 	prevQuestionName.current = formData.title;
+	// }, [formData.title]);
 
 	// Update the state with the selected values
 	const onChange = (e) => {

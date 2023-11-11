@@ -99,4 +99,49 @@ const deregisterUser = async () => {
     }
 };
 
-export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser }
+// Fetch fetching the attempt history of the user
+const fetchUserAttemptHistory = async (pageNumber) => {
+    try {
+        const response = await axios.get(baseUrl + "/history" + `/${pageNumber}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to get user history");
+    }
+}
+
+// Fetch the attempt history page count of the user
+const fetchUserAttemptHistoryPageCount = async () => {
+    try {
+        const response = await axios.get(baseUrl + "/history");
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to get page count user history");
+    }
+}
+
+// Fetch the attempt details including code of the user
+const fetchUserAttemptDetails = async (questionName) => {
+    try {
+        const response = await axios.get(baseUrl + "/history" + "/question" + `/${questionName}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to get user attempt details");
+    }
+}
+
+const updateAttemptQuestionName = async (oldQuestionName, newQuestionName) => {
+    try {
+        const response = await axios.patch(baseUrl + "/history" + "/question" + `/${oldQuestionName}`, { newQuestionName });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to update question name in user history");
+    }
+}
+
+export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, 
+    updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, 
+    fetchUserAttemptDetails, updateAttemptQuestionName }

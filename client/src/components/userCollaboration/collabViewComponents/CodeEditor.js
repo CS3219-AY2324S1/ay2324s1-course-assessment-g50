@@ -8,12 +8,6 @@ import Box from '@mui/material/Box';
 import { useDispatch } from "react-redux";
 import AlertNotification from "../../../services/alert.service.js";
 
-const languageDict = {
-    "java": "//",
-    "python": "#",
-    "javascript": "//"
-};
-
 const Spinner = () => {
     return (                    
         <Box sx={{ width: '100%' }}>
@@ -21,7 +15,8 @@ const Spinner = () => {
         </Box>
     )
 }
-const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, setUserCode, solutionCode }) => {
+
+const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, setUserCode, solutionCode, isReadMode}) => {
     const [isShowConsole, setIsShowConsole] = useState(false);
     const [result, setResult] = useState({});
     const [testCase, setTestCase] = useState('');
@@ -72,7 +67,6 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, setUserCode
         <div className="code-container">
             <div className="editor-container">
                 <Editor className="editor" height="99%" defaultLanguage="python"
-                    defaultValue={`#Type your code here`}
                     language={language}
                     onMount={handleEditorDidMount}
                     onChange={handleEditorChange}
@@ -81,7 +75,8 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, setUserCode
                         fontSize: "14px",
                         minimap: {
                             enabled: false,
-                        }
+                        },
+                        readOnly: isReadMode,
                     }} />
             </div>
             <div className={isShowConsole ? 'console-result visible' : 'console-result'}>

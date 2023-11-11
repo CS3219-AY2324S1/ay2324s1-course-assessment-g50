@@ -1,0 +1,7 @@
+.MuiTableRow-hover {
+    cursor: pointer;
+}
+
+.MuiTableRow-hover:hover {
+    color: blue;
+}

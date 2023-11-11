@@ -1,7 +1,7 @@
 import "./basicInfo.css";
 import { useState, useEffect } from "react";
-import Property from "./Property";
-import { updateUserBasicInfoAction } from "../../../../reducers/userSlice.js";
+import Property from "../profileComponents/Property";
+import { updateUserBasicInfoAction } from "../../../reducers/userSlice.js";
 import { useSelector } from "react-redux";
 
 const BasicInfo = ({ user }) => {

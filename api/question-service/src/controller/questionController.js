@@ -25,6 +25,18 @@ async function addQuestion(req, res) {
     });
 }
 
+async function getQuestion(req, res) {
+    const questionTitle = req.params.questionTitle;
+    console.log(questionTitle);
+    try {
+        const questionDetails = await question.findOne({ title: questionTitle });
+        return JsonResponse.success(200, questionDetails).send(res);
+    } catch (error) {
+        console.log(error);
+        return JsonResponse.fail(500, error).send(res);
+    }
+}
+
 // Get questions by filter
 async function getQuestions(req, res) {
     // Get Filter, sort and page info
@@ -130,4 +142,4 @@ async function getTotalQuestionCount(req, res) {
     }
 }
 
-module.exports = { addQuestion, getQuestions, getTotalQuestionCount, updateQuestion, deleteQuestion };
+module.exports = { addQuestion, getQuestion, getQuestions, getTotalQuestionCount, updateQuestion, deleteQuestion };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
-import { updateUserBasicAvatarInfoAction } from '../../../../reducers/userSlice';
+import { updateUserBasicAvatarInfoAction } from '../../../reducers/userSlice';
 import "./Avatar.css";
 
 const Avatar = ({ user }) => {

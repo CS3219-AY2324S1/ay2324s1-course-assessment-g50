@@ -1,7 +1,5 @@
 .avatar-box {
-    position: absolute;
-    height: 200px;
-    margin-bottom: 50px;
+    align-self: center;
 }
 
 .avatar-box .avatar-value {
