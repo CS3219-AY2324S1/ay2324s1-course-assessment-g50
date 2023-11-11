@@ -28,18 +28,8 @@ const match = async (criteria, timeout) => {
     }
 };
 
-const retrieveQuestionDetails = async (questionID) => {
-  try {
-    console.log(questionServiceUrl + "/" + questionID);
-    const response = await axios.get(questionServiceUrl + "/" + questionID);
-    return response.data;
-  } catch (error) {
-    throw new Error(error);
-  }
-}
-
 const matchWithUser = async (criteria) => {
     return await match(criteria, 30000); // TODO
 };
 
-export { matchWithUser, retrieveQuestionDetails };
+export { matchWithUser };

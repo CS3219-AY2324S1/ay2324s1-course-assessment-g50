@@ -8,7 +8,7 @@ const sequelize = db.sequelize
 const User = db.user
 const UserInfo = db.userInfo
 const Attempt = db.attempts;
-const attemptDetails = db.attemptDetails;
+const AttemptDetails = db.attemptDetails;
 
 // For password encryption/decryption.
 const MD5Util = require('../utils/MD5Util')
@@ -286,24 +286,54 @@ async function getAttemptedQuestionsHistoryPageCount(req, res) {
     }
 }
 
+// Gets the various attempts in different languages for each question
 async function getAttemptedQuestionsDetails(req, res) {
     const questionName = req.params.questionName;
     const id = req.session.userId
     try {
-        const questions = await Attempt.findAll({
-            attributes: ['questionName', 'attemptStatus', 'codeLanguage', 'savedCode'],
+        const questions = await AttemptDetails.findAll({
+            attributes: ['questionName', 'codeLanguage', 'savedCode'],
             where: {
                 userId: id,
                 questionName: questionName
             }, 
-            order: [['attemptDate', 'DESC']],
         });
         return JsonResponse.success(200, questions).send(res);
     } catch (error) {
-        return JsonResponse.fail(500, 'Failed to upload image to server').send(res);
+        return JsonResponse.fail(500, 'Failed to retrieve past attempts/code of user').send(res)
+    }
+}
+
+// Updates the question names when the admin user edits the name of questions
+async function updateAttemptedQuestionName(req, res) {
+    const oldQuestionName = req.params.questionName;
+    const { newQuestionName } = req.body;
+
+    try {
+        await Attempt.update(
+            { questionName: newQuestionName },
+            { where: { questionName: oldQuestionName } }
+        ).then((num) => {
+            if (num == 0) {
+                throw new Error("Failed to update any questions");
+            }
+        })
+        await AttemptDetails.update(
+            { questionName: newQuestionName },
+            { where: { questionName: oldQuestionName } }
+        ).then((num) => {
+            if (num == 0) {
+                throw new Error("Failed to update any questions");
+            }
+        })
+
+        return JsonResponse.success(201, "Question names updated in the user history").send(res)
+    } catch (error) {
+        console.log(error);
+        return JsonResponse.fail(500, 'Failed to update any questions names').send(res);
     }
 }
 
 module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, 
     updateUserAvatar: updateUserAvatar, deleteUserById, getAttemptedQuestionsHistory, getAttemptedQuestionsHistoryPageCount,
-    getAttemptedQuestionsDetails }
+    getAttemptedQuestionsDetails, updateAttemptedQuestionName }

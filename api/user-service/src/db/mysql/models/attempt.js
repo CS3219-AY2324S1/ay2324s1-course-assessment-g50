@@ -8,27 +8,17 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             primaryKey: true
         },
-        codeLanguage: {
-            type: Sequelize.ENUM,
-            primaryKey: true,
-            values: ['python', 'java', 'javascript'],
-            defaultValue: 'python'
-        },
-        savedCode: {
-            type: Sequelize.TEXT,
-            defaultValue: ""
-        },
         attemptDate: {
             type: Sequelize.DATEONLY,
             defaultValue: Sequelize.NOW
         },
         attemptStatus: {
-            type: Sequelize.STRING,
-            values: ['attempt', 'success', 'fail']
+            type: Sequelize.ENUM,
+            values: ['attempt', 'success', 'failure']
         }
     }, {
         timestamps: false
     })
 
-    return attempts
+    return attempts;
 }
