@@ -101,6 +101,7 @@ export const getTotalQuestionCount = async () => {
 // For retrieving question details for both history and collaboration
 export const retrieveQuestionDetails = async (questionName) => {
   try {
+    console.log(questionName)
     const response = await axios.get(baseUrl + "/" + questionName);
     return response.data;
 
