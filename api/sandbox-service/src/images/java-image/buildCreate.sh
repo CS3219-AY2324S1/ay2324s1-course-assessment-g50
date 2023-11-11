@@ -16,7 +16,7 @@ echo "building"
 cd $SHARED_FOLDER
 docker build -t java_box -f $DOCKERFILE .
 docker run -d --name javabox_${version} -p 850${version}:8500 --network peerprep-network \
-  -m 750M --memory-reservation 500M --cpus="1" --security-opt="no-new-privileges=true" java_box
+  -m 500M --memory-reservation 256M --cpus="1" --security-opt="no-new-privileges=true" java_box
 
 # Check if the container is running
 if [ $? -ne 0 ]; then

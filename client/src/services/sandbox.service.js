@@ -13,19 +13,12 @@ axios response: {
 */
 const baseUrl = "http://localhost:5000/sandbox";
 
-const runCode = async (code, language) => {
+const runCode = async (runInfo) => {
     try {
-        const response = await axios.post(baseUrl, { code, language });
-        console.log(response.data)
+        const response = await axios.post(baseUrl, runInfo);
         return response.data.data;
     } catch (error) {
-        console.log(error)
-        if (error.response.data.code === 400) {
-          console.log(error.response.data.data)
-          return error.response.data.data;
-        } else {
-          throw new Error("logging error");
-        }
+        return error.response.data.data;
     }
 };
 

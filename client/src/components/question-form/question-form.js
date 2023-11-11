@@ -40,7 +40,7 @@ const QuestionForm = () => {
   
   // solution code
   const initialSoln = {
-    javascript: ''
+    python: ''
   }
   const [solutionCode, setSolutionCode] = useState(initialSoln);
 
@@ -114,8 +114,8 @@ const QuestionForm = () => {
 
         <div className="solution"> 
           <h2>Solution Code for Question</h2>
-          <label>Javascript</label>
-          <CodeBox code={solutionCode} setCode={setSolutionCode} language="javascript" resetTrigger={resetTrigger}/>
+          <label>Python</label>
+          <CodeBox code={solutionCode} setCode={setSolutionCode} language="python" resetTrigger={resetTrigger}/>
         </div>
 
         <div className="solution"> 

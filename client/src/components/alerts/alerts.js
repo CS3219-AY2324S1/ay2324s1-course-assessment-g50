@@ -7,7 +7,7 @@ const Alerts = () => {
   return (
     <div style={{ position: "fixed" }}>
       {alerts.map((alert, i) => (
-        <Alert severity={alert.severity} key={i} sx={{ margin: "10px" }}>
+        <Alert severity={alert.severity} key={i} sx={{ margin: "10px", zIndex: 1300, position: "fixed" }}>
           {alert.message}
         </Alert>
       ))}

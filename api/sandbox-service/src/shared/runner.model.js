@@ -2,22 +2,27 @@ const child_process = require('child_process')
 const fs = require('fs')
 
 class Runner {
-    constructor (code, ext, name='Solution') {
+    constructor (code, ext, testCase, name='Solution') {
         this.code = code
         this.name = name
         this.file = `${name}.${ext}`
+        this.testCase = testCase
     }
 
-    static makeLanguageRunner(code, language) {
+    compile () {}
+
+    run() {}
+    
+    static makeLanguageRunner(code, language, testCase) {
         let runner;
         if (language === 'python') {
-            runner = new PythonRunner(code);
+            runner = new PythonRunner(code, testCase);
         } else if (language === 'javascript') {
-            runner = new JavascriptRunner(code);
+            runner = new JavascriptRunner(code, testCase);
         } else if (language === 'java') {
-            runner = new JavaRunner(code);
+            runner = new JavaRunner(code, testCase);
         } else {
-            return new notRecognisedRunner(code)
+            return new notRecognisedRunner(code, testCase)
         }
         return runner
     }
@@ -28,63 +33,56 @@ class Runner {
         })
     }
 
-    compile () {}
+    writeTestCase() {
+        if (!this.testCase) {
+            throw new Error('No testCase provided')
+        }
+        fs.writeFileSync(`./tests/testCase.txt`, this.testCase)
+    }
 
-  /**
-   * @return {string}
-   */
-    run() {}
-
-    exec(cmd, file) {
-        const process = child_process.spawn(cmd, [file], {cwd: './'});
-        let outputData = '';
-        let errorData = '';
-        
+    exec(cmd) {
         return new Promise((resolve, reject) => {
             const timeout = setTimeout(() => {
                 process.kill();
                 reject(new Error('Time Limit Exceeded'))
             }, 15000);
 
-            process.stdout.on('data', data => { 
-                outputData += data; 
-            }) 
-        
-            process.stderr.on("data", (data) => { 
-                errorData += data;
-            }); 
-            
-            //@todo: add timeout timer
-            process.on('exit', code => { 
+            child_process.exec(cmd, function (error, stdout, stderr) { 
                 clearTimeout(timeout)
-                if (code !== 0 || errorData.length > 0) {
-                    reject(new Error(errorData))
-                }
-            
-                resolve(outputData)
-            })
-        })
 
+                if (error !== null) {
+                    reject(error)
+                }
+                resolve(stdout)
+            });
+        })
+    }
+
+    async runTestCase(cmd) {
+        let toRun = `cat ./tests/testCase.txt | ${cmd}`
+        await this.exec(toRun)
     }
 }
 
 class JavaRunner extends Runner {
-    constructor (code) {
-        super(code, 'java')
+    constructor (code, testCase) {
+        super(code, 'java', testCase)
     }
 
     async compile() {
-        return await super.exec('javac', this.file)
+        const cmd = `javac ${this.file}`
+        return await super.exec(cmd)
     }
 
     async run() {
-        return await super.exec('java', this.name)
+        const cmd = `java ${this.name}`
+        return await super.runTestCase(cmd)
     }
 }
 
 class PythonRunner extends Runner {
-    constructor (code) {
-        super(code, 'py')
+    constructor (code, testCase) {
+        super(code, 'py', testCase)
     }
 
     async compile() {
@@ -92,13 +90,14 @@ class PythonRunner extends Runner {
     }
 
     async run() {
-        return await super.exec('python3', this.file)
+        const cmd = `python3 ${this.file}`
+        return await super.runTestCase(cmd)
     }
 }
 
 class JavascriptRunner extends Runner {
-    constructor (code) {
-        super(code, 'js')
+    constructor (code, testCase) {
+        super(code, 'js', testCase)
     }
 
     async compile() {
@@ -106,13 +105,14 @@ class JavascriptRunner extends Runner {
     }
 
     async run() {
-        return await super.exec('node', this.file)
+        const cmd = `node ${this.file}`
+        return await super.runTestCase(cmd)
     }
 }
 
 class notRecognisedRunner extends Runner {
-    constructor (code) {
-        super(code, 'js')
+    constructor (code, testCase) {
+        super(code, 'js', testCase)
     }
 
     writeFile() {

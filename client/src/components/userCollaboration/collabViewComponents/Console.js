@@ -1,7 +1,7 @@
 import "./console.css";
 import { MdArrowDropUp } from "react-icons/md"
 
-const Console = ({ handleSubmitCode, handleShowConsole }) => {
+const Console = ({ handleSubmitCode, handleShowConsole, testCase, setTestCase }) => {
 
 
     return (
@@ -10,6 +10,13 @@ const Console = ({ handleSubmitCode, handleShowConsole }) => {
                 <p>Console</p>
                 <MdArrowDropUp className="arrow-up-icon"/>
             </div>
+
+            <textarea
+                className="field"
+                value={testCase}
+                placeholder="testcase to add"
+                onChange={e => setTestCase(e.target.value)}
+            />
 
             <button className="submit-code-button" onClick={handleSubmitCode}>
                 Submit

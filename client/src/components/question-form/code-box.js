@@ -20,7 +20,7 @@ const CodeBox = ({code, setCode, language, resetTrigger}) => {
     }, [language, resetTrigger])
 
     return (
-        <Editor className="editor " height={400} defaultLanguage="javascript"
+        <Editor className="editor " height={400} defaultLanguage="python"
         defaultValue="#Type your code here`"
         language={language}
         onMount={handleEditorDidMount}

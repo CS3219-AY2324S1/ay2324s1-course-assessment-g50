@@ -24,7 +24,7 @@ const TestCases = ({ testCases, setTestCases }) => {
     return (
         <div>
             <div className="row">
-                <h3>Testcases</h3>
+                <h3>Sample Testcases</h3>
                 <button className="addbtn" onClick={add}>+</button>
             </div>
 

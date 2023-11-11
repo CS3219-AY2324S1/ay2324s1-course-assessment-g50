@@ -9,7 +9,7 @@ const nameMap = {
 
 class PoolManager {
     constructor() {
-      this.containers = [...new Array(5)].map((e, i) => i.toString());
+      this.containers = [...new Array(10)].map((e, i) => i.toString());
       console.log(this.containers)
       this.channel = null; 
       this.init();

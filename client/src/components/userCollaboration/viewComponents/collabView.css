@@ -33,3 +33,8 @@
     right: 20px;
     position: absolute;
 }
+
+.testCase {
+    background-color: #E3D3D3;
+    padding: 10px 10px;
+}
