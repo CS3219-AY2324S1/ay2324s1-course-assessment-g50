@@ -96,3 +96,14 @@ export const getTotalQuestionCount = async () => {
     throw new Error(error.response.data.data);
   }
 }
+
+// For retrieving question details for both history and collaboration
+export const retrieveQuestionDetails = async (questionName) => {
+  try {
+    const response = await axios.get(baseUrl + "/" + questionName);
+    return response.data;
+
+  } catch (error) {
+    throw new Error(error);
+  }
+}

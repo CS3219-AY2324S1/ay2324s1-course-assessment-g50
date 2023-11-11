@@ -1,27 +1,31 @@
 import "./attemptView.css";
 import CodeEditor from "../collabViewComponents/CodeEditor";
 import LanguageSelector from "../collabViewComponents/LanguageSelector";
-import { retrieveQuestionDetailsAction } from "../../../reducers/matchingSlice";
-import { fetchQuestions } from "../../../reducers/questionSlice";
+import { fetchAttemptedQuestionDetails } from "../../../reducers/questionSlice";
 import { fetchUserAttemptDetailsAction } from "../../../reducers/userSlice";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";;
+import { useNavigate } from "react-router-dom";
+
+const LANGUAGES = {
+    PYTHON: 'python',
+    JAVA: 'java',
+    JAVASCRIPT: 'javascript',
+}
 
 /* Component which shows past attempts */
 const AttemptView = ({ questionName }) => {
     const [isEditorMounted, setIsEditorMounted] = useState(false);
 
-    const questionArr = useSelector(state => state.questions.questions);
-    const question = useSelector(state => state.matching.matchedQuestionDetails);
-    const savedCodeArr = useSelector(state => state.currentUser.attemptedQuestionDetails);
+    const question = useSelector(state => state.questions.attemptedQuestionDetails);
+    const savedCodeArr = useSelector(state => state.currentUser.questionAttemptsArray);
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     /* Props info for CodeEditor & InfoBar */
-    const [language, setLanguage] = useState("python");
+    const [language, setLanguage] = useState(LANGUAGES.PYTHON);
 
     const editorRef = useRef();
     
@@ -44,36 +48,38 @@ const AttemptView = ({ questionName }) => {
         if (attempt !== undefined) {
             editorRef.current.setValue(attempt.savedCode);
         } else {
-            editorRef.current.setValue("//code not found");
+            if (newLang === LANGUAGES.JAVA || newLang === LANGUAGES.JAVASCRIPT) {
+                editorRef.current.setValue("//No code attempt found");
+            } else {
+                editorRef.current.setValue("#No code attempt found");
+            }
         }
     }
 
     const goBack = () => {
-        navigate("/profile", {state: {isAccessedFromHistory: true}});
+        navigate("/profile", {state: { isAccessedFromHistory: true }});
     }
     
     // Gets the latest submission once the editor has mounted and the code attempts are retrieved
     useEffect(() => {
         if (savedCodeArr.length > 0 && isEditorMounted){
-            editorRef.current.setValue(savedCodeArr[0].savedCode);
-            setLanguage(savedCodeArr[0].codeLanguage);
+            const attempt = savedCodeArr.find(object => object.codeLanguage === LANGUAGES.PYTHON);
+            const userCode = attempt ? attempt.savedCode : "#No code attempt found"
+            editorRef.current.setValue(userCode);
+        } else if (isEditorMounted) {
+            editorRef.current.setValue("#No code attempt found");
         }
     }, [savedCodeArr, isEditorMounted]);
 
-    //retrieves the code based on the given questionName
+    // retrieves the code based on the given questionName
     useEffect(() => {
         dispatch(fetchUserAttemptDetailsAction({ questionName }));
     }, [])
 
+    // retrieves the attempted question details based on questionName
     useEffect(() => {
-        dispatch(fetchQuestions());
+        dispatch(fetchAttemptedQuestionDetails({ questionName }));
     }, [])
-
-    useEffect(() => {
-        if (questionArr.length > 0) {
-            dispatch(retrieveQuestionDetailsAction({ questionTitle:questionArr[0].title }));
-        }
-    }, [questionArr])
 
     return (
         <div className="attemptView">

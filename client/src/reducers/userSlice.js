@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo,updateUserBasicAvatarInfo, 
-    updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, fetchUserAttemptDetails } from "../services/user.service";
+    updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, fetchUserAttemptDetails,
+    updateAttemptQuestionName } from "../services/user.service";
 
 const initialState = {
     userId: null,
@@ -16,7 +17,7 @@ const initialState = {
     status: "idle",
     attemptedQuestionHistory: [],
     attemptedQuestionHistoryPageCount: 1,
-    attemptedQuestionDetails: [] //is an array of various attempts with different languages
+    questionAttemptsArray: [] //is an array of various attempts with different languages
 };
 
 const userSlice = createSlice({
@@ -106,7 +107,11 @@ const userSlice = createSlice({
         })
         .addCase(fetchUserAttemptDetailsAction.fulfilled, (state, action) => {
             state.status = "fetchAttemptDetailsSucessfully";
-            state.attemptedQuestionDetails = action.payload;
+            state.questionAttemptsArray = action.payload;
+        })
+        .addCase(updateAttemptQuestionNameAction.fulfilled, (state, action) => {
+            console.log("updated sucessfully question name");
+            state.status = "UpdateQuestionNameSucessfully";
         });
     },
 });
@@ -210,9 +215,18 @@ const fetchUserAttemptDetailsAction = createAsyncThunk(
     }
 )
 
+// updates the questions in histories db
+const updateAttemptQuestionNameAction = createAsyncThunk(
+    "user/updateUserHistoryQuestionName",
+    async ({ oldQuestionName, newQuestionName }) => {
+        await updateAttemptQuestionName(oldQuestionName, newQuestionName);
+        return;
+    }
+)
+
 export { loginAction, logoutAction, registerAction, selectIsLoggedIn, fetchUserDataAction, fetchUserAttemptHistoryAction,
     updateUserBasicInfoAction, updateUserAccountInfoAction, updateUserBasicAvatarInfoAction, deregisterUserAction, 
-    fetchUserAttemptHistoryPageCountAction, fetchUserAttemptDetailsAction };
+    fetchUserAttemptHistoryPageCountAction, fetchUserAttemptDetailsAction, updateAttemptQuestionNameAction };
 
 export const { resetStatus } = userSlice.actions;
 

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { matchWithUser, retrieveQuestionDetails } from "../services/matching.service";
+import { matchWithUser } from "../services/matching.service";
+import { retrieveQuestionDetails } from "../services/question.service";
 
 const initialState = {
   matchedId: null,
@@ -47,8 +48,8 @@ const establishingConnectionAction = createAsyncThunk(
 
 const retrieveQuestionDetailsAction = createAsyncThunk(
   "matchingServer/getQuestionDetails",
-  async ({ questionTitle }) => {
-    const response = await retrieveQuestionDetails(questionTitle);
+  async ({ questionName }) => {
+    const response = await retrieveQuestionDetails(questionName);
     return response.data;
   }
 )
