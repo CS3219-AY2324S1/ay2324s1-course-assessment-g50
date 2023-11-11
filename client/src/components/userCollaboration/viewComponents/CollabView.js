@@ -31,10 +31,14 @@ const CollabView = () => {
 
     // Handle language change
     useEffect(() => {
+        if (!question) {
+            return;
+        }
+
         if (editorRef.current !== undefined) {
             editorRef.current.setValue(userCode[language] || `#Type your code here`);
         }
-        setUserCode(question.templateCode || '')
+        setUserCode(question.templateCode || {})
     }, [language, question]);
 
     // Handle editor code change
@@ -54,8 +58,6 @@ const CollabView = () => {
     const getEditorCode = () => {
         return editorRef.current.getValue()
     }
-
-    const solutionCode = question.solutionCode['python']
 
     const handleLanguageChange = (event) => {
         const newLanguage = event.target.value
@@ -87,7 +89,7 @@ const CollabView = () => {
     useEffect(() => {
         if (questionArr.length > 0) {
             console.log(questionArr[0].title);
-            dispatch(retrieveQuestionDetailsAction({ questionTitle:questionArr[0].title }));
+            dispatch(retrieveQuestionDetailsAction({ questionName:questionArr[0].title }));
         }
     }, [questionArr])
 
@@ -109,7 +111,7 @@ const CollabView = () => {
             </div>              
             
             <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language} 
-                getEditorCode={getEditorCode} setUserCode={setUserCode} solutionCode={solutionCode} isReadMode={false}/>
+                getEditorCode={getEditorCode} setUserCode={setUserCode} isReadMode={false}/>
 
             <InfoBar matchInfo={matchInfo} selectedLanguage={language} handleLanguageChange={handleLanguageChange}/>
         </div>
