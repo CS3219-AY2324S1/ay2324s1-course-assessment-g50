@@ -1,11 +1,13 @@
 .body {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 50px;
 }
 
 .column {
   display: flex;
   flex-direction: column;
+  gap: 0px;
 }
 
 .left {
@@ -17,7 +19,6 @@
 }
 
 .field {
-  margin-bottom: 20px;
   padding: 10px 10px;
   width: 98%;
   font-size: 16px;
@@ -45,5 +46,41 @@
 }
 
 .btn:hover {
-  background-color: #ccffcc;
+  cursor: pointer;
+  background-color: rgb(50, 205, 50, 0.7);
+}
+
+.post-form {
+  width: 70%;
+  margin: auto;
+  padding-bottom: 10%;
+}
+
+.section-title {
+  font-weight: 500;
+}
+
+.editor {
+  border-radius: 8px;
+  background-color: white;
+  border: solid 3px #939393;
+}
+
+.solution {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.addbtn {
+  height: 50%;
+  aspect-ratio: 1;
+  border-radius: 50%;
 }

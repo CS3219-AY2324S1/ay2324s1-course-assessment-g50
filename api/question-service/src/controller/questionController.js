@@ -6,11 +6,11 @@ const question = require('../db/models/question');
 // Add question to repo
 async function addQuestion(req, res) {
     // Create a question model
-    const { title, description, categories, complexity } = req.body;
-    const newQuestion = new question({ title, description, categories, complexity });
+    const newQuestion = new question({ ...req.body });
+    console.log(newQuestion)
 
     // If question title already exists, return fail
-    const dbQuestion = await question.find({ title: title }).catch(err => {
+    const dbQuestion = await question.find({ title: req.body.title }).catch(err => {
         return JsonResponse.fail(500, err).send(res);
     });
     if (dbQuestion.length > 0) {

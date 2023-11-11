@@ -88,8 +88,9 @@ export const fetchQuestions = createAsyncThunk(
 
 export const addNewQuestion = createAsyncThunk(
   "posts/addNewQuestion",
-  async (formData) => {
-    const response = await addQuestionToRepo(formData);
+  async (allFields) => {
+    const {required, optionalFields } = allFields;
+    const response = await addQuestionToRepo(required, optionalFields);
     return response;
   }
 );

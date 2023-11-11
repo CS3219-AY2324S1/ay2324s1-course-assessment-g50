@@ -1,13 +1,16 @@
 require('dotenv').config()
 const express = require('express')
+const { testCode } = require('./controller/sandboxController')
 const app = express()
 
 // Middlewares
 app.use(express.json())
 
 // Routes:
-const routes = require('./routes/sandboxRoutes');
-app.use('/sandbox', routes)
+app.post('/sandbox', async (req, res) => {
+  testCode(req, res)
+})
+
 
 // Start the server
 async function startServer() {

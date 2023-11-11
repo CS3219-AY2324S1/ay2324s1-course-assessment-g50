@@ -34,6 +34,11 @@
     position: absolute;
 }
 
+.testCase {
+    background-color: #E3D3D3;
+    padding: 10px 10px;
+}
+
 .collab-view .return-icon:hover + .hover-text {
     visibility: visible;
     opacity: 1;
@@ -46,4 +51,3 @@
     right: 8px;
     opacity: 0;
 }
-

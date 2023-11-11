@@ -30,7 +30,7 @@ router.use(
 // Sandbox apis: 
 router.use(
   "/sandbox",
-  isExceptionApi(exceptionUserApis, [isLoggedInCheck]),
+  isLoggedInCheck,
   createProxyMiddleware({
     target: process.env.SANDBOX_SERVICE_URL,
     ...proxyOptions,
