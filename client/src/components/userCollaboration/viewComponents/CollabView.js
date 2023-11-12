@@ -23,30 +23,45 @@ const CollabView = () => {
 
     /* Props info for CodeEditor & InfoBar */
     const [language, setLanguage] = useState("python");
-    const [userCode, setUserCode] = useState('')
+    const [userCode, setUserCode] = useState(''); //used for tracking when changing languages
+    const [isEditorMounted, setIsEditorMounted] = useState(false);
     const matchInfo = useSelector(state => state.matching);
 
     const doc = new Y.Doc();
     const editorRef = useRef();
 
+    //setting of template code in userCode 
+    useEffect(() => {
+        setUserCode(question.templateCode || {});    
+    }, [question])
+
     // Handle language change
     useEffect(() => {
-        if (!question) {
-            return;
+        if (isEditorMounted) {
+            editorRef.current.setValue(userCode[language] || `#Type your code here`); 
         }
+    }, [language]);
 
-        if (editorRef.current !== undefined) {
-            editorRef.current.setValue(userCode[language] || `#Type your code here`);
+    /* Replace this logic by passing down the allocated question title
+    for both users to retrieve the question details */
+    useEffect(() => {
+        dispatch(fetchQuestions());
+    }, [])
+
+    useEffect(() => {
+        if (questionArr.length > 0) {
+            console.log(questionArr[0].title);
+            dispatch(retrieveQuestionDetailsAction({ questionName:questionArr[0].title }));
         }
-        setUserCode(question.templateCode || {})
-    }, [language, question]);
+    }, [questionArr])
 
     // Handle editor code change
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
-        if (question && question.templateCode !== undefined) {
-            editorRef.current.setValue(question.templateCode[language] || `#Type your code here`);
-        }
+        editorRef.current.setValue(""); //reseting the editor to remove any previous code
+        setIsEditorMounted(true); //set editor is mounted 
+
+        editorRef.current.setValue(question.templateCode[language] || `#Type your code here`); 
         
         // Code Collaboration part:
         const manacoText = doc.getText("manaco")
@@ -74,24 +89,10 @@ const CollabView = () => {
             setLanguage(languageText.toString());
         });
     }
-    /* ********************************************* */
 
     const goBack = () => {
         navigate(-1);
     }
-
-    /* Replace this logic by passing down the allocated question title
-    for both users to retrieve the question details */
-    useEffect(() => {
-        dispatch(fetchQuestions());
-    }, [])
-
-    useEffect(() => {
-        if (questionArr.length > 0) {
-            console.log(questionArr[0].title);
-            dispatch(retrieveQuestionDetailsAction({ questionName:questionArr[0].title }));
-        }
-    }, [questionArr])
 
     return (
         <div className="collab-view">
@@ -110,7 +111,7 @@ const CollabView = () => {
             <p className="hover-text">End Session</p>
             </div>              
             
-            <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language} 
+            <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language}
                 getEditorCode={getEditorCode} setUserCode={setUserCode} isReadMode={false}/>
 
             <InfoBar matchInfo={matchInfo} selectedLanguage={language} handleLanguageChange={handleLanguageChange}/>

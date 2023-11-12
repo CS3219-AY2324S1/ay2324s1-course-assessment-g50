@@ -5,8 +5,6 @@ import { fetchTargetUserData } from "./user.service";
 //Insert the matching route here
 const baseUrl = "http://localhost:5000/matching";
 
-const questionServiceUrl = "http://localhost:5000/questions";
-
 const controller = new AbortController();
 
 const cancelMatch = async () => {
