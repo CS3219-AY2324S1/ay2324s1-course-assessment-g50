@@ -14,7 +14,7 @@ const Console = ({ handleSubmitCode, handleShowConsole, testCase, setTestCase })
             <textarea
                 className="field"
                 value={testCase}
-                placeholder="testcase to add"
+                placeholder="Testcase to run"
                 onChange={e => setTestCase(e.target.value)}
             />
 
