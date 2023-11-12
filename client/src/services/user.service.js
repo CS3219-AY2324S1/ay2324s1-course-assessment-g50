@@ -142,6 +142,16 @@ const updateAttemptQuestionName = async (oldQuestionName, newQuestionName) => {
     }
 }
 
+const updateCodeAttempt = async (questionName, codeLanguage, savedCode) => {
+    try {
+        const response = await axios.post(baseUrl + "/history" + "/code" + `${questionName}`, { codeLanguage, savedCode });
+        return response.data.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to update user's code");
+    }
+}
+
 export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, 
     updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, 
-    fetchUserAttemptDetails, updateAttemptQuestionName }
+    fetchUserAttemptDetails, updateAttemptQuestionName, updateCodeAttempt }
