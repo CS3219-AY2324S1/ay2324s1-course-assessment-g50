@@ -36,13 +36,13 @@ router.use(
     })
 );
 
+// Communication apis: 
 router.use(
-  "/messages",
+  "/chat",
   isLoggedInCheck,
   createProxyMiddleware({
     target: process.env.COMMUNICATION_SERVICE_URL,
     ...proxyOptions,
   })
 )
-
 module.exports = router

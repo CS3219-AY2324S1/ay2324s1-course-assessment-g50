@@ -9,8 +9,8 @@ const sessionConfig = require('./configs/sessionConfigs');
 app.use(session(sessionConfig))
 
 // Routes:
-const routes = require('./routes/communicationRoutes');
-app.use('/messages', routes)
+const routes = require('./routes/routes');
+app.use('/chat', routes)
 
 // DB:
 const db = require('./db/mongodb');
@@ -29,5 +29,4 @@ async function startServer() {
     console.error('Error starting communication server: ', error)
   }
 }
-
 startServer()

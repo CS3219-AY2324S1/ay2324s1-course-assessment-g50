@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose the port that your Express app will listen on
-EXPOSE 8400
+EXPOSE 8200
 EXPOSE 8500
 
 # Define the command to start your Express server

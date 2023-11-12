@@ -1,16 +1,16 @@
 version: "3"
 
 services:
-  front-end:
-    container_name: front-end
-    build:
-      context: ./client/
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
-    volumes:
-      - ./client:/app
-      - /app/node_modules
+  # front-end:
+  #   container_name: front-end
+  #   build:
+  #     context: ./client/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./client:/app
+  #     - /app/node_modules
 
   api-gateway:
     container_name: api-gateway
@@ -59,21 +59,6 @@ services:
     env_file:
       - .env
 
-  collaboration-service:
-    container_name: collboration-service
-    build:
-      context: ./api/collaboration-service/
-      dockerfile: Dockerfile
-    ports:
-      - 8200:8200
-    depends_on:
-      mongodb:
-        condition: service_healthy
-    volumes:
-      - ./api/collaboration-service:/app
-    env_file:
-      - .env
-
   matching-service:
     container_name: matching-service
     build:
@@ -116,6 +101,30 @@ services:
       - ./api/communication-service:/app
     env_file:
       - .env
+
+  collaboration-socket:
+    container_name: collaboration-socket
+    build:
+      context: ./socket/collaboration-socket
+      dockerfile: Dockerfile
+    ports:
+      - 8200:8200
+    volumes:
+      - ./socket/collaboration-socket:/app
+    env_file:
+      - .env
+
+  communication-socket:
+    container_name: communication-socket
+    build:
+      context: ./socket/communication-socket
+      dockerfile: Dockerfile
+    ports:
+      - 8500:8500
+    volumes:
+      - ./socket/communication-socket:/app
+    env_file:
+      - .env      
       
   mysql:
     image: mysql
@@ -138,7 +147,7 @@ services:
     image: mongo
     restart: always
     volumes:
-      - question-service-db-data:/data/db
+      - mongodb-db-data:/data/db
     ports:
       - "27017:27017"
     healthcheck:

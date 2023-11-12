@@ -1,13 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addMessage, fetchMessages } from "../services/communication.service";
+import {
+    addMessage,
+    fetchMessages,
+    fetchConversations,
+} from "../services/communication.service";
 
 const initialState = {
     messages: [],
+    conversation: null,
     status: "idle",
 };
 
-const userSlice = createSlice({
-    name: "currentRoom",
+const communicationSlice = createSlice({
+    name: "communication",
     initialState,
     reducers: {
         resetStatus: (state) => {
@@ -23,10 +28,15 @@ const userSlice = createSlice({
                 state.status = "succeeded";
                 state.messages = action.payload;
             })
+            .addCase(fetchConversationsAction.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.conversation = action.payload;
+            });
     },
 });
 
-export const selectAllMessages = (state) => state.currentRoom.messages;
+export const selectAllMessages = (state) => state.communication.messages;
+export const selectCurrentConversation = (state) =>state.communication.conversation;
 
 const addMessageAction = createAsyncThunk(
     "communication/addMessage",
@@ -38,14 +48,26 @@ const addMessageAction = createAsyncThunk(
 
 const fetchMessageAction = createAsyncThunk(
     "communication/fetchMessage",
-    async () => {
-        const response = await fetchMessages();
-        return response.data
+    async (conversationId) => {
+        const response = await fetchMessages(conversationId);
+        return response.data;
     }
-)
+);
 
-export { addMessageAction };
+const fetchConversationsAction = createAsyncThunk(
+    "communication/fetchConversations",
+    async (matchId) => {
+        const response = await fetchConversations(matchId);
+        return response.data;
+    }
+);
 
-export const { resetStatus } = userSlice.actions;
+export {
+    addMessageAction,
+    fetchMessageAction,
+    fetchConversationsAction,
+};
 
-export default userSlice.reducer;
+export const { resetStatus } = communicationSlice.actions;
+
+export default communicationSlice.reducer;

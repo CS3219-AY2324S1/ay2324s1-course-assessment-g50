@@ -1,4 +1,5 @@
 .collab-view {
+    position: relative;
     display: flex;
     height: 100vh;
     max-width: 100vw;
@@ -32,4 +33,37 @@
     top: 20px;
     right: 20px;
     position: absolute;
+}
+
+.chat-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgb(50, 205, 50);
+    color: #fff;
+    border: none;
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.chat-button:hover {
+    background-color: rgb(50, 205, 50, 0.7);
+}
+
+.chat-box {
+    position: fixed;
+    height: 60vh;
+    width: 35vh;
+    bottom: 100px;
+    right: 10px;
+    z-index: 2;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Box shadow */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Border */
+    border-radius: 8px; /* Border radius */
 }
