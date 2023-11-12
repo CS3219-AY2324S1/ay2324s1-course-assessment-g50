@@ -37,6 +37,7 @@ export const addQuestionToRepo = async (formData) => {
     const response = await axios.post(baseUrl, formData);
     return response.data.data;
   } catch (error) {
+    console.error("There was an error deleting the question:", error);
     const msg = error.response.data.data || error.response.statusText;
     throw new Error(msg);
   }

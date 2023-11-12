@@ -15,7 +15,7 @@ const App = () => (
   <Router>
     <Alerts />
     <Routes>
-      <Route path="/" element={<PrivateRoute component={Question}/>} />
+      <Route path="/" element={<Question/>} />
       <Route path="/login" element={<UserProfileManager />} />
       <Route path="/profile" element={<PrivateRoute component={Profile}/>} />
     </Routes>

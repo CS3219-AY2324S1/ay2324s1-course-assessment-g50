@@ -19,10 +19,14 @@ const QuestionTable = () => {
 
   /* Try and retrieve data whenever page is rendered */
   useEffect(() => {
-    if (status === 'idle' || status === 'outdated') {
+      dispatch(fetchQuestions());
+  }, [])
+
+  useEffect(() => {
+    if (status === 'outdated') {
       dispatch(fetchQuestions());
     }
-  }, [status])
+}, [status])
 
   return (
     <div className="post-form">

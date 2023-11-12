@@ -45,13 +45,14 @@ const ReadOnlyRow = ({
 	}
 
 	const changeToEditMode = () => {
-		console.log(userRole);
-		if (userRole === "admin") {
-			setReadOnly(false);
+		setReadOnly(false);
 			AlertNotification.info(INFO_CLOSING_RULE).notify(dispatch);
-		} else {
-			AlertNotification.error(NOT_AUTHORISED).notify(dispatch);
-		}
+		// if (userRole === "admin") {
+			
+		// } 
+		// else {
+		// 	AlertNotification.error(NOT_AUTHORISED).notify(dispatch);
+		// }
 	};
 
 	return (
