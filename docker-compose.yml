@@ -1,16 +1,16 @@
 version: "3"
 
 services:
-  # front-end:
-  #   container_name: front-end
-  #   build:
-  #     context: ./client/
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - ./client:/app
-  #     - /app/node_modules
+  front-end:
+    container_name: front-end
+    build:
+      context: ./client/
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/app
+      - /app/node_modules
 
   api-gateway:
     container_name: api-gateway
