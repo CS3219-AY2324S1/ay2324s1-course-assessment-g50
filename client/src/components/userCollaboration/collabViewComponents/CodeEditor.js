@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { updateCodeAttempt } from "../../../services/user.service.js";
 import "./codeEditor.css";
 import Console from "./Console";
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
@@ -42,6 +43,9 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, setUserCode
     const handleSubmitCode = async () => {
         const editorCode = getEditorCode();
 
+        //saves the code attempt
+        updateCodeAttempt(question.title, language, editorCode);
+
         if (testCase === '') {
             AlertNotification.error("Please provide a test to run").notify(dispatch);
             return
@@ -75,7 +79,7 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, setUserCode
                     onChange={handleEditorChange}
                     options={{
                         scrollBeyondLastLine: false,
-                        fontSize: "14px",
+                        fontSize: "16px",
                         minimap: {
                             enabled: false,
                         },

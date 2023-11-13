@@ -2,6 +2,7 @@ import "./collabView.css";
 import CodeEditor from "../collabViewComponents/CodeEditor";
 import InfoBar from "../collabViewComponents/InfoBar";
 import { retrieveQuestionDetailsAction } from "../../../reducers/matchingSlice";
+import { updateUserAttemptHistory } from "../../../services/user.service";
 import { fetchQuestions } from "../../../reducers/questionSlice";
 import { useEffect, useState, useRef } from "react";
 import { WebsocketProvider } from 'y-websocket';
@@ -49,7 +50,9 @@ const CollabView = () => {
 
     //setting of template code in userCode 
     useEffect(() => {
-        setUserCode(question.templateCode || {});    
+        if (question) {
+            setUserCode(question.templateCode || {});  
+        }
     }, [question])
 
     // Handle language change
@@ -66,10 +69,13 @@ const CollabView = () => {
         dispatch(fetchQuestions());
     }, [])
 
+
     useEffect(() => {
+        const currQuestionName = questionArr[0].title;
         if (questionArr.length > 0) {
-            console.log(questionArr[0].title);
-            dispatch(retrieveQuestionDetailsAction({ questionName:questionArr[0].title }));
+            console.log(currQuestionName);
+            updateUserAttemptHistory(currQuestionName, "attempt");
+            dispatch(retrieveQuestionDetailsAction({ questionName: currQuestionName }));
         }
     }, [questionArr])
 
@@ -78,8 +84,10 @@ const CollabView = () => {
         editorRef.current = editor;
         editorRef.current.setValue(""); //reseting the editor to remove any previous code
         setIsEditorMounted(true); //set editor is mounted 
-
-        editorRef.current.setValue(question.templateCode[language] || `#Type your code here`); 
+        
+        if (question) {
+            editorRef.current.setValue(question.templateCode[language] || `#Type your code here`); 
+        }
         
         // Code Collaboration part:
         const manacoText = doc.getText("manaco")
@@ -111,19 +119,6 @@ const CollabView = () => {
     const goBack = () => {
         navigate(-1);
     }
-
-
-    /* For testing purposes to retrieve questions data on refresh since no way to get to this page from the home page */
-    useEffect(() => {
-        dispatch(fetchQuestions());
-    }, [])
-
-    useEffect(() => {
-        if (questionArr.length > 0) {
-            console.log(questionArr[0]._id)
-            dispatch(retrieveQuestionDetailsAction({ questionID: questionArr[0]._id }));
-        }
-    }, [questionArr])
 
     /* Chat button to toggle chatbox. */
     const [isChatOpen, setIsChatOpen] = useState(false);
@@ -164,7 +159,7 @@ const CollabView = () => {
             <BsArrowLeftSquareFill onClick={() => goBack()} className="return-icon"/>
             <p className="hover-text">End Session</p>
             </div>              
-            <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language}
+            <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language} 
                 getEditorCode={getEditorCode} setUserCode={setUserCode} isReadMode={false}/>
             <InfoBar matchInfo={matchInfo} selectedLanguage={language} handleLanguageChange={handleLanguageChange} />
             <div className="chat-button">

@@ -144,7 +144,7 @@ const updateAttemptQuestionName = async (oldQuestionName, newQuestionName) => {
 
 const updateCodeAttempt = async (questionName, codeLanguage, savedCode) => {
     try {
-        const response = await axios.post(baseUrl + "/history" + "/code" + `${questionName}`, { codeLanguage, savedCode });
+        const response = await axios.post(baseUrl + "/history" + "/code" + `/${questionName}`, { codeLanguage, savedCode });
         return response.data.data;
     } catch (error) {
         console.log(error);
@@ -152,6 +152,18 @@ const updateCodeAttempt = async (questionName, codeLanguage, savedCode) => {
     }
 }
 
+//Sets the question to attempted in the user's history
+const updateUserAttemptHistory = async (questionName, attemptStatus) => {
+    try {
+        const response = await axios.post(baseUrl + "/history" + "/attempt" + `/${questionName}`, { attemptStatus });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Failed to update question name in user history");
+    }
+}
+
+
 export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, 
     updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, 
-    fetchUserAttemptDetails, updateAttemptQuestionName, updateCodeAttempt }
+    fetchUserAttemptDetails, updateAttemptQuestionName, updateCodeAttempt, updateUserAttemptHistory }
