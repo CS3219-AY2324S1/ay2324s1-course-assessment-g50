@@ -34,7 +34,7 @@ const AttemptHistory = () => {
 
     //use to navigate to attempt and retrieve past attempts 
     const handleQuestionOnClick = (questionName) => {
-        navigate("/solve-question", { state: { isAccessedFromHistory: true, questionName: questionName}})
+        navigate("/profile/" + questionName)
     }
 
     return (

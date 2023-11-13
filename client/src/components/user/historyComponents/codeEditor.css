@@ -1,0 +1,31 @@
+.code-container-2 {
+  flex: 3 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.console-result {
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  max-height: 0;
+}
+
+.visible {
+  max-height: 100px;
+  background-color: white;
+  padding: 30px 20px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.editor {
+  border-radius: 8px;
+  padding: 10px;
+  background-color: white;
+}
+
+p {
+  white-space: pre-wrap;
+}
