@@ -14,7 +14,7 @@ import { Button } from '@mui/material';
 import { io } from "socket.io-client";
 import Chat from "../../chatbox/Chat";
 import { fetchUserDataAction } from "../../../reducers/userSlice";
-import { serverWsUrl } from "../../../urls";
+import { serverWsUrl, communicationSocketUrl } from "../../../urls";
 
 /* Component which shows the collaboration view */
 const CollabView = () => {
