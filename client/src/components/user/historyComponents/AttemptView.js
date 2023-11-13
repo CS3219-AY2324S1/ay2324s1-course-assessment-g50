@@ -1,6 +1,6 @@
 import "./attemptView.css";
-import CodeEditor from "../collabViewComponents/CodeEditor";
-import LanguageSelector from "../collabViewComponents/LanguageSelector";
+import CodeEditor from "./CodeEditor";
+import LanguageSelector from "../../userCollaboration/collabViewComponents/LanguageSelector";
 import { fetchAttemptedQuestionDetails } from "../../../reducers/questionSlice";
 import { fetchUserAttemptDetailsAction } from "../../../reducers/userSlice";
 import { useEffect, useState, useRef } from "react";
@@ -35,10 +35,23 @@ const AttemptView = ({ questionName }) => {
         setIsEditorMounted(true);
     }
 
-    // Handle editor code submission
-    const getEditorCode = () => {
-        return editorRef.current.getValue()
-    }
+    // Gets the latest submission once the editor has mounted and the code attempts are retrieved
+    useEffect(() => {
+        if (savedCodeArr.length > 0 && isEditorMounted){
+            const attempt = savedCodeArr.find(object => object.codeLanguage === LANGUAGES.PYTHON);
+            const userCode = attempt ? attempt.savedCode : "#No code attempt found"
+            editorRef.current.setValue(userCode);
+        } else if (isEditorMounted) {
+            editorRef.current.setValue("#No code attempt found");
+        }
+    }, [savedCodeArr, isEditorMounted]);
+
+    // retrieves the code based on the given questionName from route
+    // and also retrieves the various attempts of the user in different languages
+    useEffect(() => {
+        dispatch(fetchUserAttemptDetailsAction({ questionName }));
+        dispatch(fetchAttemptedQuestionDetails({ questionName }));
+    }, []);
 
     // Searches through the array of attempts to check if there was an attempt made in that language else it leaves a comment
     const handleLanguageChange = (event) => {
@@ -59,27 +72,6 @@ const AttemptView = ({ questionName }) => {
     const goBack = () => {
         navigate("/profile", {state: { isAccessedFromHistory: true }});
     }
-    
-    // Gets the latest submission once the editor has mounted and the code attempts are retrieved
-    useEffect(() => {
-        if (savedCodeArr.length > 0 && isEditorMounted){
-            const attempt = savedCodeArr.find(object => object.codeLanguage === LANGUAGES.PYTHON);
-            const userCode = attempt ? attempt.savedCode : "#No code attempt found"
-            editorRef.current.setValue(userCode);
-        } else if (isEditorMounted) {
-            editorRef.current.setValue("#No code attempt found");
-        }
-    }, [savedCodeArr, isEditorMounted]);
-
-    // retrieves the code based on the given questionName
-    useEffect(() => {
-        dispatch(fetchUserAttemptDetailsAction({ questionName }));
-    }, [])
-
-    // retrieves the attempted question details based on questionName
-    useEffect(() => {
-        dispatch(fetchAttemptedQuestionDetails({ questionName }));
-    }, [])
 
     return (
         <div className="attemptView">
@@ -95,10 +87,10 @@ const AttemptView = ({ questionName }) => {
             <p className="hover-text">Back</p>
             </div>
 
-            <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language} getEditorCode={getEditorCode} isReadMode={true}/>
+            <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language} isReadMode={true}/>
 
-            <div className="info-bar-container">
-                <div className="language-selector">
+            <div className="info-bar-container-2">
+                <div className="language-selector-2">
                     <LanguageSelector selectedLanguage={language} handleLanguageChange={handleLanguageChange} />
                 </div>
             </div>
