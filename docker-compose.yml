@@ -133,6 +133,51 @@ services:
       - .env
     networks:
       - default
+
+  communication-service:
+    container_name: communication-service
+    build:
+      context: ./api/communication-service/
+      dockerfile: Dockerfile
+    ports:
+      - 8400:8400
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./api/communication-service:/app
+    env_file:
+      - .env
+    networks:
+      - default
+      
+  collaboration-socket:
+    container_name: collaboration-socket
+    build:
+      context: ./socket/collaboration-socket
+      dockerfile: Dockerfile
+    ports:
+      - 8200:8200
+    volumes:
+      - ./socket/collaboration-socket:/app
+    env_file:
+      - .env
+    networks:
+      - default
+      
+  communication-socket:
+    container_name: communication-socket
+    build:
+      context: ./socket/communication-socket
+      dockerfile: Dockerfile
+    ports:
+      - 8500:8500
+    volumes:
+      - ./socket/communication-socket:/app
+    env_file:
+      - .env      
+    networks:
+      - default
       
   mysql:
     image: mysql
@@ -157,7 +202,7 @@ services:
     image: mongo
     restart: always
     volumes:
-      - question-service-db-data:/data/db
+      - mongodb-db-data:/data/db
     ports:
       - "27017:27017"
     healthcheck:
@@ -184,7 +229,7 @@ services:
 
 volumes:
   user-service-db-data:
-  question-service-db-data:     
+  mongodb-db-data:     
 
 networks:
   default:

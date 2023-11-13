@@ -6,7 +6,7 @@ const InfoBar = ({ matchInfo, selectedLanguage, handleLanguageChange }) => {
 
     return (
         <div className="info-bar-container">
-            <div className="match-info">{`MatchID: ${matchInfo.matchedId}`}</div>
+            <div className="match-info">{`MatchID: ${matchInfo.matchId}`}</div>
             <div className="language-selector">
                 <LanguageSelector selectedLanguage={selectedLanguage} handleLanguageChange={handleLanguageChange} />
             </div>

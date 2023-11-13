@@ -3,6 +3,7 @@ import questionReducer from "./reducers/questionSlice";
 import userReducer from "./reducers/userSlice";
 import alertsReducer from "./reducers/alertSlice";
 import matchingReducer from "./reducers/matchingSlice";
+import communicationReducer from "./reducers/communicationSlice"
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     alerts: alertsReducer,
     currentUser: userReducer,
     matching: matchingReducer,
+    communication: communicationReducer,
   },
 });
