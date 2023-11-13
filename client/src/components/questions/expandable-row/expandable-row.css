@@ -10,6 +10,10 @@ pre {
   font-size: 16px;
 }
 
+.userCols {
+  width: 22.5%;
+}
+
 .textbox {
   margin-bottom: 20px;
   padding: 10px 10px;

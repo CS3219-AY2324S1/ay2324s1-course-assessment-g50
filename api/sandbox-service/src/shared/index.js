@@ -4,7 +4,7 @@ const JsonResponse = require('./jsonResponse')
 const fs = require('fs')
 
 const app = express();
-const port = 8500;
+const port = 9000;
 
 // Middlewares
 app.use(express.json())
@@ -36,5 +36,5 @@ app.post('/', async (req, res) => {
 })
 
 app.listen(port, function () {
-	console.log('Container service running on port 8500');
+	console.log('Container service running on port 9000');
 })

@@ -16,7 +16,7 @@ const Spinner = () => {
     )
 }
 
-const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, setUserCode, isReadMode}) => {
+const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, isReadMode}) => {
     const [isShowConsole, setIsShowConsole] = useState(false);
     const [result, setResult] = useState({});
     const [testCase, setTestCase] = useState('');
@@ -31,19 +31,12 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, setUserCode
         setIsShowConsole(!isShowConsole);
     }
 
-    function handleEditorChange(value, event) {
-        // here is the current value
-        setUserCode(prev => {
-          return {...prev, [language]: value}
-        })
-        console.log('changed')
-      }
-
     const handleSubmitCode = async () => {
         const editorCode = getEditorCode();
 
         if (testCase === '') {
             AlertNotification.error("Please provide a test to run").notify(dispatch);
+            console.log('empty')
             return
         }
 
@@ -72,7 +65,6 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, setUserCode
                 <Editor className="editor" height="99%" defaultLanguage="python"
                     language={language}
                     onMount={handleEditorDidMount}
-                    onChange={handleEditorChange}
                     options={{
                         scrollBeyondLastLine: false,
                         fontSize: "14px",

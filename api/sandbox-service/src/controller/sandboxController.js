@@ -37,7 +37,7 @@ const runCode = async (code, language, testCase) => {
       const data = await new Promise((resolve, reject) => {
         setTimeout(async () => {
           try {
-            const baseUrl = `http://${containerName}:8500/`;
+            const baseUrl = `http://${containerName}:9000/`;
             const response = await axios.post(baseUrl, { language, code, testCase });
             resolve(response.data.data); // Resolve the promise with the data
           } catch (error) {

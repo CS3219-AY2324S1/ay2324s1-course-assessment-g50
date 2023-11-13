@@ -18,6 +18,7 @@ const QuestionTable = () => {
   const status = useSelector((state) => state.questions.status);
   const questions = useSelector(selectAllQuestions);
   const filters = useSelector(selectFilters);
+  const userRole = useSelector(state => state.currentUser.userRole);
   
   /* Try and retrieve data whenever page is rendered */
   useEffect(() => {
@@ -49,7 +50,7 @@ const QuestionTable = () => {
               <TableCell align="left">Title</TableCell>
               <TableCell align="left">Category</TableCell>
               <TableCell align="left">Complexity</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              {userRole === 'admin' && <TableCell align="left">Actions</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
