@@ -1,4 +1,5 @@
 import axios from "axios";
+import { chatbaseUrl } from "../../../urls";
 
 /* 
 Message service interects with backend API -> saves to reducer
@@ -11,7 +12,7 @@ axios response: {
   }
 }
 */
-const baseUrl = "http://localhost:5000/chat";
+const baseUrl = chatbaseUrl;
 
 export const addMessage = async (message) => {
     try {

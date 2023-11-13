@@ -210,6 +210,20 @@ services:
     networks:
       - default
 
+  nginx:
+    image: nginx
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    networks:
+      - default
+    depends_on:
+      - front-end
+      - api-gateway
+      - user-service
+
 volumes:
   user-service-db-data:
   mongodb-db-data:     

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { sandboxBaseUrl } from "../../../urls";
 
 /* 
 Question service interects with backend API -> saves to reducer
@@ -11,7 +12,7 @@ axios response: {
   }
 }
 */
-const baseUrl = "http://localhost:5000/sandbox";
+const baseUrl = sandboxBaseUrl;
 
 const runCode = async (runInfo) => {
     try {

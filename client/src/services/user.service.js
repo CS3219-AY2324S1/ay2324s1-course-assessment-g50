@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { userBaseUrl } from '../../../urls';
+
 // User service interects with backend API -> saves to reducer
 
-const baseUrl = 'http://localhost:5000/users';
+const baseUrl = userBaseUrl;
 
 const loginUser = async (email, password) => {
     try {

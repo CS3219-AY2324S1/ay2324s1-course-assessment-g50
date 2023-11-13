@@ -1,4 +1,5 @@
 import axios from "axios";
+import { questionBaseUrl } from "../../../urls";
 
 /* 
 Question service interects with backend API -> saves to reducer
@@ -11,7 +12,7 @@ axios response: {
   }
 }
 */
-const baseUrl = "http://localhost:5000/questions";
+const baseUrl = questionBaseUrl;
 
 const isFormValid = (formData) => {
   const noneEmpty = Object.values(formData).every(

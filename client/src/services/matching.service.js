@@ -1,10 +1,11 @@
 import axios from "axios";
 import { addConversation } from "./communication.service";
 import { fetchTargetUserData } from "./user.service";
+import { matchingBaseUrl } from "../../../urls";
 
 
 //Insert the matching route here
-const baseUrl = "http://localhost:5000/matching";
+const baseUrl = matchingBaseUrl;
 
 const controller = new AbortController();
 
