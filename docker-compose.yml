@@ -67,23 +67,6 @@ services:
     networks:
       - default
 
-  collaboration-service:
-    container_name: collboration-service
-    build:
-      context: ./api/collaboration-service/
-      dockerfile: Dockerfile
-    ports:
-      - 8200:8200
-    depends_on:
-      mongodb:
-        condition: service_healthy
-    volumes:
-      - ./api/collaboration-service:/app
-    env_file:
-      - .env
-    networks:
-      - default
-
   matching-service:
     container_name: matching-service
     build:
@@ -140,7 +123,7 @@ services:
       context: ./api/communication-service/
       dockerfile: Dockerfile
     ports:
-      - 8400:8400
+      - 8600:8600
     depends_on:
       mongodb:
         condition: service_healthy
