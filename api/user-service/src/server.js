@@ -9,8 +9,12 @@ const session = require('express-session');
 const sessionConfig = require('./configs/sessionConfigs');
 app.use(session(sessionConfig));
 
-// Enable CORS for all routes
-app.use(cors());
+// Enable CORS for a specific origin
+app.use(cors({
+  origin: 'http://35.198.214.47:3000',
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+}));
+
 
 // Routes
 const routes = require('./routes/userRoutes');
