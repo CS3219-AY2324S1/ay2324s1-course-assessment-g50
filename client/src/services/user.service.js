@@ -4,6 +4,7 @@ import { userBaseUrl } from '../urls';
 // User service interects with backend API -> saves to reducer
 
 const baseUrl = userBaseUrl;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://35.198.214.47:3000';
 
 const loginUser = async (email, password) => {
     try {
