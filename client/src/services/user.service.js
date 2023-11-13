@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { userBaseUrl } from '../../../urls';
+import { userBaseUrl } from '../urls';
 
 // User service interects with backend API -> saves to reducer
 

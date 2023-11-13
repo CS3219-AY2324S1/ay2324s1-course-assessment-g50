@@ -1,5 +1,5 @@
 import axios from "axios";
-import { sandboxBaseUrl } from "../../../urls";
+import { sandboxBaseUrl } from "../urls";
 
 /* 
 Question service interects with backend API -> saves to reducer

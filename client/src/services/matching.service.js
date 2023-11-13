@@ -1,7 +1,7 @@
 import axios from "axios";
 import { addConversation } from "./communication.service";
 import { fetchTargetUserData } from "./user.service";
-import { matchingBaseUrl } from "../../../urls";
+import { matchingBaseUrl } from "../urls";
 
 
 //Insert the matching route here

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { chatbaseUrl } from "../../../urls";
+import { chatbaseUrl } from "../urls";
 
 /* 
 Message service interects with backend API -> saves to reducer
