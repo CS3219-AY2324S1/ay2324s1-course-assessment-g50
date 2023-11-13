@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import Register from "./authentication/Register";
-import Login from "./authentication/Login";
+import Register from "./authViewComponents/Register";
+import Login from "./authViewComponents/Login";
 import "./userAuthentication.css";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';

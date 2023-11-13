@@ -43,10 +43,11 @@ const buildFilteredURL = (filters) => {
   return filteredURL;
 }
 
-export const addQuestionToRepo = async (formData) => {
+export const addQuestionToRepo = async (formData, optionalFields) => {
   isFormValid(formData);
   try {
-    const response = await axios.post(baseUrl, formData);
+    const fullForm = {...formData, ...optionalFields};
+    const response = await axios.post(baseUrl, fullForm);
     return response.data.data;
   } catch (error) {
     const msg = error.response.data.data || error.response.statusText;
@@ -94,5 +95,17 @@ export const getTotalQuestionCount = async () => {
   } catch (error) {
     console.error("There was an error retrieving the question count: ", error);
     throw new Error(error.response.data.data);
+  }
+}
+
+// For retrieving question details for both history and collaboration
+export const retrieveQuestionDetails = async (questionName) => {
+  try {
+    console.log(questionName)
+    const response = await axios.get(baseUrl + "/" + questionName);
+    return response.data;
+
+  } catch (error) {
+    throw new Error(error);
   }
 }

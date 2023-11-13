@@ -6,11 +6,11 @@ const question = require('../db/models/question');
 // Add question to repo
 async function addQuestion(req, res) {
     // Create a question model
-    const { title, description, categories, complexity } = req.body;
-    const newQuestion = new question({ title, description, categories, complexity });
+    const newQuestion = new question({ ...req.body });
+    console.log(newQuestion)
 
     // If question title already exists, return fail
-    const dbQuestion = await question.find({ title: title }).catch(err => {
+    const dbQuestion = await question.find({ title: req.body.title }).catch(err => {
         return JsonResponse.fail(500, err).send(res);
     });
     if (dbQuestion.length > 0) {
@@ -23,6 +23,18 @@ async function addQuestion(req, res) {
     }).catch(err => {
         return JsonResponse.fail(500, err).send(res);
     });
+}
+
+async function getQuestion(req, res) {
+    const questionTitle = req.params.questionTitle;
+    console.log(questionTitle);
+    try {
+        const questionDetails = await question.findOne({ title: questionTitle });
+        return JsonResponse.success(200, questionDetails).send(res);
+    } catch (error) {
+        console.log(error);
+        return JsonResponse.fail(500, error).send(res);
+    }
 }
 
 // Get questions by filter
@@ -130,4 +142,4 @@ async function getTotalQuestionCount(req, res) {
     }
 }
 
-module.exports = { addQuestion, getQuestions, getTotalQuestionCount, updateQuestion, deleteQuestion };
+module.exports = { addQuestion, getQuestion, getQuestions, getTotalQuestionCount, updateQuestion, deleteQuestion };

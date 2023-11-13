@@ -27,6 +27,16 @@ router.use(
   })
 );
 
+// Sandbox apis: 
+router.use(
+  "/sandbox",
+  isLoggedInCheck,
+  createProxyMiddleware({
+    target: process.env.SANDBOX_SERVICE_URL,
+    ...proxyOptions,
+  })
+);
+
 router.use(
     "/matching",
     isLoggedInCheck,

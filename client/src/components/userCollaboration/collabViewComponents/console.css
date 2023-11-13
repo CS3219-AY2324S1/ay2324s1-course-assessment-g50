@@ -6,6 +6,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: white;
+    gap: 30px;
 }
 
 .console-container > p {
@@ -17,21 +18,13 @@
 
 
 .submit-code-button {
-    padding: 5px 15px;
-    min-width: 100px;
-    display: flex;
-    align-items: center;
-    border-radius: 8px;
-    background-color: rgba(50, 205, 50);
-}
-
-.submit-code-button > p {
-    width: 100%;
-    font-weight: 600;
-    text-align: center;
-    font-size: 16px;
-    margin: 0;
-    color: white;
+    padding: 15px;
+    border-radius: 20px;
+    border-style: hidden;
+    background-color: #8ddb8d;
+    font-size: 14px;
+    width: max-content;
+    color:black;
 }
 
 .show-console-button {

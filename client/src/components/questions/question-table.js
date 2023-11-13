@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchQuestions, fetchTotalQuestionCount, selectAllQuestions, selectFilters, } from "../../../reducers/questionSlice.js";
-import UserAvatar from "../../user/userProfile/userAvatar.js";
-import "../questions.css";
-import ExpandableRow from "../expandable-row/expandable-row";
+import { fetchQuestions, fetchTotalQuestionCount, selectAllQuestions, selectFilters, } from "../../reducers/questionSlice.js";
+import "./questions.css";
+import ExpandableRow from "./expandable-row/expandable-row.js";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,8 +10,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import QuestionFilterBar from "../question-filter/question-filter-bar.js";
-import QuestionPageBar from "../question-filter/filter-componets/question-page-bar.js";
+import QuestionFilterBar from "./question-filter/question-filter-bar.js";
+import QuestionPageBar from "./question-filter/filter-componets/question-page-bar.js";
 
 const QuestionTable = () => {
   const dispatch = useDispatch();
@@ -40,7 +39,6 @@ const QuestionTable = () => {
         <p className="section-title">
           Question Table
         </p>
-        <UserAvatar />
       </div>
 
       <TableContainer component={Paper}>

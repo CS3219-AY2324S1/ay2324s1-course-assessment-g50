@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { updateFilter } from '../../../reducers/questionSlice';
 import QuestionSearchBar from '../question-filter/filter-componets/question-search-bar'
 import { Autocomplete, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { category_list } from '../question-form/multi-select';
+import { category_list } from '../../question-form/multi-select';
 import './question-filter-bar.css'
 
 const QuestionFilterBar = () => {

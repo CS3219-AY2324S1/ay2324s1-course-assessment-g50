@@ -1,7 +1,7 @@
 import "./accountInfo.css";
 import { useState, useEffect } from "react";
-import Property from "./Property";
-import { updateUserAccountInfoAction, deregisterUserAction } from "../../../../reducers/userSlice.js";
+import Property from "../profileComponents/Property";
+import { updateUserAccountInfoAction, deregisterUserAction } from "../../../reducers/userSlice.js";
 import { MdDeleteForever } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 
