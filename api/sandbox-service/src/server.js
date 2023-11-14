@@ -1,10 +1,12 @@
 require('dotenv').config()
 const express = require('express')
+const cors = require('cors');
 const { testCode } = require('./controller/sandboxController')
 const app = express()
 
 // Middlewares
 app.use(express.json())
+app.use(cors)
 
 // Routes:
 app.post('/sandbox', async (req, res) => {
