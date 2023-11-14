@@ -5,24 +5,6 @@ import { useTheme } from "@mui/material/styles";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
-const category_list = [
-  "Algorithms", "Array", "String", "Hash Table", "Math", "Data Structures", "Dynamic Programming", "Sorting", 
-  "Greedy", "Depth-First Search", "Binary Search", "Database", "Breadth-First Search", 
-  "Tree", "Matrix", "Two Pointers", "Binary Tree", "Bit Manipulation", 
-  "Heap (Priority Queue)", "Stack", "Prefix Sum", "Graph", "Simulation", 
-  "Design", "Counting", "Backtracking", "Sliding Window", "Union Find", 
-  "Linked List", "Ordered Set", "Enumeration", "Monotonic Stack", "Trie", 
-  "Recursion", "Divide and Conquer", "Bitmask", "Number Theory", "Queue", 
-  "Binary Search Tree", "Segment Tree", "Memoization", "Geometry", "Topological Sort", 
-  "Binary Indexed Tree", "Hash Function", "Game Theory", "Shortest Path", "Combinatorics", 
-  "Interactive", "String Matching", "Data Stream", "Rolling Hash", "Brainteaser", 
-  "Randomized", "Monotonic Queue", "Merge Sort", "Iterator", "Concurrency", 
-  "Doubly-Linked List", "Probability and Statistics", "Quickselect", "Bucket Sort", 
-  "Suffix Array", "Minimum Spanning Tree", "Counting Sort", "Shell", "Line Sweep", 
-  "Reservoir Sampling", "Strongly Connected", "Component", "Eulerian Circuit", 
-  "Radix Sort", "Rejection Sampling", "Biconnected Component"
-];
-
 const ITEM_HEIGHT = 30;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -34,16 +16,7 @@ const MenuProps = {
   },
 };
 
-function getStyles(cat, catList, theme) {
-  return {
-    fontWeight:
-      catList.indexOf(cat) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
-const MultipleSelect = ({ categories, onChange }) => {
+const MultipleSelect = ({ availableCategories, categories, onChange }) => {
   const theme = useTheme();
 
   return (
@@ -60,11 +33,10 @@ const MultipleSelect = ({ categories, onChange }) => {
           input={<OutlinedInput label="Categories" />}
           MenuProps={MenuProps}
         >
-          {category_list.map((cat) => (
+          {availableCategories && availableCategories.map((cat) => (
             <MenuItem
               key={cat}
               value={cat}
-              style={getStyles(cat, category_list, theme)}
             >
               {cat}
             </MenuItem>
@@ -75,8 +47,7 @@ const MultipleSelect = ({ categories, onChange }) => {
   );
 };
 
-const complexities = ["Easy", "Medium", "Hard"]
-const SingleSelect = ({ complexity, onChange }) => {
+const SingleSelect = ({ availableComplexities, complexity, onChange }) => {
   return (
   <FormControl sx={{ mb: 2, width: "98%", fontSize: "16px" }}>
     <InputLabel id="demo-simple-select-label">Difficulty</InputLabel>
@@ -87,8 +58,8 @@ const SingleSelect = ({ complexity, onChange }) => {
       label="difficulty"
       onChange={onChange}
     > 
-      {complexities.map((c) => {
-        return (<MenuItem value={c}>{c}</MenuItem>)
+      {availableComplexities && availableComplexities.map((c) => {
+        return (<MenuItem value={c} key={c}>{c}</MenuItem>)
       })}
     </Select>
   </FormControl>

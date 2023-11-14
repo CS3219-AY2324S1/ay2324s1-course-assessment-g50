@@ -122,3 +122,13 @@ export const retrieveQuestionDetails = async (questionName) => {
     throw new Error(error);
   }
 }
+
+export const getQuestionTopics = async () => {
+  try {
+    const response = await axios.get(baseUrl + "/match/getQuestionTopics");
+    return response.data;
+  } catch (error) {
+    console.log(error)
+    throw new Error(error);
+  }
+}

@@ -81,7 +81,6 @@ const Chat = ({ currentUser, matchInfo, socket }) => {
       receiverId: matchedUser.userId.toString(),
       text: newMessage,
     });
-    console.log("Sent?: ", message)
     dispatch(addMessageAction(message));
     setNewMessage("");
   };
