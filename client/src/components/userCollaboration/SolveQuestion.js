@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { retrieveQuestionDetailsAction } from "../../reducers/matchingSlice";
 import { fetchQuestions } from "../../reducers/questionSlice";
+import { updateUserAttemptHistory } from "../../services/user.service";
 
 /* Component which shows the question details page be it for attempt or collaboration view */
 const SolveQuestion = () => {
@@ -25,6 +26,12 @@ const SolveQuestion = () => {
       dispatch(retrieveQuestionDetailsAction({ questionName:questionArr[0].title }));
     }
   }, [matchingStatus]);
+
+  useEffect(() => {
+    if (question) {
+      updateUserAttemptHistory(question.title, "attempt");
+    }
+  }, [question])
 
   return (
     <div className="solve-question-page">
