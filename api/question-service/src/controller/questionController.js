@@ -25,6 +25,19 @@ async function addQuestion(req, res) {
     });
 }
 
+// get all the categoies and complexities in the db
+async function getQuestionTopics(req, res) {
+    try {
+        const categories = await question.aggregate([
+            { $unwind: "$categories" },
+            { $group: { _id: null, allCategories: { $addToSet: "$categories" }, allComplexities: { $addToSet: "$complexity" } } },
+        ]);
+        return JsonResponse.success(200, { availableCategories: categories[0].allCategories, availableComplexities: categories[0].allComplexities }).send(res);
+    } catch (error) {
+        return JsonResponse.fail(500, error).send(res);
+    }
+}
+
 async function getQuestion(req, res) {
     const questionTitle = req.params.questionTitle;
     console.log(questionTitle);
@@ -142,4 +155,4 @@ async function getTotalQuestionCount(req, res) {
     }
 }
 
-module.exports = { addQuestion, getQuestion, getQuestions, getTotalQuestionCount, updateQuestion, deleteQuestion };
+module.exports = { addQuestion, getQuestion, getQuestions, getTotalQuestionCount, updateQuestion, deleteQuestion, getQuestionTopics };
