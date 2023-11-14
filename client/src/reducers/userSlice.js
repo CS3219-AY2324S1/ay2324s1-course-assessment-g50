@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, isRejected } from "@reduxjs/toolkit";
 import { loginUser, registerUser, logoutUser, fetchUserData, updateUserBasicInfo,updateUserBasicAvatarInfo, 
     updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, fetchUserAttemptDetails,
     updateAttemptQuestionName } from "../services/user.service";
@@ -114,7 +114,18 @@ const userSlice = createSlice({
         .addCase(updateAttemptQuestionNameAction.fulfilled, (state, action) => {
             console.log("updated sucessfully question name");
             state.status = "UpdateQuestionNameSucessfully";
-        });
+        })
+        .addMatcher(isRejected, (state, action) => {
+            if (action.error.message === "TIME_OUT") {
+                state.status = "userHasTimeOut"
+                state.isLoggedIn = false;
+                state.userRole = null;
+                sessionStorage.removeItem('loggedIn');
+                sessionStorage.removeItem('userRole');
+                console.log("You have timed out");
+            }
+        })
+        ;
     },
 });
 
