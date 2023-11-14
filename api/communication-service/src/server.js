@@ -1,14 +1,9 @@
 require('dotenv').config()
-const cors = require('cors');
 const express = require('express')
 const app = express()
 
 // Middlewares
 app.use(express.json())
-app.use(cors({
-  origin: 'http://35.198.214.47:3000',
-  credentials: true,
-}));
 const session = require('express-session');
 const sessionConfig = require('./configs/sessionConfigs');
 app.use(session(sessionConfig))

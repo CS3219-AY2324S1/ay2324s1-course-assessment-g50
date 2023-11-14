@@ -3,7 +3,6 @@ import amqp from 'amqplib';
 import express from 'express';
 import session from "express-session";
 import sessionConfig from './configs/sessionConfigs.js';
-import cors from 'cors';
 
 const MATCH_TIMEOUT = 30000;
 
@@ -11,10 +10,6 @@ const app = express();
 const sessionMiddleware = session(sessionConfig);
 app.use(sessionMiddleware);
 app.use(express.json());
-app.use(cors({
-  origin: 'http://35.198.214.47:3000',
-  credentials: true,
-}));;
 
 const connMap = new Map();
 

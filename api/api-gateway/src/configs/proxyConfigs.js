@@ -2,8 +2,7 @@ const cors = require('cors')
 
 // Cors Configs
 const corsConfig = cors({
-    credentials: true,
-    origin: process.env.FRONTEND_URL,
+    origin: '*',
 });
 
 // Proxy Configs
