@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { updateCodeAttempt } from "../../../services/user.service.js";
 import "./codeEditor.css";
 import Console from "./Console";
 import ConsoleResult from "./console-result.js";
@@ -24,6 +25,9 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, isReadMode}
     console.log(isLoading)
     const handleSubmitCode = async () => {
         const editorCode = getEditorCode();
+
+        //saves the code attempt
+        updateCodeAttempt(question.title, language, editorCode);
 
         if (testCase === '') {
             AlertNotification.error("Please provide a test to run").notify(dispatch);
@@ -63,7 +67,7 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, isReadMode}
                     onMount={handleEditorDidMount}
                     options={{
                         scrollBeyondLastLine: false,
-                        fontSize: "14px",
+                        fontSize: "16px",
                         minimap: {
                             enabled: false,
                         },

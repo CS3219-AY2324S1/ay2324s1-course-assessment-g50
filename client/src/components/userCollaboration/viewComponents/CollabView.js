@@ -49,12 +49,12 @@ const CollabView = ({ question }) => {
             editorRef.current.setValue(question.templateCode[language]); 
         }
     }, [language]);
-
+  
     useEffect(() => {
         // Initialise with template code
         if (isEditorMounted) {
             console.log(question)
-            editorRef.current.setValue(question.templateCode[language]); 
+            editorRef.current.setValue(question.templateCode[language]);
         }
     }, [isEditorMounted])
 
@@ -139,8 +139,10 @@ const CollabView = ({ question }) => {
             <BsArrowLeftSquareFill onClick={() => goBack()} className="return-icon"/>
             <p className="hover-text">End Session</p>
             </div>              
+
             <CodeEditor handleEditorDidMount={handleEditorDidMount} language={language}
                 getEditorCode={getEditorCode} isReadMode={false}/>
+
             <InfoBar matchInfo={matchInfo} selectedLanguage={language} handleLanguageChange={handleLanguageChange} />
             <div className="chat-button">
                 <Button onClick={openChat}>
