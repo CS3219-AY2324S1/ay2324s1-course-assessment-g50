@@ -12,6 +12,5 @@ const proxyOptions = {
 };
 
 module.exports = {
-    corsConfig,
     proxyOptions,
 };
