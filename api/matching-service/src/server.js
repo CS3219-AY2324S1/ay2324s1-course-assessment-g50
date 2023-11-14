@@ -12,7 +12,7 @@ const sessionMiddleware = session(sessionConfig);
 app.use(sessionMiddleware);
 app.use(express.json());
 app.use(cors({
-  origin: 'http://35.198.214.47',
+  origin: 'http://35.198.214.47:3000',
   credentials: true,
 }));;
 

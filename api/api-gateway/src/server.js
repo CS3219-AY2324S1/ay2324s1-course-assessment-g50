@@ -6,7 +6,7 @@ const app = express()
 
 app.use(morgan('combined'))
 app.use(cors({
-  origin: 'http://35.198.214.47',
+  origin: 'http://35.198.214.47:3000',
   credentials: true,
 }));
 

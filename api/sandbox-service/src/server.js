@@ -7,7 +7,7 @@ const app = express()
 // Middlewares
 app.use(express.json())
 app.use(cors({
-  origin: 'http://35.198.214.47',
+  origin: 'http://35.198.214.47:3000',
   credentials: true,
 }));
 
