@@ -186,6 +186,7 @@ services:
     restart: always
     volumes:
       - mongodb-db-data:/data/db
+      - ./api/question-service/dump:/data/dump
     ports:
       - "27017:27017"
     healthcheck:
