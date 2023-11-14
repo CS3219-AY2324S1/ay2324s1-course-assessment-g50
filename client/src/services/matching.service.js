@@ -4,7 +4,7 @@ import { fetchTargetUserData } from "./user.service";
 
 
 //Insert the matching route here
-const baseUrl = "http://localhost:5000/matching";
+const baseUrl = "http://35.198.214.47:5000/matching";
 
 const controller = new AbortController();
 
