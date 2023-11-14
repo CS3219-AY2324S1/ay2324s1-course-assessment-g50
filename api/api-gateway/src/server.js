@@ -5,10 +5,6 @@ const app = express()
 
 app.use(morgan('combined'))
 
-// Proxy Configs
-const { corsConfig } = require('./configs/proxyConfigs')
-app.use(corsConfig)
-
 // Session:
 const session = require('express-session');
 const sessionConfig = require('./configs/sessionConfigs');
