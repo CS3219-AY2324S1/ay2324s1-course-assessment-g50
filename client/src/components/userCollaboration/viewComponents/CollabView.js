@@ -13,8 +13,8 @@ import { io } from "socket.io-client";
 import Chat from "../../chatbox/Chat";
 import { fetchUserDataAction } from "../../../reducers/userSlice";
 
-const serverWsUrl = "ws://localhost:8200";
-const communicationSocketUrl = "ws://localhost:8500"
+const serverWsUrl = "ws://localhost:5000/collaboration";
+const communicationSocketUrl = "ws://localhost:5000"
 
 /* Component which shows the collaboration view */
 const CollabView = ({ question }) => {
