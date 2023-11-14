@@ -5,7 +5,10 @@ const morgan = require('morgan')
 const app = express()
 
 app.use(morgan('combined'))
-app.use(cors())
+app.use(cors({
+  origin: 'http://35.198.214.47',
+  credentials: true,
+}));
 
 // Proxy Configs
 const { corsConfig } = require('./configs/proxyConfigs')

@@ -5,7 +5,10 @@ const app = express()
 
 // Middlewares
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: 'http://35.198.214.47',
+  credentials: true,
+}));
 const session = require('express-session');
 const sessionConfig = require('./configs/sessionConfigs');
 app.use(session(sessionConfig))

@@ -11,7 +11,10 @@ const app = express();
 const sessionMiddleware = session(sessionConfig);
 app.use(sessionMiddleware);
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'http://35.198.214.47',
+  credentials: true,
+}));;
 
 const connMap = new Map();
 

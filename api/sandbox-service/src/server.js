@@ -6,7 +6,10 @@ const app = express()
 
 // Middlewares
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: 'http://35.198.214.47',
+  credentials: true,
+}));
 
 // Routes:
 app.post('/sandbox', async (req, res) => {
