@@ -1,9 +1,11 @@
 require('dotenv').config()
+const cors = require('cors');
 const express = require('express')
 const app = express()
 
 // Middlewares
 app.use(express.json())
+app.use(cors)
 const session = require('express-session');
 const sessionConfig = require('./configs/sessionConfigs');
 app.use(session(sessionConfig))

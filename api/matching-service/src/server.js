@@ -4,12 +4,14 @@ import express from 'express';
 import session from "express-session";
 import sessionConfig from './configs/sessionConfigs.js';
 
+const cors = require('cors');
 const MATCH_TIMEOUT = 30000;
 
 const app = express();
 const sessionMiddleware = session(sessionConfig);
 app.use(sessionMiddleware);
 app.use(express.json());
+app.use(cors());
 
 const connMap = new Map();
 
