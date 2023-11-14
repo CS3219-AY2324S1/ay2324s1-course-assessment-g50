@@ -3,8 +3,8 @@ import amqp from 'amqplib';
 import express from 'express';
 import session from "express-session";
 import sessionConfig from './configs/sessionConfigs.js';
+import cors from 'cors';
 
-const cors = require('cors');
 const MATCH_TIMEOUT = 30000;
 
 const app = express();
