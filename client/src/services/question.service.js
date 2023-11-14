@@ -31,6 +31,17 @@ const isFormValid = (formData) => {
   }
 };
 
+const isCodePresent = (optionalFields) => {
+  const hasSolution = optionalFields.solutionCode.python !== ""
+  const hasTemplates = Object.values(optionalFields.templateCode).every(
+    (field) => field !== null && field !== ""
+  );
+  if (!hasSolution || !hasTemplates) {
+    const msg = "Please fill in the solution and template code for all languages";
+    throw new Error(msg);
+  }
+}
+
 const buildFilteredURL = (filters) => {
   const queryParams = new URLSearchParams();
   for (const key in filters) {
@@ -45,6 +56,8 @@ const buildFilteredURL = (filters) => {
 
 export const addQuestionToRepo = async (formData, optionalFields) => {
   isFormValid(formData);
+  isCodePresent(optionalFields)
+  console.log(optionalFields)
   try {
     const fullForm = {...formData, ...optionalFields};
     const response = await axios.post(baseUrl, fullForm);
