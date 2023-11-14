@@ -1,0 +1,14 @@
+.pass {
+    background-color: #00a36d59;
+    padding: 10px 10px;
+}
+
+.fail {
+    background-color: #ff583359;
+    padding: 10px 10px;
+}
+
+.info {
+    background-color: #E3D3D3;
+    padding: 10px 10px;
+}

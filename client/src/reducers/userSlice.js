@@ -124,6 +124,7 @@ const loginAction = createAsyncThunk(
     "user/login",
     async ({email, password}) => {
         const response = await loginUser(email, password);
+        console.log(response.data)
         return response.data;
     }
 );
