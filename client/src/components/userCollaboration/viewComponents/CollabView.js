@@ -50,19 +50,24 @@ const CollabView = ({ question }) => {
         }
     }, [language]);
 
+    useEffect(() => {
+        // Initialise with template code
+        if (isEditorMounted) {
+            console.log(question)
+            editorRef.current.setValue(question.templateCode[language]); 
+        }
+    }, [isEditorMounted])
+
     // Handle editor code change
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
         editorRef.current.setValue(""); //reseting the editor to remove any previous code
-        setIsEditorMounted(true); //set editor is mounted 
 
-        // Initialise editor with template code
-        editorRef.current.setValue(question.templateCode[language]); 
-        console.log('set to template')
         // Code Collaboration part:
         const manacoText = doc.getText("manaco")
         const provider = new WebsocketProvider(serverWsUrl, matchInfo.matchId, doc);
         const binding = new MonacoBinding(manacoText, editorRef.current.getModel(), new Set([editorRef.current]))
+        setIsEditorMounted(true); //set editor is mounted 
     }
 
     // Handle editor code submission
@@ -124,7 +129,9 @@ const CollabView = ({ question }) => {
                 <p className="question-title">{question.title}</p>
                 <p className="question-complexity">{question.complexity}</p>
                 <div  dangerouslySetInnerHTML={{ __html: question.description }} />
-                <p className="testCase">Test case input format: ....</p>
+                <p className="testCase">
+                    {"Test case input format:\n\nSample testcases have been provided below\nPlease follow the format when submitting your testcase"}
+                </p>
                 {question.testCases && question.testCases.map((testCase, i) => 
                     <p className="testCase">{`Sample Test case ${i}:\n ${testCase}`}</p>
                 )}

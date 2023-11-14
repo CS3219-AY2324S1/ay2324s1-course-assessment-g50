@@ -74,6 +74,7 @@
 .testCase {
     background-color: #E3D3D3;
     padding: 10px 10px;
+    white-space: pre-wrap;
 }
 
 .collab-view .return-icon:hover + .hover-text {
