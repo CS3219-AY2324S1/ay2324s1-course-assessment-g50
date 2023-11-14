@@ -6,7 +6,7 @@ const app = express()
 
 // Middlewares
 app.use(express.json())
-app.use(cors)
+app.use(cors())
 
 // Routes:
 app.post('/sandbox', async (req, res) => {

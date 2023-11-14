@@ -5,7 +5,7 @@ const morgan = require('morgan')
 const app = express()
 
 app.use(morgan('combined'))
-app.use(cors)
+app.use(cors())
 
 // Proxy Configs
 const { corsConfig } = require('./configs/proxyConfigs')

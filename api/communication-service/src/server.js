@@ -5,7 +5,7 @@ const app = express()
 
 // Middlewares
 app.use(express.json())
-app.use(cors)
+app.use(cors())
 const session = require('express-session');
 const sessionConfig = require('./configs/sessionConfigs');
 app.use(session(sessionConfig))
