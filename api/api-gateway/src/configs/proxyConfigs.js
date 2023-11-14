@@ -3,7 +3,7 @@ const cors = require('cors')
 // Cors Configs
 const corsConfig = cors({
     credentials: true,
-    origin: process.env.FRONTEND_URL,
+    origin: 'http://35.198.214.47:3000',
 });
 
 // Proxy Configs
