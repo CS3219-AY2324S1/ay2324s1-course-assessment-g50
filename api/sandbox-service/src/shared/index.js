@@ -4,34 +4,37 @@ const JsonResponse = require('./jsonResponse')
 const fs = require('fs')
 
 const app = express();
-const port = 9000;
+const port = 8700;
 
 // Middlewares
 app.use(express.json())
 
 app.post('/', async (req, res) => {
     const { code, language, testCase } = req.body
+    console.log(req.body)
     
     const runner = Runner.makeLanguageRunner(code, language, testCase)
+    let stdout;
     try {
         runner.writeFile();
         runner.writeTestCase();
         await runner.compile();
-        await runner.run();
+        stdout = await runner.run();
     } catch(err) {
-        return JsonResponse.success(201, err.message).send(res);
+        // Error due to compiling or running against testcases -- feedback to user
+        return JsonResponse.fail(400, err.message).send(res);
     }	
 
     
     fs.readFile(process.env.OUTPUT_PATH, 'utf8', (err, data) => {
         if (err) {
-          // Handle error (file not found, no access, etc.)
-          JsonResponse.fail(500, 'Error reading code output').send(res);
+          // File not found, no access, etc. -- server error
+          JsonResponse.fail(500, 'Please write results to output file defined as OUTPUT_PATH in ENV variable').send(res);
           return;
         }
     
         // Send file contents as JSON response
-        JsonResponse.success(201, data).send(res);
+        JsonResponse.success(201, { data, stdout }).send(res);
     });
 })
 

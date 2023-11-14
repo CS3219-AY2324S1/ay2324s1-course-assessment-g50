@@ -1,20 +1,11 @@
 import { useState } from "react";
 import "./codeEditor.css";
 import Console from "./Console";
+import ConsoleResult from "./console-result.js";
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 import { runCode } from "../../../services/sandbox.service";
-import LinearProgress from '@mui/material/LinearProgress';
-import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from "react-redux";
 import AlertNotification from "../../../services/alert.service.js";
-
-const Spinner = () => {
-    return (                    
-        <Box sx={{ width: '100%' }}>
-            <LinearProgress />
-        </Box>
-    )
-}
 
 const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, isReadMode}) => {
     const [isShowConsole, setIsShowConsole] = useState(false);
@@ -30,7 +21,7 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, isReadMode}
     const handleShowConsole = (e) => {
         setIsShowConsole(!isShowConsole);
     }
-
+    console.log(isLoading)
     const handleSubmitCode = async () => {
         const editorCode = getEditorCode();
 
@@ -42,21 +33,26 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, isReadMode}
 
         setIsShowConsole(true);
         
-        let result;
-        if (canSubmit) {
-            setIsLoading(true)
-            const solutionCode = question.solutionCode['python']
-            const runInfo = { editorCode, language, testCase, solutionCode }
-            const codeOutput = await runCode(runInfo);
-            setResult(codeOutput)
-            setIsLoading(false)
-
-            // Disable button prevent server overload
-            setCanSubmit(false);
-            setTimeout(()=>setCanSubmit(true), 5000);
-        } else {
-            result = 'You have attempted to run code too soon. Please try again in a few seconds'
+        if (!canSubmit) {
+            const content = 'You have attempted to run code too soon. Please try again in a few seconds'
+            const errObj = { isError: true, content }
+            setResult(errObj)
+            return
         }
+        
+        // Success
+        setIsLoading(true)
+        const solutionCode = question.solutionCode['python']
+        const runInfo = { editorCode, language, testCase, solutionCode }
+        let codeOutput;
+        codeOutput = await runCode(runInfo);
+        
+        setResult(codeOutput)
+        setIsLoading(false)
+
+        // Disable button prevent server overload
+        setCanSubmit(false);
+        setTimeout(()=>setCanSubmit(true), 5000);
     }
 
     return (
@@ -74,15 +70,7 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, isReadMode}
                         readOnly: isReadMode,
                     }} />
             </div>
-            <div className={isShowConsole ? 'console-result visible' : 'console-result'}>
-                { isLoading ? <Spinner /> : 
-                    <>
-                        <p>{'Status: ' + result.status}</p>
-                        <p>{'Output:\n' + result.output}</p>
-                        <p>{'Expected:\n' + result.expected}</p>
-                    </>
-                }
-            </div>
+            <ConsoleResult isLoading={isLoading} isShowConsole={isShowConsole} result={result}/>
             <Console handleSubmitCode={handleSubmitCode} handleShowConsole={handleShowConsole} 
                 testCase={testCase} setTestCase={setTestCase}/>
         </div>

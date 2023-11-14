@@ -22,6 +22,8 @@ const SolveQuestion = () => {
   useEffect(() => {
     if (matchingStatus === 'sucessfullyConnected') {
       setIsSucessfulMatch(true);
+
+      // Get matched question here and pass down to CollabView
       dispatch(fetchQuestions());
       dispatch(retrieveQuestionDetailsAction({ questionName:questionArr[0].title }));
     }
