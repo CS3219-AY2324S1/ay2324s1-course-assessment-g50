@@ -22,7 +22,7 @@ const CodeEditor = ({ language, handleEditorDidMount, getEditorCode, isReadMode}
     const handleShowConsole = (e) => {
         setIsShowConsole(!isShowConsole);
     }
-    console.log(isLoading)
+
     const handleSubmitCode = async () => {
         const editorCode = getEditorCode();
 

@@ -49,14 +49,16 @@ const CollabView = ({ question }) => {
             editorRef.current.setValue(question.templateCode[language]); 
         }
     }, [language]);
-  
+
+    // Initialise with template code 
     useEffect(() => {
-        // Initialise with template code
-        if (isEditorMounted) {
-            console.log(question)
-            editorRef.current.setValue(question.templateCode[language]);
-        }
-    }, [isEditorMounted])
+        setTimeout(() => {
+            if (isEditorMounted && getEditorCode() === "") {
+                editorRef.current.setValue(question.templateCode[language]); 
+            }
+        }, Math.random() * 2000)
+
+    }, [isEditorMounted]);
 
     // Handle editor code change
     const handleEditorDidMount = (editor, monaco) => {
@@ -65,6 +67,8 @@ const CollabView = ({ question }) => {
 
         // Code Collaboration part:
         const manacoText = doc.getText("manaco")
+        manacoText.delete(0, manacoText.length);
+
         const provider = new WebsocketProvider(serverWsUrl, matchInfo.matchId, doc);
         const binding = new MonacoBinding(manacoText, editorRef.current.getModel(), new Set([editorRef.current]))
         setIsEditorMounted(true); //set editor is mounted 
@@ -89,7 +93,6 @@ const CollabView = ({ question }) => {
         const languageText = doc.getText("language")
         const provider = new WebsocketProvider(serverWsUrl, matchInfo.matchId, doc);
         
-        console.log("new:"+newLanguage)
         languageText.delete(0, languageText.length);
         languageText.insert(0, newLanguage);
     }
