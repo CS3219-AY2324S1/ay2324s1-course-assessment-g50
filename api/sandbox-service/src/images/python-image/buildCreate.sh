@@ -15,7 +15,7 @@ DOCKERFILE="../images/python-image/Dockerfile"
 echo "building"
 cd $SHARED_FOLDER
 docker build -t py_box -f $DOCKERFILE .
-docker run -d --name pybox_${version} -p 900${version}:9000 --network peerprep-network \
+docker run -d --name pybox_${version} -p 870${version}:8700 --network peerprep-network \
   -m 500M --memory-reservation 256M --cpus="1" --security-opt="no-new-privileges=true" py_box
 
 # Check if the container is running
@@ -24,4 +24,4 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "Successfully running py_box${version} accessible at port 900${version}"
+echo "Successfully running py_box${version} accessible at port 870${version}"

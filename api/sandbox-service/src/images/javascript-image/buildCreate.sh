@@ -15,7 +15,7 @@ DOCKERFILE="../images/javascript-image/Dockerfile"
 echo "building"
 cd $SHARED_FOLDER
 docker build -t js_box -f $DOCKERFILE .
-docker run -d --name jsbox_${version} -p 900${version}:9000 --network peerprep-network \
+docker run -d --name jsbox_${version} -p 870${version}:8700 --network peerprep-network \
   -m 500M --memory-reservation 256M --cpus="1" --security-opt="no-new-privileges=true" js_box
 
 # Check if the container is running
@@ -24,4 +24,4 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "Successfully running js_box${version} accessible at port 900${version}"
+echo "Successfully running js_box${version} accessible at port 870${version}"
