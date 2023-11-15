@@ -14,7 +14,8 @@ const initialState = {
   complexity: null,
   category: null,
   status: "idle",
-  errorInfo: null
+  errorInfo: null,
+  filteredQuestions: []
 }
 
 const matchingSlice = createSlice({
@@ -36,6 +37,8 @@ const matchingSlice = createSlice({
         state.matchedUserInfo = action.payload.matchedUserInfo;
         state.criteria = action.payload.criteria;
         state.category = action.payload.category;
+        state.filteredQuestions = action.payload.filteredQuestions;
+
       })
       .addCase(establishingConnectionAction.rejected, (state, action) => {
         state.status = "failedConnection";

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { addConversation } from "./communication.service";
 import { fetchTargetUserData } from "./user.service";
+import {fetchQuestions} from "../reducers/questionSlice";
+import {getQuestions} from "./question.service";
 
 
 //Insert the matching route here
@@ -28,7 +30,11 @@ const match = async (criteria, timeout) => {
       matchedUserInfo: matchedUserInfo.data, // Matched user specific info
       category: resp.data.category,
       complexity: resp.data.complexity,
+      filteredQuestions: await getQuestions({topicSlugs: resp.data.category, complexity: resp.data.complexity})
     }
+    console.log({topicSlugs: resp.data.category, complexity: resp.data.complexity})
+    console.log(respData.filteredQuestions);
+
     // 3. Create conversation between matched users:
     const newConversation = {
       matchId: matchedId.toString(),
