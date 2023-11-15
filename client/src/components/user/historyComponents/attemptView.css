@@ -59,3 +59,20 @@
     font-size: 18px;
     border-radius: 8px;
 }
+
+.attemptView .language-selector-2 {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.attemptView .info-bar-container-2 {
+    min-width: 100px;
+    background-color: white;
+    display: flex;
+    flex: 1 1;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 8px;
+}

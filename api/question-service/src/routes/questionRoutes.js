@@ -1,5 +1,5 @@
 const express = require('express')
-const { addQuestion, updateQuestion, deleteQuestion, getQuestion, getQuestions, getTotalQuestionCount } = require('../controller/questionController')
+const { addQuestion, updateQuestion, deleteQuestion, getQuestion, getQuestions, getTotalQuestionCount, getQuestionTopics } = require('../controller/questionController')
 const router = express.Router()
 
 // Create one question
@@ -30,6 +30,11 @@ router.patch('/:id', (req, res) => {
 // Delete one question
 router.delete('/:id', (req, res) => {
     deleteQuestion(req, res)
+})
+
+//Get categories and difficulties
+router.get('/match/getQuestionTopics', (req, res) => {
+    getQuestionTopics(req, res);
 })
 
 module.exports = router

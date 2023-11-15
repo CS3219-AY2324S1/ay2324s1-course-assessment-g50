@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 
 const codeSchema = new mongoose.Schema({
     javascript: String,
-    python: String,
+    python: {
+        type: String,
+        required: true
+    },
     java: String
 })
 

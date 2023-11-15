@@ -5,6 +5,7 @@ import {
   addQuestionToRepo,
   deleteQuestionFromRepo,
   updateQuestionFromRepo,
+  getQuestionTopics
 } from "../services/question.service";
 import { retrieveQuestionDetails } from "../services/question.service";
 
@@ -24,6 +25,8 @@ const initialState = {
   // add loading status/error here when integrating with backend
   status: "idle",
   attemptedQuestionDetails: null,
+  availableComplexities: null,
+  availableCategories: null,
 };
 
 export const questionSlice = createSlice({
@@ -68,7 +71,14 @@ export const questionSlice = createSlice({
       .addCase(fetchAttemptedQuestionDetails.fulfilled, (state, action) => {
         state.attemptedQuestionDetails = action.payload;
       })
-      
+      .addCase(fetchQuestionTopicsAction.fulfilled, (state, action) => {
+        state.availableCategories = action.payload.availableCategories;
+        state.availableComplexities = action.payload.availableComplexities;
+      })
+      .addCase(fetchQuestionTopicsAction.rejected, (state, action) => {
+        state.availableCategories = [];
+        state.availableComplexities = [];
+      })
   },
 });
 
@@ -122,6 +132,15 @@ export const fetchAttemptedQuestionDetails = createAsyncThunk(
   async ({ questionName }) => {
     //technically this is being used in matchingSlice for retrieving question details instead of userSlice
     const response = await retrieveQuestionDetails(questionName); 
+    return response.data;
+  }
+)
+
+//Fetches the available categories and complexities in the question db
+export const fetchQuestionTopicsAction = createAsyncThunk(
+  "questions/fetchQuestionTopics",
+  async () => {
+    const response = await getQuestionTopics();
     return response.data;
   }
 )

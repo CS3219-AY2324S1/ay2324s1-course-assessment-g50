@@ -60,7 +60,7 @@ class Runner {
 
     async runTestCase(cmd) {
         let toRun = `cat ./tests/testCase.txt | ${cmd}`
-        await this.exec(toRun)
+        return await this.exec(toRun)
     }
 }
 

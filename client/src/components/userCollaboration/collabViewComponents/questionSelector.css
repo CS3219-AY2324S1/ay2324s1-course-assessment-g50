@@ -1,0 +1,26 @@
+.label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.label, .question {
+    display: block;
+}
+
+.question {
+    width: 100%;
+    font-size: 16px;
+    padding: 8px 0;
+    border: none; 
+    border-bottom: 2px solid #333;
+    border-radius: 0;
+    appearance: none;
+    outline: none;
+    cursor: pointer; 
+}
+
+.question:hover {
+    transition: 0.3s;
+    border-color: grey;
+}

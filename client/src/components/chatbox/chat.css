@@ -25,17 +25,14 @@
 .chat-options {
   position: relative;
   display: flex;
-  /* Add this line */
   align-items: center;
-  /* Add this line */
   justify-content: space-between;
+  background-color: #f1f1f1;
 }
 
 .chat-options .emoji-option {
   display: flex;
-  /* Add this line */
   align-items: center;
-  /* Add this line */
 }
 
 .chat-options .chat-emoji-list {
@@ -48,6 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: white;
 }
 
 .chat-message-input {

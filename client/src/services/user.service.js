@@ -5,6 +5,16 @@ import { userBaseUrl } from '../urls';
 
 const baseUrl = userBaseUrl;
 
+// For checking if any of the status code is 419 which means time out
+const handleTimeOut = (error) => {
+    if (error.response) {
+        if (error.response.status === 419) {
+            throw new Error("TIME_OUT");
+        }
+    }
+    throw error;
+}   
+
 const loginUser = async (email, password) => {
     try {
         const response = await axios.post(baseUrl + '/login', { email, password });
@@ -43,6 +53,7 @@ const fetchUserData = async () => {
         const response = await axios.get(baseUrl);
         return response.data
     } catch (error) {
+        handleTimeOut(error);
         console.error(error);
     }
 };
@@ -53,6 +64,7 @@ const fetchTargetUserData = async (userIds) => {
         const response = await axios.post(baseUrl + "/target", { userIds });
         return response.data
     } catch (error) {
+        handleTimeOut(error);
         console.error(error);
     }
 };
@@ -62,6 +74,7 @@ const updateUserBasicInfo = async (updateData) => {
         const response = await axios.patch(baseUrl + "/info", updateData);
         return response.data;
     } catch (error) {
+        handleTimeOut(error);
         if (error.response.status === 400) {
             throw new Error("INVALID_INPUT");
         }
@@ -78,6 +91,7 @@ const updateUserBasicAvatarInfo = async (imageData) => {
         });
         return response.data;
     } catch (error) {
+        handleTimeOut(error);
         console.error(error);
     }
 }
@@ -87,6 +101,7 @@ const updateUserAccountInfo = async (updateData) => {
         const response = await axios.patch(baseUrl, updateData);
         return response.data;
     } catch (error) {
+        handleTimeOut(error);
         console.error(error);
         throw new Error("Failed to update account info");
     }
@@ -96,6 +111,7 @@ const deregisterUser = async () => {
     try {
         await axios.delete(baseUrl);
     } catch (error) {
+        handleTimeOut(error);
         console.error(error);
         throw new Error("Failed to update account info");
     }
@@ -107,6 +123,7 @@ const fetchUserAttemptHistory = async (pageNumber) => {
         const response = await axios.get(baseUrl + "/history" + `/${pageNumber}`);
         return response.data;
     } catch (error) {
+        handleTimeOut(error);
         console.log(error);
         throw new Error("Failed to get user history");
     }
@@ -118,6 +135,7 @@ const fetchUserAttemptHistoryPageCount = async () => {
         const response = await axios.get(baseUrl + "/history");
         return response.data;
     } catch (error) {
+        handleTimeOut(error);
         console.log(error);
         throw new Error("Failed to get page count user history");
     }
@@ -129,6 +147,7 @@ const fetchUserAttemptDetails = async (questionName) => {
         const response = await axios.get(baseUrl + "/history" + "/question" + `/${questionName}`);
         return response.data;
     } catch (error) {
+        handleTimeOut(error);
         console.log(error);
         throw new Error("Failed to get user attempt details");
     }
@@ -139,6 +158,7 @@ const updateAttemptQuestionName = async (oldQuestionName, newQuestionName) => {
         const response = await axios.patch(baseUrl + "/history" + "/question" + `/${oldQuestionName}`, { newQuestionName });
         return response.data;
     } catch (error) {
+        handleTimeOut(error);
         console.log(error);
         throw new Error("Failed to update question name in user history");
     }
@@ -146,14 +166,28 @@ const updateAttemptQuestionName = async (oldQuestionName, newQuestionName) => {
 
 const updateCodeAttempt = async (questionName, codeLanguage, savedCode) => {
     try {
-        const response = await axios.post(baseUrl + "/history" + "/code" + `${questionName}`, { codeLanguage, savedCode });
+        const response = await axios.post(baseUrl + "/history" + "/code" + `/${questionName}`, { codeLanguage, savedCode });
         return response.data.data;
     } catch (error) {
+        handleTimeOut(error);
         console.log(error);
         throw new Error("Failed to update user's code");
     }
 }
 
+//Sets the question to attempted in the user's history
+const updateUserAttemptHistory = async (questionName, attemptStatus) => {
+    try {
+        const response = await axios.post(baseUrl + "/history" + "/attempt" + `/${questionName}`, { attemptStatus });
+        return response.data;
+    } catch (error) {
+        handleTimeOut(error);
+        console.log(error);
+        throw new Error("Failed to update question name in user history");
+    }
+}
+
+
 export { loginUser, logoutUser, registerUser, fetchUserData, fetchTargetUserData, updateUserBasicInfo, 
     updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser, fetchUserAttemptHistory, fetchUserAttemptHistoryPageCount, 
-    fetchUserAttemptDetails, updateAttemptQuestionName, updateCodeAttempt }
+    fetchUserAttemptDetails, updateAttemptQuestionName, updateCodeAttempt, updateUserAttemptHistory }

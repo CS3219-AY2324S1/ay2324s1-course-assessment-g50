@@ -9,6 +9,7 @@ import Profile from "./components/user/Profile";
 import PrivateRoute from "./components/routing/privateRoute";
 import AdminRoute from "./components/routing/adminRoute";
 import SolveQuestion from "./components/userCollaboration/SolveQuestion";
+import AttemptedQuestion from "./components/user/PastAttempt.js";
 import "./App.css";
 import Navbar from "./components/navbar/navbar.js";
 
@@ -23,7 +24,10 @@ const App = () => (
       <Route path="/" element={<PrivateRoute component={Question}/>} />
       <Route path="/add-questions" element={<AdminRoute component={QuestionForm}/>} />
       <Route path="/login" element={<UserProfileManager />} />
-      <Route path="/profile" element={<PrivateRoute component={Profile}/>} />
+      <Route>      
+        <Route path="/profile" element={<PrivateRoute component={Profile}/>} />
+        <Route path="/profile/:questionName" element={<PrivateRoute component={AttemptedQuestion}/>} />
+      </Route>
       <Route path="/solve-question" element={<PrivateRoute component={SolveQuestion}/>} />
     </Routes>
   </Router>

@@ -170,6 +170,7 @@ services:
       MYSQL_DATABASE: peerprep
     volumes:
       - user-service-db-data:/var/lib/mysql/
+      - ./api/user-service/dump:/dump
     ports:
       - "3307:3306"
     healthcheck:
@@ -186,6 +187,7 @@ services:
     restart: always
     volumes:
       - mongodb-db-data:/data/db
+      - ./api/question-service/dump:/data/dump
     ports:
       - "27017:27017"
     healthcheck:

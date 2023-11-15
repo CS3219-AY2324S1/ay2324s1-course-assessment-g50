@@ -104,11 +104,4 @@ router.post('/history/code/:questionName', (req, res) => {
     addUserAttemptCode(req, res)
 })
 
-// // updates the attempt status to failure/sucess upon submission of code
-// router.patch('/history/attempt/:questionName', (req, res) => {
-//     updateUserAttemptOutcome(req, res)
-// })
-
-
-
 module.exports = router

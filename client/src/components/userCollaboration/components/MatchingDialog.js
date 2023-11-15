@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SingleSelect, MultipleSelect } from "./MatchingOptions";
 import { useNavigate } from "react-router-dom";
 import {establishingConnectionAction} from "../../../reducers/matchingSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const initialState = {
   categories: [],
@@ -21,6 +21,8 @@ const MatchingDialog = ({ dialogIsOpen, setDialogIsOpen }) => {
   const [fieldsAreEmpty, setFieldsAreEmpty] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const availableCategories = useSelector(state => state.questions.availableCategories);
+  const availableComplexities = useSelector(state => state.questions.availableComplexities);
 
   const handleClose = () => {
     setDialogIsOpen(false);
@@ -51,8 +53,8 @@ const MatchingDialog = ({ dialogIsOpen, setDialogIsOpen }) => {
   return (
     <Dialog open={dialogIsOpen} onClose={handleClose} className="dialog-box">
       <p className="title">Select your options for questions</p>
-      <MultipleSelect categories={categories} onChange={categoriesOnChange}/>
-      <SingleSelect complexity={complexity} onChange={complexityOnChange}/>
+      <MultipleSelect availableCategories={availableCategories} categories={categories} onChange={categoriesOnChange}/>
+      <SingleSelect availableComplexities={availableComplexities} complexity={complexity} onChange={complexityOnChange}/>
       {fieldsAreEmpty && <p className="warning">Please select all options</p>}
       <div className="start-match-button" onClick={handleStartMatching}>Start Matching</div>
     </Dialog>

@@ -38,12 +38,12 @@ router.use(
 );
 
 router.use(
-    "/matching",
-    isLoggedInCheck,
-    createProxyMiddleware({
-        target: process.env.MATCHING_SERVICE_URL,
-        ...proxyOptions,
-    })
+  "/matching",
+  isLoggedInCheck,
+  createProxyMiddleware({
+    target: process.env.MATCHING_SERVICE_URL,
+    ...proxyOptions,
+  })
 );
 
 // Communication apis: 
@@ -55,4 +55,23 @@ router.use(
     ...proxyOptions,
   })
 )
+
+// Collaboration socket io apis: 
+router.use(
+  createProxyMiddleware('/collaboration', {
+    target: process.env.COLLABORATION_SOCKET_URL,
+    ...proxyOptions,
+    ws: true, // Enable WebSocket proxying
+  })
+)
+
+// Communication socket io apis: 
+router.use(
+  createProxyMiddleware('/socket.io', {
+    target: process.env.COMMUNICATION_SOCKET_URL,
+    ...proxyOptions,
+    ws: true, // Enable WebSocket proxying
+  })
+)
+
 module.exports = router

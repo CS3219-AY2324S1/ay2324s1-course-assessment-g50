@@ -2,6 +2,8 @@ import axios from "axios";
 import { addConversation } from "./communication.service";
 import { fetchTargetUserData } from "./user.service";
 import { matchingBaseUrl } from "../urls";
+import {fetchQuestions} from "../reducers/questionSlice";
+import {getQuestions} from "./question.service";
 
 
 //Insert the matching route here
@@ -20,13 +22,20 @@ const match = async (criteria, timeout) => {
       timeout: timeout,
       signal: controller.signal,
     });
-    const matchedId = resp.data;
+    console.log(resp.data);
+    const matchedId = resp.data.users;
     // 2. Fetch user specific infos
     const matchedUserInfo = await fetchTargetUserData(matchedId);
     const respData = {
       matchedId: matchedId, // Matched user ids
-      matchedUserInfo: matchedUserInfo.data // Matched user specific infos
+      matchedUserInfo: matchedUserInfo.data, // Matched user specific info
+      category: resp.data.category,
+      complexity: resp.data.complexity,
+      filteredQuestions: await getQuestions({topicSlugs: resp.data.category, complexity: resp.data.complexity})
     }
+    console.log({topicSlugs: resp.data.category, complexity: resp.data.complexity})
+    console.log(respData.filteredQuestions);
+
     // 3. Create conversation between matched users:
     const newConversation = {
       matchId: matchedId.toString(),
@@ -37,12 +46,16 @@ const match = async (criteria, timeout) => {
     return respData;
   } catch (error) {
     console.error("Failed match:", error);
-    throw new Error(error.response.data.data);
+    throw new Error(error.response.data);
   }
 };
 
-const matchWithUser = async (criteria) => {
-  return await match(criteria, 30000); // TODO
+const matchWithUser = async (criteria, { rejectWithValue }) => {
+    try {
+        return await match(criteria, 30000); // TODO
+    } catch (err) {
+        throw rejectWithValue(err.message);
+    }
 };
 
 export { matchWithUser };
