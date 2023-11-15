@@ -15,7 +15,7 @@ function isLoggedInCheck(req, res, next) {
         next();
     } else {
         const error = "Please log in to access the questions"
-        return JsonResponse.fail(401, error).send(res);
+        return JsonResponse.fail(419, error).send(res);
     }
 }
 

@@ -67,23 +67,6 @@ services:
     networks:
       - default
 
-  collaboration-service:
-    container_name: collboration-service
-    build:
-      context: ./api/collaboration-service/
-      dockerfile: Dockerfile
-    ports:
-      - 8200:8200
-    depends_on:
-      mongodb:
-        condition: service_healthy
-    volumes:
-      - ./api/collaboration-service:/app
-    env_file:
-      - .env
-    networks:
-      - default
-
   matching-service:
     container_name: matching-service
     build:
@@ -133,6 +116,51 @@ services:
       - .env
     networks:
       - default
+
+  communication-service:
+    container_name: communication-service
+    build:
+      context: ./api/communication-service/
+      dockerfile: Dockerfile
+    ports:
+      - 8600:8600
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./api/communication-service:/app
+    env_file:
+      - .env
+    networks:
+      - default
+      
+  collaboration-socket:
+    container_name: collaboration-socket
+    build:
+      context: ./socket/collaboration-socket
+      dockerfile: Dockerfile
+    ports:
+      - 8200:8200
+    volumes:
+      - ./socket/collaboration-socket:/app
+    env_file:
+      - .env
+    networks:
+      - default
+      
+  communication-socket:
+    container_name: communication-socket
+    build:
+      context: ./socket/communication-socket
+      dockerfile: Dockerfile
+    ports:
+      - 8500:8500
+    volumes:
+      - ./socket/communication-socket:/app
+    env_file:
+      - .env      
+    networks:
+      - default
       
   mysql:
     image: mysql
@@ -142,6 +170,7 @@ services:
       MYSQL_DATABASE: peerprep
     volumes:
       - user-service-db-data:/var/lib/mysql/
+      - ./api/user-service/dump:/dump
     ports:
       - "3307:3306"
     healthcheck:
@@ -157,7 +186,8 @@ services:
     image: mongo
     restart: always
     volumes:
-      - question-service-db-data:/data/db
+      - mongodb-db-data:/data/db
+      - ./api/question-service/dump:/data/dump
     ports:
       - "27017:27017"
     healthcheck:
@@ -184,7 +214,7 @@ services:
 
 volumes:
   user-service-db-data:
-  question-service-db-data:     
+  mongodb-db-data:     
 
 networks:
   default:

@@ -6,6 +6,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: white;
+    gap: 30px;
 }
 
 .console-container > p {

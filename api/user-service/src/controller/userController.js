@@ -289,7 +289,7 @@ async function getAttemptedQuestionsHistoryPageCount(req, res) {
 // Gets the various attempts in different languages for each question
 async function getAttemptedQuestionsDetails(req, res) {
     const questionName = req.params.questionName;
-    const id = req.session.userId
+    const id = req.session.userId;
     try {
         const questions = await AttemptDetails.findAll({
             attributes: ['questionName', 'codeLanguage', 'savedCode'],
@@ -334,6 +334,43 @@ async function updateAttemptedQuestionName(req, res) {
     }
 }
 
+// Creates user's attempt for question if not already in the db, else update the record with current date
+async function addUserAttemptStatus(req, res) {
+    const questionName = req.params.questionName;
+    const userId = req.session.userId;
+    const { attemptStatus } = req.body;
+    const newAttempt = { userId, questionName, attemptStatus }; // doesn't include the time/date as there's a default value of current date
+
+    try {
+        const [record, created] = await Attempt.upsert(newAttempt, { where: { questionName: questionName, userId: userId } });
+        console.log(record);
+        return JsonResponse.success(201, "Sucessfully created user attempt").send(res);
+    } catch (error) {
+        console.log(error);
+        return JsonResponse.fail(500, 'Failed to create user attempt').send(res);
+    }
+}
+
+// Creates user's code for question if not already in the db, else update the record with current date
+async function addUserAttemptCode(req, res) {
+    
+    const questionName = req.params.questionName;
+    const userId = req.session.userId;
+    const { codeLanguage, savedCode } = req.body;
+    const newCodeAttempt = { userId, questionName, codeLanguage, savedCode };
+
+    try {
+        const [record, created] = await AttemptDetails.upsert(newCodeAttempt);
+        console.log(record);
+        return JsonResponse.success(200, "Sucessfully created user attempt").send(res);
+    } catch (error) {
+        console.log(error);
+        return JsonResponse.fail(500, 'Failed to create user attempt').send(res);
+    }
+}
+
+
+
 module.exports = { addUser, login, logout, getUserById, getUsers, updateUser, updateUserInfo, 
     updateUserAvatar: updateUserAvatar, deleteUserById, getAttemptedQuestionsHistory, getAttemptedQuestionsHistoryPageCount,
-    getAttemptedQuestionsDetails, updateAttemptedQuestionName }
+    getAttemptedQuestionsDetails, updateAttemptedQuestionName, addUserAttemptStatus, addUserAttemptCode }

@@ -1,0 +1,22 @@
+.chat-emoji-list {
+    width: 290px;
+    list-style: none;
+    display: inline-block;
+    background-color: #fff; /* Background color */
+    border: 1px solid #ccc; /* Border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Box shadow */
+    border-radius: 8px; /* Border radius */
+    padding: 8px; /* Padding around emojis */
+}
+
+.chat-emoji-list-item {
+    padding: 2px;
+    width: 26px;
+    font-size: 16px;
+    display: inline-block;
+}
+
+.chat-emoji-list-item:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+}

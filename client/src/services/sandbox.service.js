@@ -16,9 +16,12 @@ const baseUrl = "http://localhost:5000/sandbox";
 const runCode = async (runInfo) => {
     try {
         const response = await axios.post(baseUrl, runInfo);
-        return response.data.data;
+        const succcessObj = {isError: false, content: response.data.data}
+
+        return succcessObj;
     } catch (error) {
-        return error.response.data.data;
+        const errObj =  {isError: true, content: error.response.data.data};
+        return errObj
     }
 };
 
