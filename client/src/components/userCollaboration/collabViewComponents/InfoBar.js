@@ -2,9 +2,8 @@ import "./infoBar.css";
 import { useState } from "react";
 import LanguageSelector from "./LanguageSelector";
 import WarningDialog from "../components/WarningDialog"
-import QuestionSelector from "./QuestionSelector";
 
-const InfoBar = ({ matchInfo, selectedLanguage, handleLanguageChange, selectedQuestion, handleQuestionChange }) => {
+const InfoBar = ({ matchInfo, selectedLanguage, handleLanguageChange }) => {
     const users = matchInfo.matchedUserInfo
     const [dialogIsOpen, setDialogIsOpen] = useState(false); 
     const [disableDialog, setDisableDialog] = useState(false);
@@ -43,7 +42,6 @@ const InfoBar = ({ matchInfo, selectedLanguage, handleLanguageChange, selectedQu
             <div className="match-info">{`MatchID: ${matchInfo.matchId}`}</div>
             <div className="language-selector"  onClick={handleOnclick}>
                 <LanguageSelector selectedLanguage={selectedLanguage} handleLanguageChange={handleLanguageChange}/>
-                <QuestionSelector selectedQuestion={selectedQuestion} handleQuestionChange={handleQuestionChange}/>
                 <WarningDialog dialogIsOpen={dialogIsOpen} disagree={disagree} agree={agree}/>
             </div>
             <div className="match-users">

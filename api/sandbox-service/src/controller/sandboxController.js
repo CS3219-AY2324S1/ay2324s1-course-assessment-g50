@@ -18,7 +18,7 @@ const testCode = async (req, res) => {
     try {
         expected = await runCode(solutionCode, "python", testCase)
     } catch (error) {
-        return JsonResponse.fail(401, error.message).send(res);
+        return JsonResponse.fail(401, "Testcse provided is not a valid format").send(res);
     }
 
     const status = expected.data === output.data ? "Passed" : "Failed";

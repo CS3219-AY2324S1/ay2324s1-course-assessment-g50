@@ -13,9 +13,9 @@ import { updateUserAttemptHistory } from "../../services/user.service";
 const SolveQuestion = () => {
   const matchingStatus = useSelector(state => state.matching.status);
   const errorInfo = useSelector(state => state.matching.errorInfo);
+  const filteredQuestions = useSelector(state =>  state.matching.filteredQuestions);
   const dispatch = useDispatch();
   const location = useLocation();
-  const { isAccessedFromHistory = false, questionName = null } = location.state || {};
   const [isSuccessfulMatch, setIsSucessfulMatch] = useState(false);
 
   const questionArr = useSelector(state => state.questions.questions);
@@ -24,9 +24,11 @@ const SolveQuestion = () => {
   useEffect(() => {
     if (matchingStatus === 'sucessfullyConnected') {
       setIsSucessfulMatch(true);
+      console.log(filteredQuestions);
       // Get matched question here and pass down to CollabView
-      dispatch(fetchQuestions());
-      dispatch(retrieveQuestionDetailsAction({ questionName:questionArr[0].title }));
+      if (filteredQuestions.length !== 0) {
+        dispatch(retrieveQuestionDetailsAction({ questionName: filteredQuestions[0].title }));
+      }
     } else if (matchingStatus === "failedConnection") {
       AlertNotification.error("Failed match: " + errorInfo).notify(dispatch);
     }
