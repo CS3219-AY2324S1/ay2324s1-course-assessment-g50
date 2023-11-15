@@ -97,6 +97,24 @@ const CollabView = ({ question }) => {
         languageText.insert(0, newLanguage);
     }
 
+        // Handle language change
+        useEffect(() => {
+            const questionText = doc.getText("question")
+            questionText.observe(event => {
+                setLanguage(questionText.toString());
+            });
+        }, [])
+    
+        const handleQuestionChange = (event) => {
+            const newQuestion = event.target.value
+            // Language Synchronize part:
+            const questionText = doc.getText("language")
+            const provider = new WebsocketProvider(serverWsUrl, matchInfo.matchId, doc);
+            
+            questionText.delete(0, questionText.length);
+            questionText.insert(0, newQuestion);
+        }
+
     const goBack = () => {
         navigate(-1);
     }
