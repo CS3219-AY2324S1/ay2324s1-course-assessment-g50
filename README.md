@@ -7,6 +7,8 @@ or looking for their first full time job. These questions can be daunting, espec
 Introducing PeerPrep! Your one stop solution to tech interview preparations. With our collaborative features, simulate real-life interviews and take turns role playing as interviewers. Match with
 partners based on similar question interests and tackle questions together!
 
+Peerprep is available now on: http://peerprepg50.site~
+
 deployment, history, code editor, submissions, chat, 
 ## Features
 - Try out questions our team specially picked for you
