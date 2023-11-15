@@ -11,7 +11,7 @@ const initialState = {
   matchedUserInfo: null, 
   matchedQuestionName: null,
   matchedQuestionDetails: null,
-  criteria: null,
+  complexity: null,
   category: null,
   status: "idle",
   errorInfo: null
