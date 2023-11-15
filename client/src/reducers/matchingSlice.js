@@ -3,10 +3,11 @@ import { matchWithUser } from "../services/matching.service";
 
 
 const initialState = {
-  matchedUserId: null,
-  matchedUserName: null,
-  matchedQuestionName: null,
+  matchedId: null,
+  category: null,
+  complexity: null,
   status: "idle",
+  error: null,
 }
 
 
@@ -23,10 +24,15 @@ const matchingSlice = createSlice({
         state.status = "loading";
       })
       .addCase(establishingConnectionAction.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.matchedId = action.payload.matchedId;
+        state.complexity = action.payload.complexity;
+        state.category = action.payload.category;
         state.status = "successfullyConnected";
       })
       .addCase(establishingConnectionAction.rejected, (state, action) => {
         state.status = "failedConnection";
+        state.error = action.payload;
       })
   },
 });

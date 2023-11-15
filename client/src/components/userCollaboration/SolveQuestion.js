@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const SolveQuestion = () => {
 
+  const matchingState = useSelector(state => state.matching);
+
   useEffect(() => {
 
   }, []);
@@ -12,6 +14,7 @@ const SolveQuestion = () => {
   return (
     <div className="solve-question-page">
       <Loading/>
+      {JSON.stringify(matchingState)}
     </div>
   )
 }
