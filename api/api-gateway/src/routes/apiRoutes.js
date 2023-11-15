@@ -58,7 +58,6 @@ router.use(
 
 // Collaboration socket io apis: 
 router.use(
-  '/collaboration',
   createProxyMiddleware('/collaboration', {
     target: process.env.COLLABORATION_SOCKET_URL,
     ...proxyOptions,
@@ -68,7 +67,6 @@ router.use(
 
 // Communication socket io apis: 
 router.use(
-  '/socket.io',
   createProxyMiddleware('/socket.io', {
     target: process.env.COMMUNICATION_SOCKET_URL,
     ...proxyOptions,
