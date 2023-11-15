@@ -19,12 +19,15 @@ const match = async (criteria, timeout) => {
       timeout: timeout,
       signal: controller.signal,
     });
-    const matchedId = resp.data;
+    console.log(resp.data);
+    const matchedId = resp.data.users;
     // 2. Fetch user specific infos
     const matchedUserInfo = await fetchTargetUserData(matchedId);
     const respData = {
       matchedId: matchedId, // Matched user ids
-      matchedUserInfo: matchedUserInfo.data // Matched user specific infos
+      matchedUserInfo: matchedUserInfo.data, // Matched user specific info
+      category: resp.data.category,
+      complexity: resp.data.complexity,
     }
     // 3. Create conversation between matched users:
     const newConversation = {
@@ -36,7 +39,7 @@ const match = async (criteria, timeout) => {
     return respData;
   } catch (error) {
     console.error("Failed match:", error);
-    throw new Error(error.response.data.data);
+    throw new Error(error.response.data);
   }
 };
 
@@ -46,8 +49,6 @@ const matchWithUser = async (criteria, { rejectWithValue }) => {
     } catch (err) {
         throw rejectWithValue(err.message);
     }
-const matchWithUser = async (criteria) => {
-  return await match(criteria, 30000); // TODO
 };
 
 export { matchWithUser };

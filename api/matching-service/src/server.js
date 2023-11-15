@@ -34,7 +34,7 @@ await rchannel.consume(queue.queue, (msg) => {
 	const resp = JSON.parse(msg.content);
 	console.log(`Received match result ${resp} with cid ${msg.properties.correlationId}`);
 	if (resp.success) {
-		connMap.get(msg.properties.correlationId)?.send(resp.users);
+		connMap.get(msg.properties.correlationId)?.send(resp);
 	} else {
 		connMap.get(msg.properties.correlationId)?.status(400).send(resp.reason);
 	}

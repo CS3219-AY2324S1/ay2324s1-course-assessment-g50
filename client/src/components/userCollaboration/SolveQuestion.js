@@ -20,7 +20,6 @@ const SolveQuestion = () => {
 
   const questionArr = useSelector(state => state.questions.questions);
   const question = useSelector(state => state.matching.matchedQuestionDetails);
-  const dispatch = useDispatch();
   
   useEffect(() => {
     if (matchingStatus === 'sucessfullyConnected') {
