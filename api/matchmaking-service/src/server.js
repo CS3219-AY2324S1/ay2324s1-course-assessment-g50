@@ -64,6 +64,7 @@ for (let topic of topics) {
 				wchannel.publish("match_res", "", Buffer.from(JSON.stringify(resp)), {
 					correlationId: topic.waiting.cid,
 				});
+				topic.waiting = null;
 			}
 			wchannel.publish("match_res", "", Buffer.from(JSON.stringify(resp)), {
 				correlationId: msg.properties.correlationId,
