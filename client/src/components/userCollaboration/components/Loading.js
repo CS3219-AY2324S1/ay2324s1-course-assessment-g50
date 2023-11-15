@@ -1,8 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import "./loading.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import AlertNotification from "../../../services/alert.service";
+import { resetStatus } from "../../../reducers/matchingSlice";
 
 const Loading = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const matchStatus = useSelector(state => state.match.status);
+    const [time, setTime] = useState(30); 
+
+    useEffect(() => {
+        if (matchStatus === "failedConnection") {
+            AlertNotification.warning("You have timed out. Please try again in abit").notify(dispatch);
+            dispatch(resetStatus())
+            navigate("/");
+        }
+    }, [matchStatus])
+
+    useEffect(() => {
+        // Exit early when we reach 0
+        if (!time) return;
+        const intervalId = setInterval(() => {
+          setTime(time - 1); // Decrease the time by 1 second
+        }, 1000);
+        return () => clearInterval(intervalId);
+      }, [time]);
+
+
+
     return (
         <div className="loading-page">
             <div className="loading-container">
@@ -31,6 +58,7 @@ const Loading = () => {
             <span style={{"--i": 23}}></span>
             <span style={{"--i": 24}}></span>
             <div className="cancel-matching-button" onClick={() => navigate("/")}><p>Cancel Matching</p></div>
+            <p className="timer">{time}</p>
             </div>
         </div>
     )

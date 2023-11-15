@@ -35,3 +35,8 @@ export const establishingConnectionAction = createAsyncThunk(
   "matchingServer/establishingConnections",
   matchWithUser
 );
+
+
+export const { resetStatus } = matchingSlice.actions;
+
+export default matchingSlice.reducer;
