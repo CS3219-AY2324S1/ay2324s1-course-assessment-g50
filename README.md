@@ -42,7 +42,7 @@ Message Broker: RabbitMQ
 
 ### Option 2: Using npm (starts each service individually)
 
-There are 11 services that needs to be started individually should you choose to use npm to start the application.
+There are 10 services that needs to be started individually should you choose to use npm to start the application.
 
 Warning: .env.example provided is meant for running using **docker-compose**.
 To run using npm, please change all urls in the .env file to localhost. .env for certain services also requires additional fields only found in root-level .env
