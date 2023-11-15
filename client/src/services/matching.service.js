@@ -1,9 +1,10 @@
 import axios from "axios";
 const baseUrl = "http://localhost:5000/matching";
-const controller = new AbortController();
+let controller = new AbortController();
 
 const cancelMatch = async () => {
   controller.abort();
+  controller = new AbortController();
 }
 
 const match = async (criteria, timeout) => {

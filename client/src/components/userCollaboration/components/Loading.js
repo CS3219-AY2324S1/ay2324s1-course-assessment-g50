@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import AlertNotification from "../../../services/alert.service";
 import { resetStatus } from "../../../reducers/matchingSlice";
+import {cancelMatch} from "../../../services/matching.service";
 
 const Loading = () => {
     const navigate = useNavigate();
@@ -57,7 +58,7 @@ const Loading = () => {
             <span style={{"--i": 22}}></span>
             <span style={{"--i": 23}}></span>
             <span style={{"--i": 24}}></span>
-            <div className="cancel-matching-button" onClick={() => navigate("/")}><p>Cancel Matching</p></div>
+            <div className="cancel-matching-button" onClick={async () => {await cancelMatch(); navigate("/"); }}><p>Cancel Matching</p></div>
             <p className="timer">{time}</p>
             </div>
         </div>

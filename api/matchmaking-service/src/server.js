@@ -39,6 +39,21 @@ await rchannel.assertExchange("match_req", "topic", {
 	durable: false
 });
 
+const cchannel = await connection.createChannel(); // for cancelling
+await cchannel.assertQueue("match_cancel", {durable: false});
+cchannel.consume("match_cancel", (msg) => {
+	const cid = msg.content.toString();
+	console.log(`Cancelling cid ${cid}`);
+	for (let t of topics) {
+		if (t.waiting?.cid === cid) {
+			console.log(`Cancelled ${t.waiting}`);
+			t.waiting = null;
+		}
+	}
+})
+
+
+
 for (let topic of topics) {
 	let q = rchannel.assertQueue('', {
 		exclusive: false
