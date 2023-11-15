@@ -40,6 +40,12 @@ const match = async (criteria, timeout) => {
   }
 };
 
+const matchWithUser = async (criteria, { rejectWithValue }) => {
+    try {
+        return await match(criteria, 30000); // TODO
+    } catch (err) {
+        throw rejectWithValue(err.message);
+    }
 const matchWithUser = async (criteria) => {
   return await match(criteria, 30000); // TODO
 };
