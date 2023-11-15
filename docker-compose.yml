@@ -170,6 +170,7 @@ services:
       MYSQL_DATABASE: peerprep
     volumes:
       - user-service-db-data:/var/lib/mysql/
+      - ./api/user-service/dump:/dump
     ports:
       - "3307:3306"
     healthcheck:

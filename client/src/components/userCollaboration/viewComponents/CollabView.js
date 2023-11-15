@@ -133,7 +133,7 @@ const CollabView = ({ question }) => {
                 <p className="question-complexity">{question.complexity}</p>
                 <div  dangerouslySetInnerHTML={{ __html: question.description }} />
                 <p className="testCase">
-                    {"Test case input format:\n\nSample testcases have been provided below\nPlease follow the format when submitting your testcase"}
+                    {"Test case input warning:\nTestcases CANNOT have empty spaces at start of line"}
                 </p>
                 {question.testCases && question.testCases.map((testCase, i) => 
                     <p className="testCase">{`Sample Test case ${i}:\n ${testCase}`}</p>
