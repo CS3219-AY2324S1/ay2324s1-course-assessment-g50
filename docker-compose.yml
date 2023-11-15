@@ -10,7 +10,9 @@ services:
       - 3000:3000
     volumes:
       - ./client:/app
-      - /app/node_modules  
+      - /app/node_modules
+    networks:
+      - default
 
   api-gateway:
     container_name: api-gateway
@@ -24,9 +26,10 @@ services:
         condition: service_healthy
     volumes:
       - ./api/api-gateway:/app
-      - /app/node_modules
     env_file:
-      - .env  
+      - .env 
+    networks:
+      - default
 
   user-service:
     container_name: user-service
@@ -42,9 +45,10 @@ services:
         condition: service_healthy
     volumes:
       - ./api/user-service:/app
-      - /app/node_modules
     env_file:
       - .env
+    networks:
+      - default 
 
   question-service:
     container_name: question-service
@@ -58,9 +62,42 @@ services:
         condition: service_healthy
     volumes:
       - ./api/question-service:/app
-      - /app/node_modules
     env_file:
       - .env
+    networks:
+      - default
+
+  matching-service:
+    container_name: matching-service
+    build:
+      context: ./api/matching-service/
+      dockerfile: Dockerfile
+    ports:
+      - 8300:8300
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./api/matching-service:/app
+    env_file:
+      - .env
+    networks:
+      - default
+
+  matchmaking-service:
+    container_name: matchmaking-service
+    build:
+      context: ./api/matchmaking-service/
+      dockerfile: Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./api/matchmaking-service:/app
+    env_file:
+      - .env
+    networks:
+      - default
 
   mysql:
     image: mysql
@@ -70,6 +107,7 @@ services:
       MYSQL_DATABASE: peerprep
     volumes:
       - user-service-db-data:/var/lib/mysql/
+      - ./api/user-service/dump:/dump
     ports:
       - "3307:3306"
     healthcheck:
@@ -78,12 +116,15 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    networks:
+      - default
 
   mongodb:
     image: mongo
     restart: always
     volumes:
-      - question-service-db-data:/data/db
+      - mongodb-db-data:/data/db
+      - ./api/question-service/dump:/data/dump
     ports:
       - "27017:27017"
     healthcheck:
@@ -92,7 +133,28 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
+    networks:
+      - default
+
+  rabbitmq:
+    image: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 30s
+      retries: 3
+    networks:
+      - default
 
 volumes:
   user-service-db-data:
-  question-service-db-data:     
+  mongodb-db-data:     
+
+networks:
+  default:
+    name: peerprep-network
+
+  

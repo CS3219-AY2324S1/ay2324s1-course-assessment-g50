@@ -27,4 +27,13 @@ router.use(
   })
 );
 
+router.use(
+    "/matching",
+    isLoggedInCheck,
+    createProxyMiddleware({
+        target: process.env.MATCHING_SERVICE_URL,
+        ...proxyOptions,
+    })
+);
+
 module.exports = router

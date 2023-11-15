@@ -1,16 +1,34 @@
+import axios from "axios";
+const baseUrl = "http://localhost:5000/matching";
+const controller = new AbortController();
 
+const cancelMatch = async () => {
+  controller.abort();
+}
 
-
-
-//Insert the matching route here
-const baseUrl = "";
-
-const matchWithUser = async () => {
+const match = async (criteria, timeout) => {
   try {
-    return axios.get(baseUrl);
+    let resp = await axios.post(baseUrl, criteria, {
+      timeout: timeout,
+      signal: controller.signal,
+    });
+    return {
+      matchedId: resp.data.users,
+      category: resp.data.category,
+      complexity: resp.data.complexity,
+    };
   } catch (error) {
-    throw new Error(msg);
+    console.error("Failed match:", error);
+    throw new Error(error.response.data);
   }
 };
 
-export { matchWithUser };
+const matchWithUser = async (criteria, { rejectWithValue }) => {
+  try {
+    return await match(criteria, 30000); // default timeout
+  } catch (err) {
+    throw rejectWithValue(err.message);
+  }
+};
+
+export { matchWithUser, cancelMatch };
