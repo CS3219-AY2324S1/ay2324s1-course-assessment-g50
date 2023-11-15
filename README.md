@@ -70,6 +70,7 @@ eg. http://api-gateway:5000 => http://localhost:5000
 2. Run `mysql -u root -p peerprep`
 3. Enter the password `example` when prompted
 4. Run `source /dump/CreateUsers.sql` 
+   - **If there are existing users**, run `DELETE FROM users` and `DELETE FROM user_infos` first
 
 This creates an admin user account with privileges to manage the questions database
    - Email: `admin@gmail.com`
@@ -78,3 +79,4 @@ This creates an admin user account with privileges to manage the questions datab
 ### Question data
 This loads in our team's curated question list for easy setup
 1. In local machine's terminal, run `docker-compose exec mongodb mongorestore /data/dump`
+   - This command can only be **executed once**
