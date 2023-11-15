@@ -11,7 +11,7 @@ axios response: {
   }
 }
 */
-const baseUrl = "http://35.198.214.47:5000/chat";
+const baseUrl = "http://peerprepg50:5000/chat";
 
 export const addMessage = async (message) => {
     try {

@@ -11,7 +11,7 @@ axios response: {
   }
 }
 */
-const baseUrl = "http://35.198.214.47:5000/sandbox";
+const baseUrl = "http://peerprepg50:5000/sandbox";
 
 const runCode = async (runInfo) => {
     try {

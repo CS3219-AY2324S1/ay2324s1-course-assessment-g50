@@ -13,8 +13,8 @@ import { io } from "socket.io-client";
 import Chat from "../../chatbox/Chat";
 import { fetchUserDataAction } from "../../../reducers/userSlice";
 
-const serverWsUrl = "ws://35.198.214.47:8200";
-const communicationSocketUrl = "ws://35.198.214.47:8500"
+const serverWsUrl = "ws://peerprepg50:8200";
+const communicationSocketUrl = "ws://peerprepg50:8500"
 
 /* Component which shows the collaboration view */
 const CollabView = ({ question }) => {
