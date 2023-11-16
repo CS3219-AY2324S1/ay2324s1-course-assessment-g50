@@ -6,7 +6,6 @@ import Question from "./components/questions/questions";
 import UserProfileManager from "./components/user/UserAuthentication";
 import Profile from "./components/user/Profile";
 import PrivateRoute from "./components/routing/privateRoute";
-import SolveQuestion from "./components/userCollaboration/SolveQuestion.js";
 import "./App.css";
 
 /* To enable sending of cookies on each request globally*/
@@ -19,7 +18,6 @@ const App = () => (
       <Route path="/" element={<PrivateRoute component={Question}/>} />
       <Route path="/login" element={<UserProfileManager />} />
       <Route path="/profile" element={<PrivateRoute component={Profile}/>} />
-      <Route path="/solve-question" element={<PrivateRoute component={SolveQuestion}/>} />
     </Routes>
   </Router>
 );
