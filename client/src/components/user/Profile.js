@@ -19,6 +19,7 @@ const Profile = () => {
   const user = useSelector((state) => state.currentUser);
   const isLoggedIn = useSelector((state) => state.currentUser.isLoggedIn);
   const status = useSelector((state) => state.currentUser.status);
+  const errorLogs = useSelector((state) => state.currentUser.errorLogs);
 
   const PANEL = {
     BASIC_INFO: "Basic Info",
@@ -43,6 +44,14 @@ const Profile = () => {
       dispatch(fetchUserDataAction());
     }
   }, [user]);
+
+  /* Pop out error message whenever user profile page operations
+  go wrong. */
+  useEffect(() => {
+    if (status?.startsWith("failed")) {
+      alert(errorLogs)
+    }
+  }, [status])
 
   const goBack = () => {
     navigate('/');

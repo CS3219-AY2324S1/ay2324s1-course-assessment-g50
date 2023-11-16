@@ -19,7 +19,7 @@ async function addUser(req, res) {
 
     // check if email already exists in DB
     const dbUser = await User.findOne({ where: { email: email } }).catch(err => {
-        return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res)
+        return JsonResponse.fail(500, 'Internal error').send(res)
     })
     if (dbUser) {
         return JsonResponse.fail(400, 'User already registered, please change email').send(res)
@@ -29,11 +29,6 @@ async function addUser(req, res) {
     const now = new Date()
     const salt = String(now.getTime())
     let rawPassword = password;
-    // try {
-    //     rawPassword = RSAUtil.decrypt(password);
-    // } catch (e) {
-    //     return JsonResponse.fail(400, e.message).send(res)
-    // }
     const md5Password = MD5Util.sign(rawPassword, salt, "utf8")
 
     // Create user and default user info in DB.
@@ -70,7 +65,7 @@ async function login(req, res) {
 
     // Find user in DB:
     const dbUser = await User.findOne({ where: { email: email } }).catch(error => {
-        return JsonResponse.fail(500, `Failed to query user profile with email=${email}`).send(res)
+        return JsonResponse.fail(500, `Internal error`).send(res)
     })
     if (!dbUser) {
         return JsonResponse.fail(400, `This user does not exists`).send(res)
@@ -79,11 +74,6 @@ async function login(req, res) {
     // Validate Password:
     let rawPassword = password;
     const salt = dbUser.salt
-    // try {
-    //     rawPassword = RSAUtil.decrypt(password)
-    // } catch (error) {
-    //     return JsonResponse.fail(500, error.message).send(res)
-    // }
     const md5Password = MD5Util.sign(rawPassword, salt, 'utf8')
     const dbPassword = dbUser.password
     if (md5Password != dbPassword) {
@@ -121,7 +111,7 @@ async function getUserById(req, res) {
     const id = req.session.userId;
     // Get user by id
     const userInfo = await UserInfo.findOne({ where: { userId: id } }).catch(err => {
-        return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res)
+        return JsonResponse.fail(500, 'Internal error').send(res)
     })
     if (userInfo) {
         userInfo.dataValues["email"] = req.session.email;
@@ -143,7 +133,7 @@ async function getUsers(req, res) {
             }
         }
     }).catch(err => {
-        return JsonResponse.fail(500, 'Internal error, failed to get users from db').send(res)
+        return JsonResponse.fail(500, 'Internal error').send(res)
     })
     if (userInfos) {
         return JsonResponse.success(200, userInfos).send(res)
@@ -162,7 +152,7 @@ async function updateUser(req, res) {
     if (newPassword) {
         //getting the salt
         const dbUser = await User.findOne({ where: { id: id } }).catch(err => {
-            return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res);
+            return JsonResponse.fail(500, 'Internal error').send(res);
         })
         salt = dbUser.salt;
         md5Password = MD5Util.sign(newPassword, salt, 'utf8');
@@ -224,7 +214,7 @@ async function updateUserAvatar(req, res) {
     let imageUrl = ""
     try {
         const dbUser = await UserInfo.findOne({ where: { id: id } }).catch(err => {
-            return JsonResponse.fail(500, 'Internal error, failed to get user from db').send(res);
+            return JsonResponse.fail(500, 'Internal error').send(res);
         })
         const prevImgUrl = dbUser.avatar
         imageUrl = await uploadImageToServer(req, prevImgUrl)
