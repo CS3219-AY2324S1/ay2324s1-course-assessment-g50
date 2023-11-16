@@ -10,6 +10,7 @@ import "./profile.css";
 import BasicInfo from "./userProfile/profileComponents/BasicInfo";
 import AccountInfo from "./userProfile/profileComponents/AccountInfo";
 import ProfileAvatar from "./userProfile/profileComponents/profileAvatar"
+import { sendError } from "../../services/alert.service.js";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const Profile = () => {
   go wrong. */
   useEffect(() => {
     if (status?.startsWith("failed")) {
-      alert(errorLogs)
+      sendError(dispatch, errorLogs)
     }
   }, [status])
 
