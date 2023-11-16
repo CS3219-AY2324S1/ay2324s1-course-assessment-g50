@@ -16,9 +16,12 @@ const Avatar = ({ user }) => {
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
-        if (file) {
+        if (file.type.startsWith('image/')) {
             setSelectedImage(URL.createObjectURL(file));
-            setSelectedImageLink(file)
+            setSelectedImageLink(file);
+        } else {
+            // Handle the case when the selected file is not an image
+            alert('Please select a valid image file.');
         }
     };
 
