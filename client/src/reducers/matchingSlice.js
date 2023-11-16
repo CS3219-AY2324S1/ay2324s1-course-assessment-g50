@@ -28,6 +28,7 @@ const matchingSlice = createSlice({
         state.matchedId = action.payload.matchedId;
         state.complexity = action.payload.complexity;
         state.category = action.payload.category;
+        state.error = null;
         state.status = "successfullyConnected";
       })
       .addCase(establishingConnectionAction.rejected, (state, action) => {
