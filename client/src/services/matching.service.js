@@ -20,8 +20,9 @@ const match = async (criteria, timeout) => {
     };
   } catch (error) {
     console.error("Failed match:", error);
-    throw new Error(error.response.data);
-  }
+    const errMsg = error.response ? error.response.data : error.message
+    throw new Error(errMsg);
+  } 
 };
 
 const matchWithUser = async (criteria, { rejectWithValue }) => {

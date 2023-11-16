@@ -14,7 +14,11 @@ const Loading = () => {
 
     useEffect(() => {
         if (matchStatus === "failedConnection") {
-            AlertNotification.warning("You have timed out. Please try again in abit").notify(dispatch);
+            dispatch(resetStatus())
+            navigate("/");
+        } else if (matchStatus === "idle") {
+            // If user reloads page
+            AlertNotification.error('Match Disconnected').notify(dispatch);
             dispatch(resetStatus())
             navigate("/");
         }
