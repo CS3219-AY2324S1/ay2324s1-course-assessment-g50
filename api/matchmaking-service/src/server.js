@@ -50,6 +50,7 @@ cchannel.consume("match_cancel", (msg) => {
 			t.waiting = null;
 		}
 	}
+	cchannel.ack(msg);
 })
 
 

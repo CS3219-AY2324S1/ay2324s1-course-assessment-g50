@@ -12,6 +12,7 @@ const SolveQuestion = () => {
   const dispatch = useDispatch();
 
   if (matchingState.status === "failedConnection") {
+    console.log(matchingState);
     AlertNotification.error(`Failed match: ${matchingState.error}`).notify(dispatch);
     navigate('/');
   }

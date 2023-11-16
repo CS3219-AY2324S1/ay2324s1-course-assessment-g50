@@ -22,7 +22,7 @@ const match = async (criteria, timeout) => {
     console.error("Failed match:", error);
     const errMsg = error.response ? error.response.data : error.message
     throw new Error(errMsg);
-  } 
+  }
 };
 
 const matchWithUser = async (criteria, { rejectWithValue }) => {
