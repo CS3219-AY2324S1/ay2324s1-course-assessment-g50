@@ -24,7 +24,7 @@ const Register = ({ handleRegister }) => {
         dispatch(resetStatus());
         setIsSucessfulRegistration(false);
       }, 3000);
-    } else {
+    } else if (status === "failedRegistration") {
       setIsFailedRegistration(true);
       setTimeout(() => {
         dispatch(resetStatus());
