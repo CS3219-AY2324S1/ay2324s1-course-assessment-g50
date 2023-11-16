@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import { updateUserBasicAvatarInfoAction } from '../../../../reducers/userSlice';
+import { sendError } from '../../../../services/alert.service';
 import "./profileAvatar.css";
 
 const Avatar = ({ user }) => {
@@ -16,17 +17,22 @@ const Avatar = ({ user }) => {
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
-        if (file) {
+        if (file.type.startsWith('image/')) {
             setSelectedImage(URL.createObjectURL(file));
-            setSelectedImageLink(file)
+            setSelectedImageLink(file);
+        } else {
+            // Handle the case when the selected file is not an image
+            sendError(dispatch, 'Please select a valid image file.');
         }
     };
 
     const handleSaveClick = () => {
-        const formData = new FormData()
-        formData.append('avatar', selectedImageLink)
-        dispatch(updateUserBasicAvatarInfoAction(formData))
-        setIsEditing(false);
+        if (selectedImageLink) {
+            const formData = new FormData()
+            formData.append('avatar', selectedImageLink)
+            dispatch(updateUserBasicAvatarInfoAction(formData))
+        }
+        setIsEditing(false)
     };
 
     return (

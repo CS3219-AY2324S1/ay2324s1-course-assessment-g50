@@ -58,35 +58,22 @@ const updateUserBasicInfo = async (updateData) => {
 };
 
 const updateUserBasicAvatarInfo = async (imageData) => {
-    try {
-        const response = await axios.post(baseUrl + "/info/avatar", imageData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        return response.data;
-    } catch (error) {
-        console.error(error);
-    }
+    const response = await axios.post(baseUrl + "/info/avatar", imageData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    console.log(response.data);
+    return response.data;
 }
 
 const updateUserAccountInfo = async (updateData) => {
-    try {
-        const response = await axios.patch(baseUrl, updateData);
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        throw new Error("Failed to update account info");
-    }
+    const response = await axios.patch(baseUrl, updateData);
+    return response.data;
 };
 
 const deregisterUser = async () => {
-    try {
-        await axios.delete(baseUrl);
-    } catch (error) {
-        console.error(error);
-        throw new Error("Failed to update account info");
-    }
+    await axios.delete(baseUrl);
 };
 
 export { loginUser, logoutUser, registerUser, fetchUserData, updateUserBasicInfo, updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser }

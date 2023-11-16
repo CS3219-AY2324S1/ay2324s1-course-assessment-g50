@@ -10,6 +10,7 @@ import "./profile.css";
 import BasicInfo from "./userProfile/profileComponents/BasicInfo";
 import AccountInfo from "./userProfile/profileComponents/AccountInfo";
 import ProfileAvatar from "./userProfile/profileComponents/profileAvatar"
+import { sendError } from "../../services/alert.service.js";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const Profile = () => {
   const user = useSelector((state) => state.currentUser);
   const isLoggedIn = useSelector((state) => state.currentUser.isLoggedIn);
   const status = useSelector((state) => state.currentUser.status);
+  const errorLogs = useSelector((state) => state.currentUser.errorLogs);
 
   const PANEL = {
     BASIC_INFO: "Basic Info",
@@ -43,6 +45,14 @@ const Profile = () => {
       dispatch(fetchUserDataAction());
     }
   }, [status]);
+
+  /* Pop out error message whenever user profile page operations
+  go wrong. */
+  useEffect(() => {
+    if (status?.startsWith("failed")) {
+      sendError(dispatch, errorLogs)
+    }
+  }, [status])
 
   const goBack = () => {
     navigate('/');
