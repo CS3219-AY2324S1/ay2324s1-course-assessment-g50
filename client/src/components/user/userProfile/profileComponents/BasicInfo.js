@@ -9,7 +9,7 @@ const BasicInfo = ({ user }) => {
   const status = useSelector((state) => state.currentUser.status);
 
   useEffect(() => {
-    if (status === "givenInvalidInfoUpdate") {
+    if (status === "failedBasicInfoUpdate") {
       setIsInvalidUpdate(true);
       setTimeout(() => {
         setIsInvalidUpdate(false);

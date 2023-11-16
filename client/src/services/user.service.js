@@ -28,10 +28,7 @@ const registerUser = async (email, password) => {
         return response.data;
     } catch (error) {
         console.error(error);
-        if (error.response.status === 400) {
-            throw new Error("INVALID_EMAIL");
-        }
-        throw new Error("Failed to register");
+        throw new Error("Failed to register: " + error.response.data.data);
     }
 };
 
@@ -50,30 +47,44 @@ const updateUserBasicInfo = async (updateData) => {
         const response = await axios.patch(baseUrl + "/info", updateData);
         return response.data;
     } catch (error) {
-        if (error.response.status === 400) {
-            throw new Error("INVALID_INPUT");
-        }
-        throw new Error("Failed to update basic info");
+        console.error(error);
+        throw new Error("Failed to update user basic info: " + error.response.data.data);
     }
 };
 
 const updateUserBasicAvatarInfo = async (imageData) => {
-    const response = await axios.post(baseUrl + "/info/avatar", imageData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
-    console.log(response.data);
-    return response.data;
+    try {
+        const response = await axios.post(baseUrl + "/info/avatar", imageData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to update avatar info");
+    }
 }
 
 const updateUserAccountInfo = async (updateData) => {
-    const response = await axios.patch(baseUrl, updateData);
-    return response.data;
+    try {
+        const response = await axios.patch(baseUrl, updateData);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to update account info: " + error.response.data.data);
+    }
 };
 
 const deregisterUser = async () => {
-    await axios.delete(baseUrl);
+    try {
+        await axios.delete(baseUrl);
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to delete account");
+    }
 };
 
 export { loginUser, logoutUser, registerUser, fetchUserData, updateUserBasicInfo, updateUserBasicAvatarInfo, updateUserAccountInfo, deregisterUser }

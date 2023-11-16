@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    
+    max-width: 500px;
 }
 
 .registration-container .email, .password, .confirm-password {
@@ -42,8 +42,10 @@
 
 .registration-container .error-message {
     color: red;
+    word-break: break-word;
 }
 
 .registration-container .successful-registration-message {
     color: green;
+    word-break: break-word;
 }

@@ -10,10 +10,11 @@ const Register = ({ handleRegister }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [isNotMatchingPassword, setIsNotMatchingPassword] = useState(false);  
-  const [isSucessfulRegistration, setIsSucessfulRegistration] = useState(false); 
-  const [isFailedRegistration, setIsFailedRegistration] = useState(false); 
+  const [isNotMatchingPassword, setIsNotMatchingPassword] = useState(false);
+  const [isSucessfulRegistration, setIsSucessfulRegistration] = useState(false);
+  const [isFailedRegistration, setIsFailedRegistration] = useState(false);
   const status = useSelector((state) => state.currentUser.status);
+  const errorLogs = useSelector((state) => state.currentUser.errorLogs)
 
   /* If API is sucessful */
   useEffect(() => {
@@ -23,7 +24,7 @@ const Register = ({ handleRegister }) => {
         dispatch(resetStatus());
         setIsSucessfulRegistration(false);
       }, 3000);
-    } else if (status === "givenInvalidEmail") {
+    } else {
       setIsFailedRegistration(true);
       setTimeout(() => {
         dispatch(resetStatus());
@@ -57,27 +58,27 @@ const Register = ({ handleRegister }) => {
 
       <div className="password">
         <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
 
-        <div className="confirm-password">
+      <div className="confirm-password">
         <label>Confirm Password</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+      </div>
 
-        {isSucessfulRegistration && <p className="successful-registration-message">Sucessful registration, you may log in now</p>}
-        {isNotMatchingPassword && <p className="error-message">Your passwords are not matching</p>}
-        {isFailedRegistration && <p className="error-message">Invalid Email provided</p>}
-        <div className="button" onClick={onClickRegister}>Register</div>
-        
+      {isSucessfulRegistration && <p className="successful-registration-message">Sucessful registration, you may log in now</p>}
+      {isNotMatchingPassword && <p className="error-message">Your passwords are not matching</p>}
+      {isFailedRegistration && <p className="error-message">{errorLogs}</p>}
+      <div className="button" onClick={onClickRegister}>Register</div>
+
     </div>
   );
 };

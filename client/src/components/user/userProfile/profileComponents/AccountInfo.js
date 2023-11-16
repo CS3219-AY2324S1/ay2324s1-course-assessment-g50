@@ -12,7 +12,7 @@ const AccountInfo = ({ user }) => {
   const status = useSelector((state) => state.currentUser.status);
 
   useEffect(() => {
-    if (status === "givenInvalidInfoUpdate") {
+    if (status === "failedAccountInfoUpdate") {
       setIsInvalidUpdate(true);
       setTimeout(() => {
         setIsInvalidUpdate(false);
