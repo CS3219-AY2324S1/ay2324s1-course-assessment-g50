@@ -68,6 +68,7 @@ for (let topic of topics) {
 		let resp;
 		if (topic.waiting === null || topic.waiting === undefined) {
 			topic.waiting = {uid: user, cid: correlation};
+			console.log(`Match id:${topic.waiting.uid} waiting for match partner`)
 		} else {
 			if (topic.waiting.uid === user) {
 				// fail the match if same user
