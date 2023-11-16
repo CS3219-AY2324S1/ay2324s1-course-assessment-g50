@@ -3,3 +3,8 @@
     padding: 30px 70px 30px 30px;
     padding-left: 30px;
 }
+
+.invalid-update {
+    color: red;
+    text-align: center;
+}
