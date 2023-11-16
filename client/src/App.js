@@ -12,23 +12,13 @@ axios.defaults.withCredentials = true;
 
 const App = () => (
   <Router>
+    <Alerts />
     <Routes>
-      <Route path="/" element={<QuestionPage />} />
-      
-      <Route>
-        <Route path="/login" element={<UserProfileManager />}/>
-        <Route path="/profile" element={<Profile />}/>
-      </Route>
-
+      <Route path="/" element={<Question />} />
+      <Route path="/login" element={<UserProfileManager />}/>
+      <Route path="/profile" element={<Profile />}/>
     </Routes>
   </Router>
-);
-
-const QuestionPage = () => (
-  <div>
-    <Question />
-    <Alerts />
-  </div>
 );
 
 export default App;
