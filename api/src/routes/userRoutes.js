@@ -56,6 +56,7 @@ router.patch('/info', [
 router.patch('/', [
     check('email').optional().isEmail().withMessage("Email must be in valid format."),
     check('password')
+        .optional()
         .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long.')
         .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/)
         .withMessage('Password must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character.')
