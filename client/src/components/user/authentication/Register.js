@@ -29,7 +29,7 @@ const Register = ({ handleRegister }) => {
       setTimeout(() => {
         dispatch(resetStatus());
         setIsFailedRegistration(false);
-      }, 3000);
+      }, 7000);
     }
   }, [status]);
 
