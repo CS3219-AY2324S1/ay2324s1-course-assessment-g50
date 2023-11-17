@@ -1,2 +1,10 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/6BOvYMwN)
-# AssignmentTemplate
+## Assignment1 Running Instructions
+
+### Pre-requisites
+- Ensure you have npm installed
+
+### 1.1 Download required files
+- In root directory, run `npm i`
+
+### 1.2 Start the application
+- In root directory, run `npm run start`
