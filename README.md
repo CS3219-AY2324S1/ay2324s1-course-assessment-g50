@@ -7,7 +7,7 @@
 ### Pre-requisites
 
 - Ensure you have Docker Desktop (>= v4.22.2) installed (https://docs.docker.com/get-docker/)
-- Ensure you have .env files for system variables, can refer to .env.example to check. If there are missing variables, please contact team members.
+- Ensure you have .env files for system variables. **Note you need to have .env files accordingly for different services.** Can refer to .env.example in each service's root directory to check. If there are missing variables, please contact team members.
 
 ### 1.1 To run all the services at the same time
 
