@@ -34,9 +34,6 @@ const QuestionForm = () => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const emptyDescription = (value) =>
-    value.replace(/<(.|\n)*?>/g, "").trim().length !== 0;
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -44,11 +41,11 @@ const QuestionForm = () => {
       (field) => field !== null && field !== ""
     );
     const hasCat = formData.categories.length > 0;
-    const hasDesc = emptyDescription(formData.description);
+    const hasDesc = formData.description.replace(/<(?!img\s)[^>]*>/g, "").trim().length !== 0;
 
-    const isAllFilled = noneEmpty && hasCat && hasDesc;
+    const isValid = noneEmpty && hasCat && hasDesc;
 
-    if (isAllFilled) {
+    if (isValid) {
       try {
         await dispatch(addNewQuestion(formData)).unwrap();
         setFormData(initialState);

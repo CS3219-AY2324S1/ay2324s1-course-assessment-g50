@@ -9,8 +9,7 @@ export const addQuestionToRepo = (questionData) => {
 
   // Check for duplicates
   const hasDuplicate = questionRepo.filter(
-    (question) => question.title === questionData.title
-  );
+    (question) => question.title.toLowerCase().trim() === questionData.title.toLowerCase().trim());
 
   if (hasDuplicate.length > 0) {
     throw new Error("Found possible duplicate question with the same title");
