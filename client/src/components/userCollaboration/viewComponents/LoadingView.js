@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./loading.css";
+import {cancelMatch} from "../../../services/matching.service";
 
 const LoadingView = () => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const LoadingView = () => {
             <span style={{"--i": 22}}></span>
             <span style={{"--i": 23}}></span>
             <span style={{"--i": 24}}></span>
-            <div className="cancel-matching-button" onClick={() => navigate("/")}><p>Cancel Matching</p></div>
+            <div className="cancel-matching-button" onClick={async () => {await cancelMatch(); navigate("/"); }}><p>Cancel Matching</p></div>
             </div>
         </div>
     )

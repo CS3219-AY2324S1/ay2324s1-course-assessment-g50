@@ -8,10 +8,11 @@ import {getQuestions} from "./question.service";
 //Insert the matching route here
 const baseUrl = "http://localhost:5000/matching";
 
-const controller = new AbortController();
+let controller = new AbortController();
 
 const cancelMatch = async () => {
   controller.abort();
+  controller = new AbortController();
 }
 
 const match = async (criteria, timeout) => {
@@ -57,4 +58,4 @@ const matchWithUser = async (criteria, { rejectWithValue }) => {
     }
 };
 
-export { matchWithUser };
+export { matchWithUser, cancelMatch };

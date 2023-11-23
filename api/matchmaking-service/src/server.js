@@ -39,6 +39,22 @@ await rchannel.assertExchange("match_req", "topic", {
 	durable: false
 });
 
+const cchannel = await connection.createChannel(); // for cancelling
+await cchannel.assertQueue("match_cancel", {durable: false});
+cchannel.consume("match_cancel", (msg) => {
+	const cid = msg.content.toString();
+	console.log(`Cancelling cid ${cid}`);
+	for (let t of topics) {
+		if (t.waiting?.cid === cid) {
+			console.log(`Cancelled ${t.waiting}`);
+			t.waiting = null;
+		}
+	}
+	cchannel.ack(msg);
+})
+
+
+
 for (let topic of topics) {
 	let q = rchannel.assertQueue('', {
 		exclusive: false
@@ -53,6 +69,7 @@ for (let topic of topics) {
 		let resp;
 		if (topic.waiting === null || topic.waiting === undefined) {
 			topic.waiting = {uid: user, cid: correlation};
+			console.log(`Match id:${topic.waiting.uid} waiting for match partner`)
 		} else {
 			if (topic.waiting.uid === user) {
 				// fail the match if same user
@@ -64,6 +81,7 @@ for (let topic of topics) {
 				wchannel.publish("match_res", "", Buffer.from(JSON.stringify(resp)), {
 					correlationId: topic.waiting.cid,
 				});
+				topic.waiting = null;
 			}
 			wchannel.publish("match_res", "", Buffer.from(JSON.stringify(resp)), {
 				correlationId: msg.properties.correlationId,

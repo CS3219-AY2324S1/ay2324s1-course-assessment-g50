@@ -37,13 +37,23 @@ router.use(
   })
 );
 
+let matchProxy = createProxyMiddleware({
+    target: process.env.MATCHING_SERVICE_URL,
+    // onClose: function(res, socket, head) { console.log('Client disconnected'); },
+    ...proxyOptions,
+    onError: (err, req, res, target) => {console.log("in onerror");}
+})
+
 router.use(
   "/matching",
   isLoggedInCheck,
-  createProxyMiddleware({
-    target: process.env.MATCHING_SERVICE_URL,
-    ...proxyOptions,
-  })
+    (req, socket, head) => {
+        socket.on('close', (err) => {
+            console.log("socket closed");
+            req.emit('aborted');
+        });
+        return matchProxy(req, socket, head);
+    }
 );
 
 // Communication apis: 
